@@ -1,0 +1,36 @@
+int main() {
+    //This is a comment
+    DOUBLE ValA = 2;
+    DOUBLE ValB = 2;
+    DOUBLE ValC = 1;
+
+    DOUBLE real_val;
+    DOUBLE img_val;
+    //These should be the 2 ways variables can be declared, unless i have issues or run out of time
+
+    DOUBLE in_the_sqrt = b * b - 4 * a * c;
+
+    //example of an if statement
+    if (in_the_sqrt > 0) {
+        real_val = - b + SQRT(in_the_sqrt) / 2 * a;
+        img_val = - b - SQRT(in_the_sqrt) / 2 * a;
+    } else if (in_the_sqrt < 0) {
+        real_val = - b / 2 * a;
+        img_val = SQRT(-in_the_sqrt) / 2 * a;
+    } else {
+        real_val = -b / 2 * a;
+        img_val = 0;
+    }
+
+
+    Print("\nThe Equation is: \n {0}x^2 + {1}x + {2} = 0 \n", ValA, ValB, ValC);
+    
+    //Print is done using '+' to concatenate
+    if(img_val == 0){
+        Print("The result is : x= " + real_val);
+    } else {
+        Print("The result is : x= " + real_val + img_val);
+    }
+
+    return 0; 
+}
