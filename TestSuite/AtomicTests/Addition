@@ -1,0 +1,14 @@
+int main() {
+    //This is a comment
+    INT a = 2;
+    INT b = 1;
+    DOUBLE c = 1.0;
+    DOUBLE d = 2.5;
+    INT INTRes;
+    DOUBLE DOUBLERes;
+
+    INTRes = a + b;
+    DOUBLERes = c + d;
+
+    return 0; 
+}
