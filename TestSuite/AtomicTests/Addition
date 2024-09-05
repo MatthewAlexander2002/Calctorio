@@ -1,14 +1,17 @@
 int main() {
-    //This is a comment
-    INT a = 2;
-    INT b = 1;
-    DOUBLE c = 1.0;
-    DOUBLE d = 2.5;
-    INT INTRes;
-    DOUBLE DOUBLERes;
+    /*This is a comment*/
+    int a = 2;
+    int b = 1;
+    double c = 1.0;
+    double d = 2.5;
+    int INTRes;
+    double DOUBLERes;
 
     INTRes = a + b;
     DOUBLERes = c + d;
+
+    print(INTRes);
+    print(DOUBLERes);
 
     return 0; 
 }
