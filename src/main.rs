@@ -1,4 +1,4 @@
-use std::env;
+use std::{env, vec};
 use std::fs::File;
 use std::io::prelude::*;
 
@@ -18,6 +18,11 @@ fn main() {
 
     println!("With text: \n{}", contents);
 
+    //probably need a better name for symbols and scope
+    let legal_symbols: Vec<&str> = vec!["int", "double", "const", "if", "for", "print", "size", "toINT", "toFloat", "break", "return"];
+    let legal_binary_opaterators: Vec<&str> = vec!["&&", "||", "<", ">", "<=", ">=", "<>", "=="];
+    let legal_operator: Vec<&str> = vec!["=", "+", "-", "*", "/", "%"];
+    let legal_scope: Vec<&str> = vec!["(", ")", "{", "}", "[", "]", ";", "/*", "*/"];
     // let mut token_start = 0;
     let mut current_token = String::new();
     let mut found_tokens: Vec<String> = vec![];
