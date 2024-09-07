@@ -39,6 +39,9 @@ enum Tokens {
     Semi, // ;
     CommentL, // /* 
     CommentR, // */
+    SpeechMarks, // "
+    NewLine, // \r\n\f //carriage return, new line, new page
+    WhiteSpace, // \s //white space
 }
 
 
@@ -60,11 +63,22 @@ pub fn lexer(file_loc: &str) -> Vec<String> {
     let mut current_token = String::new();
     let mut found_tokens: Vec<Tokens> = vec![];
 
+    //need to capture "i"(usize) so i can just get a char out
     for (i, c) in contents.chars().enumerate(){
 
         // print!("{:?}, ", i);
         // println!("{:?}", c);
 
+        //Psudo code idea for my tokenisation
+        //if "delimiter"
+        // let new_token: Tokens = String_to_Token(current_token: String)
+        // found_tokens.pushback(new_token)
+        // let new_delim: Tokens = String_to_Token(c: String)
+        // found_tokens.pushback(new_delim)
+        
+        // i think this is the simplest way without going crazy and minimising code repeating
+
+        //end current token on operators, scope, binary operators
         if c == '\n' || c == '\t' || c == ' ' {
             if current_token != String::new() {
                 println!("{:?}", current_token);
