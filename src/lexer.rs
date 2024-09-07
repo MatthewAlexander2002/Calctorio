@@ -1,7 +1,6 @@
 use std::vec;
 use std::fs::File;
 use std::io::prelude::*;
-use fsm::nfa::Nfa; //next step i think i should do this in its own file and then bring the NFA here
 
 pub fn lexer(file_loc: &str) -> Vec<String> {
     let mut file = File::open(file_loc).expect("file not found");

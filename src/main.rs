@@ -1,5 +1,4 @@
 mod lexer;
-mod nfa;
 
 fn main() {
     // /home/matthew/Documents/UNI/Sem 6/SDL/Calctorio/TestSuite/AtomicTests/Addition
