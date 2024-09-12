@@ -1,0 +1,11 @@
+int main() {
+    /*This is a comment*/
+    int a = 2.1;
+    int DOUBLERes;
+
+    DOUBLERes = ToINT(a);
+
+    print(DOUBLERes);
+
+    return 0; 
+}

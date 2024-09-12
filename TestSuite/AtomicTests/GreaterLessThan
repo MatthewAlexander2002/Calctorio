@@ -1,0 +1,22 @@
+int main() {
+    int a = 2;
+    int b = 1;
+
+    double c = 1.0;
+    double d = 2.5;
+
+    if(a > b) {
+        print("int true")
+    }
+    if(a < b) {
+        print("int false")
+    }
+    if(c > d) {
+        print("double false")
+    }
+    if(c < d) {
+        print("double true")
+    }
+
+    return 0; 
+}

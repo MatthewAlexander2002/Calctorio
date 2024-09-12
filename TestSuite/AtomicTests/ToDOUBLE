@@ -1,0 +1,10 @@
+int main() {
+    int a = 2;
+    int INTRes;
+
+    INTRes = ToDOUBLE(a);
+
+    print(INTRes);
+
+    return 0; 
+}

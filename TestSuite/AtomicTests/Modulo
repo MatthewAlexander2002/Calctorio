@@ -1,0 +1,17 @@
+int main() {
+    /*This is a comment*/
+    int a = 33;
+    int b = 10;
+    double c = 10.25;
+    double d = 10.00;
+    int INTRes;
+    double DOUBLERes;
+
+    INTRes = a % b;
+    DOUBLERes = c % d;
+
+    print(INTRes);
+    print(DOUBLERes);
+
+    return 0; 
+}
