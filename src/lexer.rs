@@ -169,7 +169,14 @@ pub fn lexer(file_loc: &str) -> Vec<Token> {
             current_token.clear();
         //consider changing this to a .contains on a array but i will refactor later when i figure out whats the faster op
         } else if c == ' ' || c == ';' || c == '\n' || c == '\t' || c == '"' || c == '=' || c == '+' || c == '-' || c == '*' || c == '/' || c == '%' || c == '*' || c == '(' || c == ')' || c == '{' || c == '}' || c == '[' || c == ']' {
-            if !current_token.is_empty() {
+            if c == ' ' && current_token.is_empty() {
+                //make sure that leading white space doesn't end up in the next token
+                current_token.push(c);
+                found_tokens.push(string_to_token(current_token.clone()));
+                println!("{:?}", current_token);
+                current_token.clear();
+
+            } else if !current_token.is_empty() {
                 //turn token up to but not including delimiter into token
                 found_tokens.push(string_to_token(current_token.clone()));
                 println!("{:?}", current_token);
