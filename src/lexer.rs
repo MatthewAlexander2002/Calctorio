@@ -1,6 +1,6 @@
 use std::vec;
 use std::fs::File;
-use std::io::{prelude::*, Cursor};
+use std::io::prelude::*;
 
 //enum token that catagories each enum into sub catagories i.e., operators, types etc.
 // then each sub catgory is a enum within its self
@@ -75,7 +75,7 @@ enum ScopeTK {
 }
 
 enum VariableTK {
-    VarName(Some),
+    VarName(String),
 }
 
 
@@ -94,122 +94,133 @@ pub fn lexer(file_loc: &str) -> Vec<String> {
     // let legal_operator: Vec<&str> = vec!["=", "+", "-", "*", "/", "%"];
     // let legal_scope: Vec<&str> = vec!["(", ")", "{", "}", "[", "]", ";", "/*", "*/"];
     // let mut token_start = 0;
+
+    let mut char_iter = contents.chars().peekable();
     let mut current_token = String::new();
-    let mut found_tokens: Vec<Token> = vec![];
+    // let mut found_tokens: Vec<Token> = vec![];
+    let mut found_tokens: Vec<String> = vec![];
 
-    //need to capture "i"(usize) so i can just get a char out
-    for (i, c) in contents.chars().enumerate(){
+    while let Some(c) = char_iter.next() {
 
-        // print!("{:?}, ", i);
-        // println!("{:?}", c);
-
-        //Psudo code idea for my tokenisation
-        //if "delimiter"
-        // let new_token: Tokens = String_to_Token(current_token: String)
-        // found_tokens.push_back(new_token)
-        // let new_delim: Tokens = String_to_Token(c: String)
-        // found_tokens.push_back(new_delim)
-        
-        // i think this is the simplest way without going crazy and minmising code repeating
-
-        //end current token on operators, scope, binary operators
-        if c == '\n' || c == '\t' || c == ' ' {
-            if current_token != String::new() {
+        if c == '/' && char_iter.peek() == Some(&'*') {
+            continue;
+        } else if c == '*' && char_iter.peek() == Some(&'/') {
+            continue;
+        } else if c == '&' && char_iter.peek() == Some(&'&') {
+            continue;
+        } else if c == '|' && char_iter.peek() == Some(&'|') {
+            continue;
+        } else if c == '>' && char_iter.peek() == Some(&'=') {
+            continue;   
+        } else if c == '<' && char_iter.peek() == Some(&'=') {
+            continue;   
+        } else if c == '<' && char_iter.peek() == Some(&'>') {
+            continue;   
+        }  else if c == '=' && char_iter.peek() == Some(&'=') {
+            continue;
+            //consider changing this to a .contains on a array but i will refactor later when i figure out whats the faster op   
+        } else if c == ' ' || c == ';' || c == '\n' || c == '\t' || c == '"' || c == '=' || c == '+' || c == '-' || c == '*' || c == '/' || c == '%' || c == '*' || c == '(' || c == ')' || c == '{' || c == '}' || c == '[' || c == ']' {
+            if !current_token.is_empty() {
                 println!("{:?}", current_token);
-                found_tokens.push(current_token);
-                current_token = String::new();
+                found_tokens.push(current_token.clone());
+                current_token.clear()
             }
         } else {
             current_token.push(c);
         }
     }
+
+    // if !current_token.is_empty() {
+    //     found_tokens.push(current_token);
+    // }
+
     return found_tokens;
 }
 
-fn String_to_Token (current_String: String) -> Token {
-    if(current_String == "int"){ //Types
+fn string_to_token (current_string: String) -> Token {
+    if current_string == "int" { //Types
         return Token::Type(TypeTK::Int);
-    } else if (current_String == "double") {
+    } else if current_string == "double" {
         return Token::Type(TypeTK::Double);
-    } else if (current_String.parse::<i32>().is_ok()) {
-        return Token::Type(TypeTK::IntVal(current_String.parse::<i32>()));
-    } else if (current_String.parse::<f32>().is_ok()) {
-        return Token::Type(TypeTK::IntVal(current_String.parse::<i32>()));
-    } else if (current_String == "const") {
+    } else if let Ok(int_val) = current_string.parse::<i32>() {
+        return Token::Type(TypeTK::IntVal(int_val));
+    } else if let Ok(double_val) = current_string.parse::<f32>() {
+        return Token::Type(TypeTK::DoubleVal(double_val));
+    } else if current_string == "const" {
         return Token::Type(TypeTK::Const);
-    } else if (current_String == "if") { //Control Flow
-        return Token::Type(ControlFlowTK::If);
-    } else if (current_String == "for") {
-        return Token::Type(ControlFlowTK::For);
-    } else if (current_String == "while") {
-        return Token::Type(ControlFlowTK::While);
-    } else if (current_String == "break") {
-        return Token::Type(ControlFlowTK::Break);
-    } else if (current_String == "continue") {
-        return Token::Type(ControlFlowTK::Continue);
-    } else if (current_String == "return") {
-        return Token::Type(ControlFlowTK::Return);
-    } else if (current_String == "print") { // Utilities
-        return Token::Type(UtilitiesTK::Print); 
-    } else if (current_String == "size") {
-        return Token::Type(UtilitiesTK::Size);
-    } else if (current_String == "toINT") {
-        return Token::Type(UtilitiesTK::ToINT);
-    } else if (current_String == "toDOUBLE") {
-        return Token::Type(UtilitiesTK::ToDouble);
-    } else if (current_String == "/*") {
-        return Token::Type(UtilitiesTK::CommentL);
-    } else if (current_String == "*/") {
-        return Token::Type(UtilitiesTK::CommentR);
-    } else if (current_String == "\"") {
-        return Token::Type(UtilitiesTK::SpeechMarks);
-    } else if (current_String == "&&") { // Binary Operators
-        return Token::Type(BinaryOpsTK::And); 
-    } else if (current_String == "||") {
-        return Token::Type(BinaryOpsTK::Or);
-    } else if (current_String == ">") {
-        return Token::Type(BinaryOpsTK::GreaterThan);
-    } else if (current_String == "<") {
-        return Token::Type(BinaryOpsTK::LessThan);
-    } else if (current_String == ">=") {
-        return Token::Type(BinaryOpsTK::GreaterThanEqual);
-    } else if (current_String == "<=") {
-        return Token::Type(BinaryOpsTK::LessThanEqual);
-    } else if (current_String == "<>") {
-        return Token::Type(BinaryOpsTK::NotEqual);
-    } else if (current_String == "==") {
-        return Token::Type(BinaryOpsTK::Equal);
-    } else if (current_String == "=") { // Operators
-        return Token::Type(OpsTK::Assignment); 
-    } else if (current_String == "+") {
-        return Token::Type(OpsTK::Plus);
-    } else if (current_String == "-") {
-        return Token::Type(OpsTK::Minus);
-    } else if (current_String == "*") {
-        return Token::Type(OpsTK::Times);
-    } else if (current_String == "/") {
-        return Token::Type(OpsTK::Divide);
-    } else if (current_String == "%") {
-        return Token::Type(OpsTK::Modulo);
-    } else if (current_String == "(") {
-        return Token::Type(ScopeTK::BracketL);
-    } else if (current_String == ")") {
-        return Token::Type(ScopeTK::BracketR);
-    } else if (current_String == "{") {
-        return Token::Type(ScopeTK::CurlyBracketL);
-    } else if (current_String == "}") {
-        return Token::Type(ScopeTK::CurlyBracketR);
-    } else if (current_String == "[") {
-        return Token::Type(ScopeTK::SquareBracketL);
-    } else if (current_String == "]") {
-        return Token::Type(ScopeTK::SquareBracketR);
-    } else if (current_String == ";") {
-        return Token::Type(ScopeTK::Semi);
-    } else if (current_String == "\r" || current_String == "\n") {
-        return Token::Type(ScopeTK::NewLine);
-    } else if (current_String == " ") {
-        return Token::Type(ScopeTK::WhiteSpace);
+    } else if current_string == "if" { //Control Flow
+        return Token::ControlFlow(ControlFlowTK::If);
+    } else if current_string == "for" {
+        return Token::ControlFlow(ControlFlowTK::For);
+    } else if current_string == "while" {
+        return Token::ControlFlow(ControlFlowTK::While);
+    } else if current_string == "break" {
+        return Token::ControlFlow(ControlFlowTK::Break);
+    } else if current_string == "continue" {
+        return Token::ControlFlow(ControlFlowTK::Continue);
+    } else if current_string == "return" {
+        return Token::ControlFlow(ControlFlowTK::Return);
+    } else if current_string == "print" { // Utilities
+        return Token::Utilities(UtilitiesTK::Print); 
+    } else if current_string == "size" {
+        return Token::Utilities(UtilitiesTK::Size);
+    } else if current_string == "toINT" {
+        return Token::Utilities(UtilitiesTK::ToINT);
+    } else if current_string == "toDOUBLE" {
+        return Token::Utilities(UtilitiesTK::ToDouble);
+    } else if current_string == "/*" {
+        return Token::Utilities(UtilitiesTK::CommentL);
+    } else if current_string == "*/" {
+        return Token::Utilities(UtilitiesTK::CommentR);
+    } else if current_string == "\"" {
+        return Token::Utilities(UtilitiesTK::SpeechMarks);
+    } else if current_string == "&&" { // Binary Operators
+        return Token::BinaryOps(BinaryOpsTK::And); 
+    } else if current_string == "||" {
+        return Token::BinaryOps(BinaryOpsTK::Or);
+    } else if current_string == ">" {
+        return Token::BinaryOps(BinaryOpsTK::GreaterThan);
+    } else if current_string == "<" {
+        return Token::BinaryOps(BinaryOpsTK::LessThan);
+    } else if current_string == ">=" {
+        return Token::BinaryOps(BinaryOpsTK::GreaterThanEqual);
+    } else if current_string == "<=" {
+        return Token::BinaryOps(BinaryOpsTK::LessThanEqual);
+    } else if current_string == "<>" {
+        return Token::BinaryOps(BinaryOpsTK::NotEqual);
+    } else if current_string == "==" {
+        return Token::BinaryOps(BinaryOpsTK::Equal);
+    } else if current_string == "=" { // Operators
+        return Token::Ops(OpsTK::Assignment); 
+    } else if current_string == "+" {
+        return Token::Ops(OpsTK::Plus);
+    } else if current_string == "-" {
+        return Token::Ops(OpsTK::Minus);
+    } else if current_string == "*" {
+        return Token::Ops(OpsTK::Times);
+    } else if current_string == "/" {
+        return Token::Ops(OpsTK::Divide);
+    } else if current_string == "%" {
+        return Token::Ops(OpsTK::Modulo);
+    } else if current_string == "(" { // Scope
+        return Token::Scope(ScopeTK::BracketL);
+    } else if current_string == ")" {
+        return Token::Scope(ScopeTK::BracketR);
+    } else if current_string == "{" {
+        return Token::Scope(ScopeTK::CurlyBracketL);
+    } else if current_string == "}" {
+        return Token::Scope(ScopeTK::CurlyBracketR);
+    } else if current_string == "[" {
+        return Token::Scope(ScopeTK::SquareBracketL);
+    } else if current_string == "]" {
+        return Token::Scope(ScopeTK::SquareBracketR);
+    } else if current_string == ";" {
+        return Token::Scope(ScopeTK::Semi);
+    } else if current_string == "\r" || current_string == "\n" {
+        return Token::Scope(ScopeTK::NewLine);
+    } else if current_string == " " {
+        return Token::Scope(ScopeTK::WhiteSpace);
     } else {
-        return Token::Type(VariableTK::VarName(current_String));
+        return Token::Variable(VariableTK::VarName(current_string)); // Variable Name
     }
 }
