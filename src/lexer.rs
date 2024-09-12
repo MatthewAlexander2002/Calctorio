@@ -5,7 +5,7 @@ use std::io::prelude::*;
 //enum token that catagories each enum into sub catagories i.e., operators, types etc.
 // then each sub catgory is a enum within its self
 
-enum Token {
+pub enum Token {
     Type(TypeTK),
     ControlFlow(ControlFlowTK),
     Utilities(UtilitiesTK),
@@ -15,7 +15,7 @@ enum Token {
     Variable(VariableTK),
 }
 
-enum TypeTK { //need both a 
+pub enum TypeTK { //need both a 
     Int, // int
     Double, // double
     IntVal(i32), // i.e. 8
@@ -23,7 +23,7 @@ enum TypeTK { //need both a
     Const, // const
 }
 
-enum ControlFlowTK {
+pub enum ControlFlowTK {
     If, // if
     For, // for
     While, // while
@@ -32,7 +32,7 @@ enum ControlFlowTK {
     Return, // return
 }
 
-enum UtilitiesTK {
+pub enum UtilitiesTK {
     Print, // print
     Size, // size
     ToINT, // toINT
@@ -42,7 +42,7 @@ enum UtilitiesTK {
     SpeechMarks, // "
 }
 
-enum BinaryOpsTK {
+pub enum BinaryOpsTK {
     And, // &&
     Or, // ||
     GreaterThan, // >
@@ -53,7 +53,7 @@ enum BinaryOpsTK {
     Equal, // ==
 }
 
-enum OpsTK {
+pub enum OpsTK {
     Assignment, // =
     Plus, // +
     Minus, // -
@@ -62,7 +62,7 @@ enum OpsTK {
     Modulo, // %
 }
 
-enum ScopeTK {
+pub enum ScopeTK {
     BracketL, // (
     BracketR, // )
     CurlyBracketL, // {
@@ -74,12 +74,12 @@ enum ScopeTK {
     WhiteSpace, // \s " " //white space
 }
 
-enum VariableTK {
+pub enum VariableTK {
     VarName(String),
 }
 
 
-pub fn lexer(file_loc: &str) -> Vec<String> {
+pub fn lexer(file_loc: &str) -> Vec<Token> {
     let mut file = File::open(file_loc).expect("file not found");
 
     let mut contents = String::new();
@@ -97,33 +97,91 @@ pub fn lexer(file_loc: &str) -> Vec<String> {
 
     let mut char_iter = contents.chars().peekable();
     let mut current_token = String::new();
-    // let mut found_tokens: Vec<Token> = vec![];
-    let mut found_tokens: Vec<String> = vec![];
+    let mut found_tokens: Vec<Token> = vec![];
+    // let mut found_tokens: Vec<String> = vec![];
 
     while let Some(c) = char_iter.next() {
 
+        //need to change this to check if it has
         if c == '/' && char_iter.peek() == Some(&'*') {
-            continue;
+            current_token.push(c);
+        } else if c == '*' && current_token == "/" {
+            current_token.push(c);
+            found_tokens.push(string_to_token(current_token.clone()));
+            println!("{:?}", current_token);
+            current_token.clear();
         } else if c == '*' && char_iter.peek() == Some(&'/') {
-            continue;
+            if current_token.is_empty() {
+                current_token.push(c);
+            } else {
+                //turn current word into a token
+                found_tokens.push(string_to_token(current_token.clone()));
+                println!("{:?}", current_token);
+                current_token.clear();
+                //then add the soon to be token to the current_token
+                current_token.push(c);
+            }
+        } else if c == '/' && current_token == "*" {
+            current_token.push(c);
+            found_tokens.push(string_to_token(current_token.clone()));
+            println!("{:?}", current_token);
+            current_token.clear();
         } else if c == '&' && char_iter.peek() == Some(&'&') {
-            continue;
+            current_token.push(c);
+        } else if c == '&' && current_token == "&" {
+            current_token.push(c);
+            found_tokens.push(string_to_token(current_token.clone()));
+            current_token.clear();
         } else if c == '|' && char_iter.peek() == Some(&'|') {
-            continue;
+            current_token.push(c);
+        } else if c == '|' && current_token == "|" {
+            current_token.push(c);
+            found_tokens.push(string_to_token(current_token.clone()));
+            println!("{:?}", current_token);
+            current_token.clear();
         } else if c == '>' && char_iter.peek() == Some(&'=') {
-            continue;   
+            current_token.push(c); 
+        } else if c == '=' && current_token == ">" {
+            current_token.push(c);
+            found_tokens.push(string_to_token(current_token.clone()));
+            println!("{:?}", current_token);
+            current_token.clear();
         } else if c == '<' && char_iter.peek() == Some(&'=') {
-            continue;   
+            current_token.push(c);  
+        } else if c == '=' && current_token == "<" {
+            current_token.push(c);
+            found_tokens.push(string_to_token(current_token.clone()));
+            println!("{:?}", current_token);
+            current_token.clear();
         } else if c == '<' && char_iter.peek() == Some(&'>') {
-            continue;   
+            current_token.push(c);  
+        } else if c == '>' && current_token == "<" {
+            current_token.push(c);
+            found_tokens.push(string_to_token(current_token.clone()));
+            println!("{:?}", current_token);
+            current_token.clear();
         }  else if c == '=' && char_iter.peek() == Some(&'=') {
-            continue;
-            //consider changing this to a .contains on a array but i will refactor later when i figure out whats the faster op   
+            current_token.push(c);  
+        } else if c == '=' && current_token == "=" {
+            current_token.push(c);
+            found_tokens.push(string_to_token(current_token.clone()));
+            println!("{:?}", current_token);
+            current_token.clear();
+        //consider changing this to a .contains on a array but i will refactor later when i figure out whats the faster op
         } else if c == ' ' || c == ';' || c == '\n' || c == '\t' || c == '"' || c == '=' || c == '+' || c == '-' || c == '*' || c == '/' || c == '%' || c == '*' || c == '(' || c == ')' || c == '{' || c == '}' || c == '[' || c == ']' {
             if !current_token.is_empty() {
+                //turn token up to but not including delimiter into token
+                found_tokens.push(string_to_token(current_token.clone()));
                 println!("{:?}", current_token);
-                found_tokens.push(current_token.clone());
-                current_token.clear()
+                current_token.clear();
+                
+                //turn delimiter into token
+                current_token.push(c);
+                found_tokens.push(string_to_token(current_token.clone()));
+                println!("{:?}", current_token);
+                current_token.clear();
+            } else {
+                current_token.push(c);
             }
         } else {
             current_token.push(c);
