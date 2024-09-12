@@ -1,0 +1,24 @@
+int main() {
+    int a = 2;
+    int b = 1;
+    int c = 2;
+
+    double d = 1.0;
+    double e = 2.5;
+    double f = 1.0;
+
+    if(a <> b) {
+        print("int true")
+    }
+    if(a <> c) {
+        print("int false")
+    }
+    if(d <> e) {
+        print("double true")
+    }
+    if(d <> f) {
+        print("double false")
+    }
+
+    return 0; 
+}

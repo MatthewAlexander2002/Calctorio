@@ -1,0 +1,17 @@
+int main() {
+    /*This should be able handle in / where a remanded occurs*/
+    int a = 26;
+    int b = 5;
+    double c = 8.4;
+    double d = 2.0;
+    int INTRes;
+    double DOUBLERes;
+
+    INTRes = a / b;
+    DOUBLERes = c / d;
+
+    print(INTRes);
+    print(DOUBLERes);
+
+    return 0; 
+}
