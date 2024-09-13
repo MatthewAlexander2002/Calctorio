@@ -8,5 +8,5 @@ fn main() {
     
     // println!("{:?}", filename);
     let filename = "/home/matthew/Documents/UNI/Sem 6/SDL/Calctorio/TestSuite/AtomicTests/Addition";
-    lexer::lexer(filename);
+    let tokens = lexer::lexer(filename);
 }
