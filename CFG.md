@@ -1,12 +1,12 @@
 S -> A
 
-A -> if(<Ex>){D} | for(<Ex>;<Ex>;<Ex>){D} | while(<Ex>){D} | <Type><VName>(B){D}
+A -> <Type><VName>(B){D} 
 
 B -> <Type><VName>B | , | ε
 
-C -> const<Type><VName>=<Ex>; | <Type><VName>=<Ex>; | <Type><VName>; | <VName>=<Ex>;
+C -> if(<Ex>){C} | for(<Ex>;<Ex>;<Ex>){C} | while(<Ex>){C} | D
 
-D -> A | D
+D -> const<Type><VName>=<Ex>; | <Type><VName>=<Ex>; | <Type><VName>; | <VName>=<Ex>;
 
 <Type> -> int | double
 
