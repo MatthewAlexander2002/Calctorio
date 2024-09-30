@@ -12,31 +12,49 @@
 
 <StatementList> -> <Statement><StatementList> | ε
 
-<Statement> -> <ifStatement> | <whileLoop> | <forLoop> | <assignment> | <VarDecl> 
+<Statement> -> <ifStatement> | <whileLoop> | <forLoop> | <assignment> | <VarDecl> | break; | continue; | <return> | <print> | <comment> | ε
 
 <ifStatement> -> if(<BoolEx>){<StatementList>} 
 
 <whileLoop> -> while(<BoolEx>){<StatementList>}
 
-<forLoop> -> 
+<forLoop> -> for(<Ex>; <BoolEx>; <Ex>){<StatementList>}
 
-<assignment> ->
+<return> -> return<returnTail>;
 
-<VarDecl> ->
+<returnTail> -> <number> | <VName>
 
-<Ex> -> <BoolEx> | <ArithEx>
+<print> -> print(<Text>);
+
+<comment> -> /*<Text>*/ | //<Text'>
+
+<Text> -> <WhiteSpace><VName><Text><WhiteSpace> | ε
+
+<Text'> -> <WhiteSpace'><VName><Text'><WhiteSpace'><NewLine> | ε
+
+<WhiteSpace> -> <Space><WhiteSpace> | <NewLine><WhiteSpace> | ε
+
+<WhiteSpace'> -> <Space><WhiteSpace> | ε
+
+<assignment> -> <VName>=<Ex>;
+
+<VarDecl> -> const<Decl>=<Ex>; | <Decl>=<Ex>; | <Decl>;
+
+<Decl> -> <Type><VName>
+
+<Ex> -> <BoolEx> | <ArithEx> 
 
 <BoolEx> -> <RelEx><BoolEx'> 
 
 <BoolEx'> -> <BoolOp><BoolEx> | ε
 
-<BoolOp> -> && | || //might need more
+<BoolOp> -> && | || 
 
 <RelEx> -> <ArithEx><RelOp><ArithEx>
 
 <RelOp> -> == | > | < | >= | <= | <>
 
-<ArithEx> -> <ArithVal><ArithEx'> | (<ArithEx>) //need to make sure the brackets exicute first they are quite high up the stack or is this a rule that i done at a later set  // maybe | <ArithVal> 
+<ArithEx> -> <ArithVal><ArithEx'> | (<ArithEx>) | <toINT> | <toDOUBLE>
 
 <ArithEx'> -> <ArithOp><ArithEx> | ε
 
@@ -48,31 +66,18 @@
 
 <fnCall> -> <VName>(<argList>)
 
-<Number> -> //need to figure out how to int or double
-
-<argList> -> <ex><argListTail> | ε
+<argList> -> <Ex><argListTail> | ε
 
 <argListTail> -> ,<Ex><argListTail> | ε
 
-
-
-
-C -> if(<Ex>){C} | for(<Ex>;<BEx>;<Ex>){C} | while(<BEx>){C} | D
-
-D -> const<Decl> =<Ex>; | <Decl> =<Ex>; | <Decl>; | <VName>=<Ex>;
-
-<Decl> -> <Type><VName>
-
-<Type> -> int | double
-
 <VName> -> Σ∗
 
-<Ex> -> <Tm>+<Ex> | <Tm>-<Ex> | <Tm><BEx><Ex> | <Tm>
+<toINT> -> toINT(<ArithEx>);
 
-<BEx> -> && | || | > | < | >= | <= | <> | ==
+<toDOUBLE> -> toDOUBLE(<ArithEx>);
 
-<Tm> -> <Fr>*<Tm> | <Fr>/<Tm> | <Fr>%<Tm> | <Fr>
+<type> -> int | double
 
-<Fr> -> (<Ex>) | ZZ | RR
+<Number> -> ZZ | RR
 
 first and follow sets -> table
