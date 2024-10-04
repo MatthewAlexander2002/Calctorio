@@ -12,7 +12,7 @@
 
 <StatementList> -> <Statement><StatementList> | ε
 
-<Statement> -> <ifStatement> | <whileLoop> | <forLoop> | <assignment> | <VarDecl> | break; | continue; | <return> | <print> | <comment> | ε
+<Statement> -> <ifStatement> | <whileLoop> | <forLoop> | <assignment> | <VarDecl> | break; | continue; | <return> | <print> | <comment> | ε //remove comments
 
 <ifStatement> -> if(<BoolEx>){<StatementList>} 
 
@@ -24,7 +24,7 @@
 
 <returnTail> -> <number> | <VName>
 
-<print> -> print(<Text>);
+<print> -> print(<Text>); //remove
 
 <comment> -> /*<Text>*/ | //<Text'>
 
