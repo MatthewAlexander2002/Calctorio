@@ -12,29 +12,23 @@
 
 <StatementList> -> <Statement><StatementList> | ε
 
-<Statement> -> <ifStatement> | <whileLoop> | <forLoop> | <assignment> | <VarDecl> | break; | continue; | <return> | <print> | <comment> | ε //remove comments
+<Statement> -> if(<BoolEx>){<StatementList>} | while(<BoolEx>){<StatementList>} | for(<forLoopFirstBit>; <BoolEx>; <forLoopLastBit>){<StatementList>} | <assignment> | <VarDecl> | break; | continue; | <return> | <print> | ε
 
-<ifStatement> -> if(<BoolEx>){<StatementList>} 
+<forLoopFirstBit> -> <VarDecl> | <assignment> | ε
 
-<whileLoop> -> while(<BoolEx>){<StatementList>}
-
-<forLoop> -> for(<Ex>; <BoolEx>; <Ex>){<StatementList>}
+<forLoopLastBit> -> <assignment> | ε
 
 <return> -> return<returnTail>;
 
 <returnTail> -> <number> | <VName>
 
-<print> -> print(<Text>); //remove
+<print> -> print(<Text>); 
 
-<comment> -> /*<Text>*/ | //<Text'>
+<Text> -> <TextElement><TextTail> | ε
 
-<Text> -> <WhiteSpace><VName><Text><WhiteSpace> | ε
+<TextElement> -> <String> | <number> | <VName>
 
-<Text'> -> <WhiteSpace'><VName><Text'><WhiteSpace'><NewLine> | ε
-
-<WhiteSpace> -> <Space><WhiteSpace> | <NewLine><WhiteSpace> | ε
-
-<WhiteSpace'> -> <Space><WhiteSpace> | ε
+<TextTail> -> + <TextElement><TextTail> | ε
 
 <assignment> -> <VName>=<Ex>;
 
@@ -50,11 +44,13 @@
 
 <BoolOp> -> && | || 
 
-<RelEx> -> <ArithEx><RelOp><ArithEx>
+<RelEx> -> <ArithEx><RelEx'>
+
+<RelEx'> -> <RelOp><ArithEx> | ε
 
 <RelOp> -> == | > | < | >= | <= | <>
 
-<ArithEx> -> <ArithVal><ArithEx'> | (<ArithEx>) | <toINT> | <toDOUBLE>
+<ArithEx> -> <ArithVal><ArithEx'> | (<ArithEx>) | toINT(<ArithEx>); | toDOUBLE(<ArithEx>);
 
 <ArithEx'> -> <ArithOp><ArithEx> | ε
 
@@ -72,12 +68,10 @@
 
 <VName> -> Σ∗
 
-<toINT> -> toINT(<ArithEx>);
-
-<toDOUBLE> -> toDOUBLE(<ArithEx>);
-
 <type> -> int | double
 
 <Number> -> ZZ | RR
 
 first and follow sets -> table
+
+number my rules & and expand ors to its own lines
