@@ -6,13 +6,13 @@
 <ListOfParams> -> ε
 <NonEmptyListOfParams> -> <Decl> 
 <NonEmptyListOfParams> -> <NonEmptyListOfParamsContinue>
-<NonEmptyListOfParamsContinue> -> ,<Decl> 
+<NonEmptyListOfParamsContinue> -> ,
 <NonEmptyListOfParamsContinue> -> ε
 <StatementList> -> <Statement><StatementList> 
 <StatementList> ε
-<Statement> -> if(<BoolEx>){<StatementList>}
-<Statement> -> while(<BoolEx>){<StatementList>}
-<Statement> -> for(<forLoopFirstBit>; <BoolEx>; <forLoopLastBit>){<StatementList>}
+<Statement> -> if
+<Statement> -> while
+<Statement> -> for
 <Statement> -> <assignment>
 <Statement> -> <VarDecl>
 <Statement> -> break;
@@ -25,10 +25,10 @@
 <forLoopFirstBit> -> ε
 <forLoopLastBit> -> <assignment> 
 <forLoopLastBit> -> ε
-<return> -> return<returnTail>;
+<return> -> return
 <returnTail> -> <number>
 <returnTail> -> <VName>
-<print> -> print(<Text>);
+<print> -> print
 <Text> -> <TextElement><TextTail>
 <Text> -> ε
 <TextElement> -> <String>
@@ -37,7 +37,7 @@
 <TextTail> -> + <TextElement><TextTail>
 <TextTail> -> ε
 <assignment> -> <VName>=<Ex>;
-<VarDecl> -> const<Decl>=<Ex>;
+<VarDecl> -> const
 <VarDecl> -> <Decl>=<Ex>; 
 <VarDecl> -> <Decl>;
 <Decl> -> <Type><VName>
@@ -75,14 +75,10 @@
 <fnCall> -> <VName>(<argList>)
 <argList> -> <Ex><argListTail>
 <argList> -> ε
-<argListTail> -> ,<Ex><argListTail>
+<argListTail> -> ,
 <argListTail> -> ε
 <type> -> int
 <type> -> double
 <VName> -> Σ∗
 <Number> -> ZZ
 <Number> -> RR
-
-first and follow sets -> table
-
-number my rules & and expand ors to its own lines
