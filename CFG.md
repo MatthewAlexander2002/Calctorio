@@ -17,18 +17,16 @@
 <Statement> -> <VarDecl>
 <Statement> -> break;
 <Statement> -> continue;
-<Statement> -> <return>
-<Statement> -> <print>
+<Statement> -> return<returnTail>;
+<Statement> -> print(<Text>);
 <Statement> -> ε
 <forLoopFirstBit> -> <VarDecl> 
 <forLoopFirstBit> -> <assignment>
 <forLoopFirstBit> -> ε
 <forLoopLastBit> -> <assignment> 
 <forLoopLastBit> -> ε
-<return> -> return<returnTail>;
 <returnTail> -> <number>
 <returnTail> -> <VName>
-<print> -> print(<Text>);
 <Text> -> <TextElement><TextTail>
 <Text> -> ε
 <TextElement> -> <String>
@@ -84,5 +82,3 @@
 <Number> -> RR
 
 first and follow sets -> table
-
-number my rules & and expand ors to its own lines
