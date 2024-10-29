@@ -43,7 +43,7 @@
 <Ex> -> <ArithEx> 
 <BoolEx> -> <RelEx><BoolEx'> 
 <BoolEx'> -> <BoolOp><BoolEx>
-<BoolEx'> ε
+<BoolEx'> -> ε
 <BoolOp> -> &&
 <BoolOp> -> || 
 <RelEx> -> <ArithEx><RelEx'>
