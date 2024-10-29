@@ -15,37 +15,18 @@ Follow(TextTail) -> Follow(Text)
 Follow(assignment) -> Follow(forLoopFirstBit) U Follow(forLoopLastBit) U Follow(Statement)
 Follow(VarDecl) -> Follow(forLoopFirstBit) U Follow(Statement) 
 Follow(Decl) -> Follow(NonEmptyListOfParamsContinue) U Follow(NonEmptyListOfParams) U {; | = | (}
-Follow(Ex) -> <BoolEx> 
-Follow(Ex) -> <ArithEx> 
-Follow(BoolEx) -> <RelEx><BoolEx'> 
-Follow(BoolEx') -> <BoolOp><BoolEx>
-Follow(BoolEx') ε
-Follow(BoolOp) -> &&
-Follow(BoolOp) -> || 
-Follow(RelEx) -> <ArithEx><RelEx'>
-Follow(RelEx') -> <RelOp><ArithEx>
-Follow(RelEx') -> ε
-Follow(RelOp) -> ==
-Follow(RelOp) -> >
-Follow(RelOp) -> <
-Follow(RelOp) -> >=
-Follow(RelOp) -> <=
-Follow(RelOp) -> <>
-Follow(ArithEx) -> <ArithVal><ArithEx'>
-Follow(ArithEx) -> (<ArithEx>)
-Follow(ArithEx) -> toINT(<ArithEx>);
-Follow(ArithEx) -> toDOUBLE(<ArithEx>);
-Follow(ArithEx') -> <ArithOp><ArithEx>
-Follow(ArithEx') -> ε
-Follow(ArithOp) -> +
-Follow(ArithOp) -> -
-Follow(ArithOp) -> <ArithOp'>
-Follow(ArithOp') -> *
-Follow(ArithOp') -> / 
-Follow(ArithOp') -> %
-Follow(ArithVal) -> <fnCall>
-Follow(ArithVal) -> <Number>
-Follow(ArithVal) -> <VName>
+Follow(Ex) -> First(argListTail) U {;}
+Follow(BoolEx) -> Follow(Ex)
+Follow(BoolEx') -> Follow(BoolEx)
+Follow(BoolOp) -> First(BoolEx)
+Follow(RelEx) -> First(BoolEx')
+Follow(RelEx') -> Follow(RelEx)
+Follow(RelOp) -> First(ArithEx)
+Follow(ArithEx) -> First(ArithEx') U Follow(ArithEx') U {)}
+Follow(ArithEx') -> Follow(ArithEx)
+Follow(ArithOp) -> First(ArithEx)
+Follow(ArithOp') -> Follow(ArithOp)
+Follow(ArithVal) -> First(ArithEx')
 Follow(fnCall) -> <VName>(<argList>)
 Follow(argList) -> <Ex><argListTail>
 Follow(argList) -> ε
