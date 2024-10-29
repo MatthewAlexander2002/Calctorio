@@ -1,44 +1,20 @@
-Follow(Prog) -> <FuncList>
-Follow(FuncList) -> <FuncDecl><FuncList> 
-Follow(FuncList) -> ε
-Follow(FuncDecl) -> <Decl>(<ListOfParams>){<StatementList>}
-Follow(ListOfParams) -> <NonEmptyListOfParams> 
-Follow(ListOfParams) -> ε
-Follow(NonEmptyListOfParams) -> <Decl> 
-Follow(NonEmptyListOfParams) -> <NonEmptyListOfParamsContinue>
-Follow(NonEmptyListOfParamsContinue) -> ,<Decl> 
-Follow(NonEmptyListOfParamsContinue) -> ε
-Follow(StatementList) -> <Statement><StatementList> 
-Follow(StatementList) ε
-Follow(Statement) -> if(<BoolEx>){<StatementList>}
-Follow(Statement) -> while(<BoolEx>){<StatementList>}
-Follow(Statement) -> for(<forLoopFirstBit>; <BoolEx>; <forLoopLastBit>){<StatementList>}
-Follow(Statement) -> <assignment>
-Follow(Statement) -> <VarDecl>
-Follow(Statement) -> break;
-Follow(Statement) -> continue;
-Follow(Statement) -> return<returnTail>;
-Follow(Statement) -> print(<Text>);
-Follow(Statement) -> ε
-Follow(forLoopFirstBit) -> <VarDecl> 
-Follow(forLoopFirstBit) -> <assignment>
-Follow(forLoopFirstBit) -> ε
-Follow(forLoopLastBit) -> <assignment> 
-Follow(forLoopLastBit) -> ε
-Follow(returnTail) -> <number>
-Follow(returnTail) -> <VName>
-Follow(Text) -> <TextElement><TextTail>
-Follow(Text) -> ε
-Follow(TextElement) -> <String>
-Follow(TextElement) -> <number>
-Follow(TextElement) -> <VName>
-Follow(TextTail) -> + <TextElement><TextTail>
-Follow(TextTail) -> ε
-Follow(assignment) -> <VName>=<Ex>;
-Follow(VarDecl) -> const<Decl>=<Ex>;
-Follow(VarDecl) -> <Decl>=<Ex>; 
-Follow(VarDecl) -> <Decl>;
-Follow(Decl) -> <Type><VName>
+Follow(Prog) -> $
+Follow(FuncList) -> Follow(Prog)
+Follow(FuncDecl) -> First(FuncList) U Follow(FuncList)
+Follow(ListOfParams) -> {)}
+Follow(NonEmptyListOfParams) -> Follow(ListOfParams)
+Follow(NonEmptyListOfParamsContinue) -> Follow(NonEmptyListOfParams)
+Follow(StatementList) -> {\}}
+Follow(Statement) -> First(StatementList) U Follow(StatementList)
+Follow(forLoopFirstBit) -> {;}
+Follow(forLoopLastBit) -> {)}
+Follow(returnTail) -> {;}
+Follow(Text) -> {)}
+Follow(TextElement) -> Follow(TextTail)
+Follow(TextTail) -> Follow(Text)
+Follow(assignment) -> Follow(forLoopFirstBit) U Follow(forLoopLastBit) U Follow(Statement)
+Follow(VarDecl) -> Follow(forLoopFirstBit) U Follow(Statement) 
+Follow(Decl) -> Follow(NonEmptyListOfParamsContinue) U Follow(NonEmptyListOfParams) U {; | = | (}
 Follow(Ex) -> <BoolEx> 
 Follow(Ex) -> <ArithEx> 
 Follow(BoolEx) -> <RelEx><BoolEx'> 
