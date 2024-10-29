@@ -9,7 +9,7 @@
 <NonEmptyListOfParamsContinue> -> ,<Decl> 
 <NonEmptyListOfParamsContinue> -> ε
 <StatementList> -> <Statement><StatementList> 
-<StatementList> ε
+<StatementList> -> ε
 <Statement> -> if(<BoolEx>){<StatementList>}
 <Statement> -> while(<BoolEx>){<StatementList>}
 <Statement> -> for(<forLoopFirstBit>; <BoolEx>; <forLoopLastBit>){<StatementList>}
