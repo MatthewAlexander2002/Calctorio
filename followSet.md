@@ -10,7 +10,7 @@ Follow(forLoopFirstBit) -> {;}
 Follow(forLoopLastBit) -> {)}
 Follow(returnTail) -> {;}
 Follow(Text) -> {)}
-Follow(TextElement) -> Follow(TextTail) U Follow(Text) U Follow(TextTail)
+Follow(TextElement) -> Follow(TextTail) U Follow(Text)
 Follow(TextTail) -> Follow(Text)
 Follow(assignment) -> Follow(forLoopFirstBit) U Follow(forLoopLastBit) U Follow(Statement)
 Follow(VarDecl) -> Follow(forLoopFirstBit) U Follow(Statement) 
