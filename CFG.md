@@ -12,7 +12,7 @@
 <StatementList> -> ε
 <Statement> -> if(<BoolEx>){<StatementList>}
 <Statement> -> while(<BoolEx>){<StatementList>}
-<Statement> -> for(<forLoopFirstBit>; <BoolEx>; <forLoopLastBit>){<StatementList>}
+<Statement> -> for(<forLoopFirstBit>;<forLoopMiddleBit>;<forLoopLastBit>){<StatementList>} 
 <Statement> -> <assignment>
 <Statement> -> <VarDecl>
 <Statement> -> break;
@@ -23,24 +23,25 @@
 <forLoopFirstBit> -> <VarDecl> 
 <forLoopFirstBit> -> <assignment>
 <forLoopFirstBit> -> ε
+<forLoopMiddleBit> -> <BoolEx>
+<forLoopMiddleBit> -> ε
 <forLoopLastBit> -> <assignment> 
 <forLoopLastBit> -> ε
 <returnTail> -> <number>
-<returnTail> -> <VName>
+<returnTail> -> <String>
 <Text> -> <TextElement><TextTail>
 <Text> -> ε
 <TextElement> -> <String>
 <TextElement> -> <number>
-<TextElement> -> <VName>
 <TextTail> -> + <TextElement><TextTail>
 <TextTail> -> ε
 <assignment> -> <VName>=<Ex>;
 <VarDecl> -> const<Decl>=<Ex>;
-<VarDecl> -> <Decl>=<Ex>; 
-<VarDecl> -> <Decl>;
+<VarDecl> -> <Decl><VarDecl'>;
+<VarDecl'> -> =<Ex>
+<VarDecl'> -> ε
 <Decl> -> <Type><VName>
-<Ex> -> <BoolEx> 
-<Ex> -> <ArithEx> 
+<Ex> -> <BoolEx>
 <BoolEx> -> <RelEx><BoolEx'> 
 <BoolEx'> -> <BoolOp><BoolEx>
 <BoolEx'> -> ε
@@ -67,9 +68,10 @@
 <ArithOp'> -> *
 <ArithOp'> -> / 
 <ArithOp'> -> %
-<ArithVal> -> <fnCall>
+<ArithVal> -> <String>
 <ArithVal> -> <Number>
-<ArithVal> -> <VName>
+<String> -> <fnCall>
+<String> -> <VName>
 <fnCall> -> <VName>(<argList>)
 <argList> -> <Ex><argListTail>
 <argList> -> ε
@@ -77,7 +79,7 @@
 <argListTail> -> ε
 <type> -> int
 <type> -> double
-<VName> -> Σ∗
+<VName> -> Σ∗  // variables could be functions with out params
 <Number> -> ZZ
 <Number> -> RR
 

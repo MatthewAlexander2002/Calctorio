@@ -6,14 +6,15 @@ Follow(NonEmptyListOfParams) -> Follow(ListOfParams)
 Follow(NonEmptyListOfParamsContinue) -> Follow(NonEmptyListOfParams)
 Follow(StatementList) -> {}}
 Follow(Statement) -> First(StatementList) U Follow(StatementList)
-Follow(forLoopFirstBit) -> {;}
+Follow(forLoopFirstBit) -> {;} // First(BoolEx)
 Follow(forLoopLastBit) -> {)}
 Follow(returnTail) -> {;}
 Follow(Text) -> {)}
 Follow(TextElement) -> Follow(TextTail) U Follow(Text)
 Follow(TextTail) -> Follow(Text)
 Follow(assignment) -> Follow(forLoopFirstBit) U Follow(forLoopLastBit) U Follow(Statement)
-Follow(VarDecl) -> Follow(forLoopFirstBit) U Follow(Statement) 
+Follow(VarDecl) -> Follow(forLoopFirstBit) U Follow(Statement)
+Follow(VarDecl') -> {;}
 Follow(Decl) -> Follow(NonEmptyListOfParamsContinue) U Follow(NonEmptyListOfParams) U {; | = | (}
 Follow(Ex) -> First(argListTail) U {;}
 Follow(BoolEx) -> Follow(Ex)

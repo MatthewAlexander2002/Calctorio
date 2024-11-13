@@ -3,7 +3,7 @@ use std::fs::File;
 use std::io::prelude::*;
 
 //enum token that catagories each enum into sub catagories i.e., operators, types etc.
-// then each sub catgory is a enum within its self
+// then each sub category is a enum within its self
 
 pub enum Token {
     Type(TypeTK),

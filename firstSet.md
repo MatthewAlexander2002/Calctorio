@@ -14,8 +14,9 @@ First(TextElement) -> <String> U First(Number) U First(VName)
 First(TextTail) -> + First(TextElement) U {ε}
 First(assignment) -> First(VName)
 First(VarDecl) -> {const} U First(Decl)
+First(VarDecl') -> {= | ε}
 First(Decl) -> First(type)
-First(Ex) -> First(BoolEx) U First(ArithEx)
+First(Ex) -> First(BoolEx)
 First(BoolEx) -> First(RelEx)
 First(BoolEx') -> First(BoolOp) U {ε}
 First(BoolOp) -> {&& | ||}
