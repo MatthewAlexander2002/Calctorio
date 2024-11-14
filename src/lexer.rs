@@ -5,7 +5,7 @@ use std::io::prelude::*;
 //enum token that catagories each enum into sub catagories i.e., operators, types etc.
 // then each sub category is a enum within its self
 
-#[derive(Clone, Hash, Eq, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum Token {
     Type(TypeTK),
     ControlFlow(ControlFlowTK),
@@ -14,9 +14,10 @@ pub enum Token {
     Ops(OpsTK),
     Scope(ScopeTK),
     Variable(VariableTK),
+    EOF,
 }
 
-#[derive(Clone, Hash, Eq, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum TypeTK { //need both a 
     Int, // int
     Double, // double
@@ -25,7 +26,7 @@ pub enum TypeTK { //need both a
     Const, // const
 }
 
-#[derive(Clone, Hash, Eq, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ControlFlowTK {
     If, // if
     For, // for
@@ -35,7 +36,7 @@ pub enum ControlFlowTK {
     Return, // return
 }
 
-#[derive(Clone, Hash, Eq, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum UtilitiesTK {
     Print, // print
     Size, // size
@@ -46,7 +47,7 @@ pub enum UtilitiesTK {
     SpeechMarks, // "
 }
 
-#[derive(Clone, Hash, Eq, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum BinaryOpsTK {
     And, // &&
     Or, // ||
@@ -58,7 +59,7 @@ pub enum BinaryOpsTK {
     Equal, // ==
 }
 
-#[derive(Clone, Hash, Eq, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum OpsTK {
     Assignment, // =
     Plus, // +
@@ -68,7 +69,7 @@ pub enum OpsTK {
     Modulo, // %
 }
 
-#[derive(Clone, Hash, Eq, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ScopeTK {
     BracketL, // (
     BracketR, // )
@@ -81,7 +82,7 @@ pub enum ScopeTK {
     WhiteSpace, // \s " " //white space
 }
 
-#[derive(Clone, Hash, Eq, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum VariableTK {
     VarName(String),
 }
@@ -206,6 +207,7 @@ pub fn lexer(file_loc: &str) -> Vec<Token> {
     // if !current_token.is_empty() {
     //     found_tokens.push(current_token);
     // }
+    found_tokens.push(Token::EOF);
 
     return found_tokens;
 }
