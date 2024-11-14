@@ -10,5 +10,5 @@ fn main() {
     // println!("{:?}", filename);
     let filename = "/home/matthew/Documents/UNI/Sem 6/SDL/Calctorio/TestSuite/AtomicTests/Addition";
     let tokens = lexer::lexer(filename);
-    parser::parser(tokens);
+    let root = parser::parser(tokens);
 }
