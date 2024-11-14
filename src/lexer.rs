@@ -5,7 +5,7 @@ use std::io::prelude::*;
 //enum token that catagories each enum into sub catagories i.e., operators, types etc.
 // then each sub category is a enum within its self
 
-#[derive(Clone)]
+#[derive(Clone, Hash, Eq, PartialEq)]
 pub enum Token {
     Type(TypeTK),
     ControlFlow(ControlFlowTK),
@@ -16,16 +16,16 @@ pub enum Token {
     Variable(VariableTK),
 }
 
-#[derive(Clone)]
+#[derive(Clone, Hash, Eq, PartialEq)]
 pub enum TypeTK { //need both a 
     Int, // int
     Double, // double
     IntVal(i32), // i.e. 8
-    DoubleVal(f32), // i.e. 8.88
+    DoubleVal(String), // i.e. 8.88 //has to be a string b/c floats don't hash
     Const, // const
 }
 
-#[derive(Clone)]
+#[derive(Clone, Hash, Eq, PartialEq)]
 pub enum ControlFlowTK {
     If, // if
     For, // for
@@ -35,7 +35,7 @@ pub enum ControlFlowTK {
     Return, // return
 }
 
-#[derive(Clone)]
+#[derive(Clone, Hash, Eq, PartialEq)]
 pub enum UtilitiesTK {
     Print, // print
     Size, // size
@@ -46,7 +46,7 @@ pub enum UtilitiesTK {
     SpeechMarks, // "
 }
 
-#[derive(Clone)]
+#[derive(Clone, Hash, Eq, PartialEq)]
 pub enum BinaryOpsTK {
     And, // &&
     Or, // ||
@@ -58,7 +58,7 @@ pub enum BinaryOpsTK {
     Equal, // ==
 }
 
-#[derive(Clone)]
+#[derive(Clone, Hash, Eq, PartialEq)]
 pub enum OpsTK {
     Assignment, // =
     Plus, // +
@@ -68,7 +68,7 @@ pub enum OpsTK {
     Modulo, // %
 }
 
-#[derive(Clone)]
+#[derive(Clone, Hash, Eq, PartialEq)]
 pub enum ScopeTK {
     BracketL, // (
     BracketR, // )
@@ -81,7 +81,7 @@ pub enum ScopeTK {
     WhiteSpace, // \s " " //white space
 }
 
-#[derive(Clone)]
+#[derive(Clone, Hash, Eq, PartialEq)]
 pub enum VariableTK {
     VarName(String),
 }
@@ -218,7 +218,7 @@ fn string_to_token (current_string: String) -> Token {
     } else if let Ok(int_val) = current_string.parse::<i32>() {
         return Token::Type(TypeTK::IntVal(int_val));
     } else if let Ok(double_val) = current_string.parse::<f32>() {
-        return Token::Type(TypeTK::DoubleVal(double_val));
+        return Token::Type(TypeTK::DoubleVal(current_string));
     } else if current_string == "const" {
         return Token::Type(TypeTK::Const);
     } else if current_string == "if" { //Control Flow
