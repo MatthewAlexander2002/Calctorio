@@ -1,4 +1,5 @@
 mod lexer;
+mod parser;
 
 fn main() {
     // /home/matthew/Documents/UNI/Sem 6/SDL/Calctorio/TestSuite/AtomicTests/Addition
@@ -9,4 +10,5 @@ fn main() {
     // println!("{:?}", filename);
     let filename = "/home/matthew/Documents/UNI/Sem 6/SDL/Calctorio/TestSuite/AtomicTests/Addition";
     let tokens = lexer::lexer(filename);
+    parser::parser(tokens);
 }

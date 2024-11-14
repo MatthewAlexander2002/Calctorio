@@ -5,6 +5,7 @@ use std::io::prelude::*;
 //enum token that catagories each enum into sub catagories i.e., operators, types etc.
 // then each sub category is a enum within its self
 
+#[derive(Clone)]
 pub enum Token {
     Type(TypeTK),
     ControlFlow(ControlFlowTK),
@@ -15,6 +16,7 @@ pub enum Token {
     Variable(VariableTK),
 }
 
+#[derive(Clone)]
 pub enum TypeTK { //need both a 
     Int, // int
     Double, // double
@@ -23,6 +25,7 @@ pub enum TypeTK { //need both a
     Const, // const
 }
 
+#[derive(Clone)]
 pub enum ControlFlowTK {
     If, // if
     For, // for
@@ -32,6 +35,7 @@ pub enum ControlFlowTK {
     Return, // return
 }
 
+#[derive(Clone)]
 pub enum UtilitiesTK {
     Print, // print
     Size, // size
@@ -42,6 +46,7 @@ pub enum UtilitiesTK {
     SpeechMarks, // "
 }
 
+#[derive(Clone)]
 pub enum BinaryOpsTK {
     And, // &&
     Or, // ||
@@ -53,6 +58,7 @@ pub enum BinaryOpsTK {
     Equal, // ==
 }
 
+#[derive(Clone)]
 pub enum OpsTK {
     Assignment, // =
     Plus, // +
@@ -62,6 +68,7 @@ pub enum OpsTK {
     Modulo, // %
 }
 
+#[derive(Clone)]
 pub enum ScopeTK {
     BracketL, // (
     BracketR, // )
@@ -74,6 +81,7 @@ pub enum ScopeTK {
     WhiteSpace, // \s " " //white space
 }
 
+#[derive(Clone)]
 pub enum VariableTK {
     VarName(String),
 }
