@@ -2,7 +2,7 @@ First(Prog) -> First(FuncList)
 First(FuncList) -> First(FuncDecl) U {ε}
 First(FuncDecl) -> First(Decl)
 First(ListOfParams) -> First(NonEmptyListOfParams) U {ε}
-First(NonEmptyListOfParams) -> First(Decl) U First(NonEmptyListOfParamsContinue)
+First(NonEmptyListOfParams) -> First(Decl)
 First(NonEmptyListOfParamsContinue) -> {, | ε}
 First(StatementList) -> First(Statement) U {ε}
 First(Statement) -> First(assignment) U First(VarDecl) U { if | while | for | break | continue | return | print | ε } //ChatGPT: First(assignment) U First(VarDecl) U { if, while, for, break, continue, return, print } no ε

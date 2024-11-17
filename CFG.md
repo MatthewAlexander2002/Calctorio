@@ -4,9 +4,8 @@
 <FuncDecl> -> <Decl>(<ListOfParams>){<StatementList>}
 <ListOfParams> -> <NonEmptyListOfParams> 
 <ListOfParams> -> ε
-<NonEmptyListOfParams> -> <Decl> 
-<NonEmptyListOfParams> -> <NonEmptyListOfParamsContinue>
-<NonEmptyListOfParamsContinue> -> ,<Decl> 
+<NonEmptyListOfParams> -> <Decl><NonEmptyListOfParamsContinue>
+<NonEmptyListOfParamsContinue> -> ,<NonEmptyListOfParams>
 <NonEmptyListOfParamsContinue> -> ε
 <StatementList> -> <Statement><StatementList> 
 <StatementList> -> ε
