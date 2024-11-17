@@ -58,8 +58,8 @@
 <RelOp> -> <>
 <ArithEx> -> <ArithVal><ArithEx'>
 <ArithEx> -> (<ArithEx>)
-<ArithEx> -> toINT(<ArithEx>);
-<ArithEx> -> toDOUBLE(<ArithEx>);
+<ArithEx> -> toINT(<ArithEx>)
+<ArithEx> -> toDOUBLE(<ArithEx>)
 <ArithEx'> -> <ArithOp><ArithEx>
 <ArithEx'> -> ε
 <ArithOp> -> +
