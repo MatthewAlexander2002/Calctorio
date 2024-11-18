@@ -208,7 +208,7 @@ pub fn lexer(file_loc: &str) -> Vec<Token> {
             println!("{:?}", current_token);
             current_token.clear();
         //consider changing this to a .contains on a array but i will refactor later when i figure out whats the faster op
-        } else if c == ' ' || c == ';' || c == '\n' || c == '\t' || c == '"' || c == '=' || c == '+' || c == '-' || c == '*' || c == '/' || c == '%' || c == '*' || c == '(' || c == ')' || c == '{' || c == '}' || c == '[' || c == ']' || c == ',' {
+        } else if c == ';' || c == '"' || c == '=' || c == '+' || c == '-' || c == '*' || c == '/' || c == '%' || c == '*' || c == '(' || c == ')' || c == '{' || c == '}' || c == '[' || c == ']' || c == ',' {
             if c == ' ' && current_token.is_empty() {
                 //make sure that leading white space doesn't end up in the next token
                 current_token.push(c);
@@ -235,9 +235,10 @@ pub fn lexer(file_loc: &str) -> Vec<Token> {
         }
     }
 
-    // if !current_token.is_empty() {
-    //     found_tokens.push(current_token);
-    // }
+    if !current_token.is_empty() {
+        found_tokens.push(string_to_token(current_token.clone()));
+        println!("{:?}", current_token);
+    }
     found_tokens.push(Token::EOF);
 
     return found_tokens;
@@ -324,10 +325,6 @@ fn string_to_token (current_string: String) -> Token {
         return Token::Scope(ScopeTK::Semi);
     } else if current_string == "," {
         return Token::Scope(ScopeTK::Comma);
-    } else if current_string == "\r" || current_string == "\n" {
-        return Token::Scope(ScopeTK::NewLine);
-    } else if current_string == " " {
-        return Token::Scope(ScopeTK::WhiteSpace);
     } else {
         return Token::Variable(VariableTK::VarName(current_string)); // Variable Name
     }
