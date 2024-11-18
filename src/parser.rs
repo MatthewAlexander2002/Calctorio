@@ -59,9 +59,9 @@ enum Symbol {
 
 #[derive(Clone)]
 pub struct TreeNode {
-    // parent: Option<Box<TreeNode>>,
+    parent: Option<Box<TreeNode>>,
     children: Vec<TreeNode>,
-    name: String,
+    Symbol: Symbol,
 }
 
 fn build_parse_table() -> HashMap<(NonTerminal, Token), Production> {
@@ -304,39 +304,6 @@ fn build_parse_table() -> HashMap<(NonTerminal, Token), Production> {
 
     table
 } 
-
-// impl TreeNode {
-//     fn prog() -> Self {
-//         TreeNode{
-//             parent: None,
-//             children: vec![],
-//             name: String::from("Prog"),
-//         }
-//     }
-
-//     fn func_list(parent: &mut TreeNode) -> Self {
-//         TreeNode{
-//             parent: Some(Box::new(parent.clone())),
-//             children: vec![],
-//             name: String::from("FuncList"),
-//         }
-//     }
-
-
-
-
-//     fn new_child(parent: &mut TreeNode, name: String) -> Self {
-//         let child  = TreeNode{
-//             parent: Some(Box::new(parent.clone())),
-//             children: vec![],
-//             name,
-//         };
-//         parent.children.push(child.clone());
-//         child
-//     }
-
-
-// }
 
 pub fn parser(tokens: Vec<lexer::Token>) -> TreeNode {
     let table = build_parse_table();
