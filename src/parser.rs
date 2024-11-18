@@ -1,7 +1,7 @@
 #![allow(warnings)]
 
 use crate::lexer::{self, BinaryOpsTK, ControlFlowTK, OpsTK, ScopeTK, Token, TypeTK, UtilitiesTK, VariableTK};
-use std::collections::{hash_map, HashMap};
+use std::{collections::{hash_map, HashMap}, iter};
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 enum NonTerminal {
@@ -62,6 +62,15 @@ pub struct TreeNode {
     parent: Option<Box<TreeNode>>,
     children: Vec<TreeNode>,
     Symbol: Symbol,
+}
+
+impl TreeNode {
+    fn debug_print(&self, indent: usize) {
+        println!("{}{:?}", " ".repeat(indent), self.Symbol);
+        for child in &self.children {
+            child.debug_print(indent + 2);
+        }
+    }
 }
 
 fn build_parse_table() -> HashMap<(NonTerminal, Token), Production> {
@@ -307,18 +316,78 @@ fn build_parse_table() -> HashMap<(NonTerminal, Token), Production> {
 
 pub fn parser(tokens: Vec<lexer::Token>) -> TreeNode {
     let table = build_parse_table();
-    // let mut table: HashMap<(lexer::Token, String), TreeNode> = HashMap::new();
+    let mut root = TreeNode{
+        parent: None,
+        children: vec![],
+        Symbol: Symbol::NonTerminal(NonTerminal::Prog)
+    };
+    let mut stack: Vec<TreeNode> = vec![root.clone()];
+    let mut token_counter = 0;
 
-    // let mut root = TreeNode{ parent: None, children: vec![TreeNode{ parent: None, children: vec![], name: String::from("FuncList"), value: lexer::Token::Entry}], name: String::from("Prog"), value: lexer::Token::Entry};
-    // let mut func_list = TreeNode{ parent: None, children: vec![TreeNode{ parent: None, children: vec![], name: String::from("FuncDecl"), value: lexer::Token::Entry}, func_list], name: String::from("FuncList"), value: lexer::Token::Entry};
-    // let mut func_decl = TreeNode{ parent: None, children: vec![], name: String::from("FuncDecl"), value: lexer::Token::Entry};
+    while !stack.is_empty() && token_counter < tokens.len() {
+        if let Some(current_node) = stack.pop() {
+            println!("Processing node:");
+            current_node.debug_print(0);
 
-
-    // let root = TreeNode::new_root(tokens[0].clone());
-    // // let func_list = TreeNode::new_child(&mut root, Token::Entry, String::from("FuncList"));
-    // table.insert((Token::Entry, String::from("Prog")), TreeNode::new_root(tokens[0].clone()));
-
-    // // table.insert((Token::Entry, String::from("FuncList")), );
-
+            match &current_node.Symbol {
+                Symbol::NonTerminal(non_terminal) => {
+                    if let Some(production) = table.get(&(non_terminal.clone(), tokens[token_counter].clone())) {
+                        match production {
+                            Production::Rule(symbols) => {
+                                for symbol in symbols.iter().rev() {
+                                    let new_node = TreeNode {
+                                        parent: Some(Box::new(current_node.clone())),
+                                        children: vec![],
+                                        Symbol: symbol.clone(),
+                                    };
+                                    stack.push(new_node);
+                                }
+                                println!("\nAfter processing production:");
+                                root.debug_print(0);
+                            },
+                            Production::Epsilon => {
+                                token_counter += 1;
+                            }
+                        }
+                    }
+                },
+                Symbol::Terminal(terminal) => {
+                    if terminal == &tokens[token_counter] {
+                        token_counter += 1;
+                    }
+                }
+            }
+        }
+    }
     root
 }
+
+// pub fn parser(tokens: Vec<lexer::Token>) -> TreeNode {
+//     let table = build_parse_table();
+//     let mut root = TreeNode{ 
+//         parent: None, 
+//         children: vec![], 
+//         Symbol: Symbol::NonTerminal(NonTerminal::Prog)
+//     };
+//     let mut stack: Vec<TreeNode> = vec![root.clone()]; //pop (top item) & push (top item) to simulate a stack
+
+//     let mut flush: bool = false;
+//     let mut token_counter = 0;
+//     while !stack.is_empty() {
+//         if let Some(current_node) = stack.pop(){
+//             if let Symbol::NonTerminal(non_terminal) = &current_node.Symbol {
+
+//         //         if table.contains_key(&(non_terminal.clone(), tokens[token_counter].clone())){
+//         //             table.entry((current_node.Symbol ,tokens[token_counter].clone()));
+//         //         }
+//             } else if let Symbol::Terminal(terminal) = &current_node.Symbol {
+//                 let mut new_node = TreeNode{
+//                     parent: Some(Box::new(current_node.clone())),
+//                     children: vec![],
+//                     Symbol: Symbol::Terminal(tokens[token_counter]),
+//                 };
+//             }
+//         }
+//     }
+//     root
+// }
