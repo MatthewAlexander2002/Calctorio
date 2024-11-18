@@ -1,3 +1,4 @@
+#![allow(warnings)]
 mod lexer;
 mod parser;
 
