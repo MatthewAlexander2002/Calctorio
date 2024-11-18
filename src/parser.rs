@@ -1,7 +1,7 @@
 #![allow(warnings)]
 
 use crate::lexer::{self, BinaryOpsTK, ControlFlowTK, OpsTK, ScopeTK, Token, TypeTK, UtilitiesTK, VariableTK};
-use std::{collections::{hash_map, HashMap}, iter};
+use std::{cell::RefCell, collections::{hash_map, HashMap}, iter, rc::Rc};
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 enum NonTerminal {
@@ -57,10 +57,9 @@ enum Symbol {
     NonTerminal(NonTerminal),
 }
 
-#[derive(Clone)]
+#[derive(Debug, Clone)]
 pub struct TreeNode {
-    parent: Option<Box<TreeNode>>,
-    children: Vec<TreeNode>,
+    pub children: Vec<Rc<RefCell<TreeNode>>>,
     Symbol: Symbol,
 }
 
@@ -68,7 +67,7 @@ impl TreeNode {
     fn debug_print(&self, indent: usize) {
         println!("{}{:?}", " ".repeat(indent), self.Symbol);
         for child in &self.children {
-            child.debug_print(indent + 2);
+            child.borrow().debug_print(indent + 2);
         }
     }
 }
@@ -314,36 +313,39 @@ fn build_parse_table() -> HashMap<(NonTerminal, Token), Production> {
     table
 } 
 
-pub fn parser(tokens: Vec<lexer::Token>) -> TreeNode {
+pub fn parser<'a>(tokens: &'a [lexer::Token]) -> TreeNode {
     let table = build_parse_table();
-    let mut root = TreeNode{
-        parent: None,
+    let root = Rc::new(RefCell::new(TreeNode {
+        // parent: None,
         children: vec![],
-        Symbol: Symbol::NonTerminal(NonTerminal::Prog)
-    };
-    let mut stack: Vec<TreeNode> = vec![root.clone()];
+        Symbol: Symbol::NonTerminal(NonTerminal::Prog),
+    }));
+    let mut stack: Vec<Rc<RefCell<TreeNode>>> = vec![Rc::clone(&root)];    
     let mut token_counter = 0;
-
     while !stack.is_empty() && token_counter < tokens.len() {
-        if let Some(current_node) = stack.pop() {
+        if let Some(mut current_node) = stack.pop() {
             println!("Processing node:");
-            current_node.debug_print(0);
+            current_node.borrow().debug_print(0);
 
-            match &current_node.Symbol {
+            match &current_node.borrow().Symbol {
                 Symbol::NonTerminal(non_terminal) => {
                     if let Some(production) = table.get(&(non_terminal.clone(), tokens[token_counter].clone())) {
                         match production {
                             Production::Rule(symbols) => {
                                 for symbol in symbols.iter().rev() {
-                                    let new_node = TreeNode {
-                                        parent: Some(Box::new(current_node.clone())),
+                                    // let new_node = TreeNode {
+                                    //     parent: Some(Box::new(current_node.clone())),
+                                    //     children: vec![],
+                                    //     Symbol: symbol.clone(),
+                                    // };
+                                    let new_node = Rc::new(RefCell::new(TreeNode {
                                         children: vec![],
                                         Symbol: symbol.clone(),
-                                    };
+                                    }));
                                     stack.push(new_node);
                                 }
-                                println!("\nAfter processing production:");
-                                root.debug_print(0);
+                                // println!("\nAfter processing production:");
+                                // root.debug_print(0);
                             },
                             Production::Epsilon => {
                                 token_counter += 1;
@@ -352,14 +354,16 @@ pub fn parser(tokens: Vec<lexer::Token>) -> TreeNode {
                     }
                 },
                 Symbol::Terminal(terminal) => {
-                    if terminal == &tokens[token_counter] {
+                    if *terminal == tokens[token_counter] {
                         token_counter += 1;
                     }
                 }
             }
         }
     }
-    root
+    Rc::try_unwrap(root)
+        .expect("Root should be uniquely owned at this point")
+        .into_inner()
 }
 
 // pub fn parser(tokens: Vec<lexer::Token>) -> TreeNode {
