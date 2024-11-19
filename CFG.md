@@ -69,9 +69,11 @@
 <ArithOp'> -> %
 <ArithVal> -> <String>
 <ArithVal> -> <Number>
-<String> -> <fnCall>
-<String> -> <VName>
-<fnCall> -> <VName>(<argList>)
+<!-- <String> -> <fnCall> -->
+<String> -> <VName><String'>
+<String'> -> (<argList>)
+<String'>  -> ε
+<!-- <fnCall> -> <VName>(<argList>) -->
 <argList> -> <Ex><argListTail>
 <argList> -> ε
 <argListTail> -> ,<Ex><argListTail>

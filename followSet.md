@@ -28,7 +28,9 @@ Follow(ArithEx') -> Follow(ArithEx)
 Follow(ArithOp) -> First(ArithEx)
 Follow(ArithOp') -> Follow(ArithOp)
 Follow(ArithVal) -> First(ArithEx') U Follow(ArithEx)
-Follow(fnCall) -> Follow(ArithVal)
+<!-- Follow(fnCall) -> Follow(ArithVal) -->
+Follow(String) -> First(ArithEx') U First(TextTail) U {;}
+Follow(String') -> Follow(String)
 Follow(argList) -> {)}
 Follow(argListTail) -> Follow(argList)
 Follow(type) -> First(VName)

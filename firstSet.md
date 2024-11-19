@@ -10,7 +10,7 @@ First(forLoopFirstBit) -> First(VarDecl) U First(assignment) U {ε}
 First(forLoopLastBit) -> First(assignment) U {ε}
 First(returnTail) -> First(Number) U First(VName)
 First(Text) -> First(TextElement) U {ε}
-First(TextElement) -> <String> U First(Number) U First(VName)
+First(TextElement) -> First(String) U First(Number) U First(VName)
 First(TextTail) -> + First(TextElement) U {ε}
 First(assignment) -> First(VName)
 First(VarDecl) -> {const} U First(Decl)
@@ -24,11 +24,13 @@ First(RelEx) -> First(ArithEx)
 First(RelEx') -> First(RelOp) U {ε}
 First(RelOp) -> {== | > | < | >= | <= | <>}
 First(ArithEx) -> First(ArithVal) U {( | toINT | toDOUBLE} 
-First(ArithEx') -> First(ArithOp)  U {ε}
+First(ArithEx') -> First(ArithOp) U {ε}
 First(ArithOp) -> First(ArithOp') U {+ | -} 
 First(ArithOp') -> {* | / | %}
-First(ArithVal) -> First(fnCall) U First(Number) U First(VName)
-First(fnCall) -> First(VName)
+First(ArithVal) -> First(String) U First(Number)
+First(String) -> First(VName)
+First(String') -> {( | ε}
+<!-- First(fnCall) -> First(VName) -->
 First(argList) -> First(Ex) U {ε}
 First(argListTail) -> {, | ε}
 First(type) -> {int | double}
