@@ -1,10 +1,10 @@
 #![allow(warnings)]
 
 use crate::lexer::{self, BinaryOpsTK, ControlFlowTK, OpsTK, ScopeTK, Token, TypeTK, UtilitiesTK, VariableTK};
-use std::{collections::{hash_map, HashMap}};
+use std::{collections::{hash_map, HashMap}, ops::Index};
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
-enum NonTerminal {
+pub enum NonTerminal {
     Prog,
     FuncList,
     FuncDecl,
@@ -37,7 +37,8 @@ enum NonTerminal {
     ArithOpP,
     ArithVal,
     String,
-    FnCall,
+    StringP,
+    // FnCall,
     ArgList,
     ArgListTail,
     Type,
@@ -52,7 +53,7 @@ enum Production {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
-enum Symbol {
+pub enum Symbol {
     Terminal(Token),
     NonTerminal(NonTerminal),
 }
@@ -60,7 +61,7 @@ enum Symbol {
 #[derive(Debug, Clone)]
 pub struct TreeNode {
     pub children: Vec<TreeNode>,
-    Symbol: Symbol,
+    pub(crate) Symbol: Symbol,
 }
 
 impl TreeNode {
@@ -279,8 +280,25 @@ fn build_parse_table() -> HashMap<(NonTerminal, Token), Production> {
     table.insert((NonTerminal::ArithVal, Token::Type(TypeTK::DoubleVal(String::new()))), Production::Rule(vec![Symbol::NonTerminal(NonTerminal::Number)]));
     // String
     //Handle in code to Move onto the next step with LL(2)
+    table.insert((NonTerminal::String, Token::Variable(VariableTK::VarName(String::new()))),  Production::Epsilon);
+    //StringP
+    table.insert((NonTerminal::StringP, Token::Type(TypeTK::IntVal(0))),  Production::Epsilon);
+    table.insert((NonTerminal::StringP, Token::Type(TypeTK::DoubleVal(String::new()))), Production::Epsilon);
+    table.insert((NonTerminal::StringP, Token::Scope(ScopeTK::Semi)), Production::Epsilon);
+    table.insert((NonTerminal::StringP, Token::Ops(OpsTK::Plus)),  Production::Epsilon);
+    table.insert((NonTerminal::StringP, Token::Ops(OpsTK::Minus)),  Production::Epsilon);
+    table.insert((NonTerminal::StringP, Token::Ops(OpsTK::Times)),  Production::Epsilon);
+    table.insert((NonTerminal::StringP, Token::Ops(OpsTK::Divide)),  Production::Epsilon);
+    table.insert((NonTerminal::StringP, Token::Ops(OpsTK::Modulo)),  Production::Epsilon);
+    table.insert((NonTerminal::StringP, Token::BinaryOps(BinaryOpsTK::Equal)), Production::Epsilon);
+    table.insert((NonTerminal::StringP, Token::BinaryOps(BinaryOpsTK::LessThan)), Production::Epsilon);
+    table.insert((NonTerminal::StringP, Token::BinaryOps(BinaryOpsTK::LessThanEqual)), Production::Epsilon);
+    table.insert((NonTerminal::StringP, Token::BinaryOps(BinaryOpsTK::GreaterThan)), Production::Epsilon);
+    table.insert((NonTerminal::StringP, Token::BinaryOps(BinaryOpsTK::GreaterThanEqual)), Production::Epsilon);
+    table.insert((NonTerminal::StringP, Token::BinaryOps(BinaryOpsTK::NotEqual)), Production::Epsilon);
+    table.insert((NonTerminal::StringP, Token::Scope(ScopeTK::BracketL)), Production::Rule(vec![Symbol::Terminal(Token::Scope(ScopeTK::BracketL)), Symbol::NonTerminal(NonTerminal::ArgList), Symbol::Terminal(Token::Scope(ScopeTK::BracketR))]));
     // FnCall
-    table.insert((NonTerminal::FnCall, Token::Variable(VariableTK::VarName(String::new()))), Production::Rule(vec![Symbol::NonTerminal(NonTerminal::VName), Symbol::Terminal(Token::Scope(ScopeTK::BracketL)), Symbol::NonTerminal(NonTerminal::ArgList),Symbol::Terminal(Token::Scope(ScopeTK::BracketR))]));
+    // table.insert((NonTerminal::FnCall, Token::Variable(VariableTK::VarName(String::new()))), Production::Rule(vec![Symbol::NonTerminal(NonTerminal::VName), Symbol::Terminal(Token::Scope(ScopeTK::BracketL)), Symbol::NonTerminal(NonTerminal::ArgList),Symbol::Terminal(Token::Scope(ScopeTK::BracketR))]));
     // ArgList
     table.insert((NonTerminal::ArgList, Token::Scope(ScopeTK::BracketR)), Production::Epsilon);
     table.insert((NonTerminal::ArgList, Token::Ops(OpsTK::Plus)), Production::Rule(vec![Symbol::NonTerminal(NonTerminal::Ex), Symbol::NonTerminal(NonTerminal::ArgListTail)]));
@@ -313,65 +331,179 @@ fn build_parse_table() -> HashMap<(NonTerminal, Token), Production> {
     table
 } 
 
-pub fn parse(tokens: Vec<Token>) {
-    let parse_table = build_parse_table();
-    let mut stack: Vec<Symbol> = vec![Symbol::NonTerminal(NonTerminal::Prog)];
-    let mut root = Rc::new(RefCell::new(TreeNode {
-        children: Vec::new(),
-        Symbol: stack.last().unwrap().clone(),
-    }));
-    let mut current_node = Rc::clone(&root);
+pub fn parser(tokens: &[Token]) -> Result<TreeNode, String> {
+    let table = build_parse_table();
+    let mut index= 0;
 
-    let mut input_iter = tokens.into_iter();
-    let mut lookahead = input_iter.next();
+    let root = parse_non_terminal(NonTerminal::Prog, tokens, &mut index, &table)?;
 
-    while let Some(symbol) = stack.pop() {
-        match symbol {
-            Symbol::Terminal(expected) => {
-                // Match terminal
-                if Some(expected.clone()) == lookahead {
-                    // Advance to the next token
-                    lookahead = input_iter.next();
-                } else {
-                    return Err(format!("Syntax error: expected {:?}, found {:?}", expected.clone(), lookahead));
-                }
-            }
-            Symbol::NonTerminal(nt) => {
-                // Look up the parse table
-                if let Some(production) = parse_table.get(&(nt.clone(), lookahead.clone().unwrap_or(Token::EOF))) {
-                    match production {
-                        Production::Rule(rhs) => {
-                            // Push symbols of the production rule to stack in reverse order
-                            for sym in rhs.iter().rev() {
-                                stack.push(sym.clone());
-                            }
+    if index < tokens.len() {
+        return Err(format!(
+            "Unexpected token at the end: {:?}",
+            tokens.get(index)
+        ));
+    }
 
-                            // Add child nodes for RHS to current node
-                            for sym in rhs {
-                                let child = Rc::new(RefCell::new(TreeNode {
-                                    children: Vec::new(),
-                                    Symbol: sym.clone(),
-                                }));
-                                current_node.borrow_mut().children.push(Rc::clone(&child));
+    Ok(root)
+}
+
+fn parse_non_terminal(non_terminal: NonTerminal, tokens: &[Token], index: &mut usize, table: &HashMap<(NonTerminal, Token), Production>) -> Result<TreeNode, String> {
+    let mut node = TreeNode{
+        children: vec![],
+        Symbol: Symbol::NonTerminal(non_terminal.clone()),
+    };
+
+    let current_token = if *index < tokens.len() {
+        &tokens[*index]
+    } else {
+        return  Err("Unexpected end of input.".to_string());
+    };
+
+    if let Some(production) = table.get(&(non_terminal.clone(), current_token.clone())) {
+        match production {
+            Production::Rule(symbols) => {
+                for symbol in symbols {
+                    match symbol {
+                        Symbol::Terminal(expected_token) => {
+                            if *index < tokens.len() && &tokens[*index] == expected_token {
+                                *index += 1;
+                                node.children.push(TreeNode {
+                                    children: vec![],
+                                    Symbol: Symbol::Terminal(expected_token.clone()),
+                                });
+                            } else {
+                                return Err(format!(
+                                    "Expected token {:?}, found {:?}",
+                                    expected_token, tokens.get(*index)
+                                ));
                             }
                         }
-                        Production::Epsilon => {
-                            // Handle epsilon production (no action needed for the stack)
+                        Symbol::NonTerminal(next_non_terminal) => {
+                            node.children.push(parse_non_terminal(next_non_terminal.clone(), tokens, index, table)?);
                         }
                     }
-                } else {
-                    return Err(format!("Parse error: no rule for {:?} with lookahead {:?}", nt, lookahead));
                 }
             }
+            Production::Epsilon => {
+                //do nothing
+            }
         }
+    } else {
+        return Err(format!(
+            "No production rule for non-terminal {:?} with token {:?}",
+            non_terminal, current_token
+        ));
     }
 
-    if lookahead.is_some() {
-        Err(format!("Syntax error: unexpected input {:?}", lookahead))
-    } else {
-        Ok(root)
-    }
+    Ok(node)
 }
+
+//best example
+// pub fn parser(tokens: Vec<lexer::Token>, root: TreeNode) {
+//     let table = build_parse_table();
+//     let mut root = TreeNode{
+//         children: Vec::new(),
+//         Symbol: Symbol::NonTerminal(NonTerminal::Prog)
+//     };
+//     // let mut stack: Vec<TreeNode> = vec![root.clone()];
+//     let mut token_counter = 0;
+
+//     while !stack.is_empty() && token_counter < tokens.len() {
+//         if let Some(current_node) = stack.pop() {
+//             println!("Processing node:");
+//             current_node.debug_print(0);
+
+//             match &current_node.Symbol {
+//                 Symbol::NonTerminal(non_terminal) => {
+//                     if let Some(production) = table.get(&(non_terminal.clone(), tokens[token_counter].clone())) {
+//                         match production {
+//                             Production::Rule(symbols) => {
+//                                 for symbol in symbols.iter().rev() {
+//                                     let new_node = TreeNode {
+//                                         parent: Some(Box::new(current_node.clone())),
+//                                         children: vec![],
+//                                         Symbol: symbol.clone(),
+//                                     };
+//                                     stack.push(new_node);
+//                                 }
+//                                 println!("\nAfter processing production:");
+//                                 root.debug_print(0);
+//                             },
+//                             Production::Epsilon => {
+//                                 token_counter += 1;
+//                             }
+//                         }
+//                     }
+//                 },
+//                 Symbol::Terminal(terminal) => {
+//                     if terminal == &tokens[token_counter] {
+//                         token_counter += 1;
+//                     }
+//                 }
+//             }
+//         }
+//     }
+// }
+
+// pub fn parse(tokens: Vec<Token>) {
+//     let parse_table = build_parse_table();
+//     let mut stack: Vec<Symbol> = vec![Symbol::NonTerminal(NonTerminal::Prog)];
+//     let mut root = Rc::new(RefCell::new(TreeNode {
+//         children: Vec::new(),
+//         Symbol: stack.last().unwrap().clone(),
+//     }));
+//     let mut current_node = Rc::clone(&root);
+
+//     let mut input_iter = tokens.into_iter();
+//     let mut lookahead = input_iter.next();
+
+//     while let Some(symbol) = stack.pop() {
+//         match symbol {
+//             Symbol::Terminal(expected) => {
+//                 // Match terminal
+//                 if Some(expected.clone()) == lookahead {
+//                     // Advance to the next token
+//                     lookahead = input_iter.next();
+//                 } else {
+//                     return Err(format!("Syntax error: expected {:?}, found {:?}", expected.clone(), lookahead));
+//                 }
+//             }
+//             Symbol::NonTerminal(nt) => {
+//                 // Look up the parse table
+//                 if let Some(production) = parse_table.get(&(nt.clone(), lookahead.clone().unwrap_or(Token::EOF))) {
+//                     match production {
+//                         Production::Rule(rhs) => {
+//                             // Push symbols of the production rule to stack in reverse order
+//                             for sym in rhs.iter().rev() {
+//                                 stack.push(sym.clone());
+//                             }
+
+//                             // Add child nodes for RHS to current node
+//                             for sym in rhs {
+//                                 let child = Rc::new(RefCell::new(TreeNode {
+//                                     children: Vec::new(),
+//                                     Symbol: sym.clone(),
+//                                 }));
+//                                 current_node.borrow_mut().children.push(Rc::clone(&child));
+//                             }
+//                         }
+//                         Production::Epsilon => {
+//                             // Handle epsilon production (no action needed for the stack)
+//                         }
+//                     }
+//                 } else {
+//                     return Err(format!("Parse error: no rule for {:?} with lookahead {:?}", nt, lookahead));
+//                 }
+//             }
+//         }
+//     }
+
+//     if lookahead.is_some() {
+//         Err(format!("Syntax error: unexpected input {:?}", lookahead))
+//     } else {
+//         Ok(root)
+//     }
+// }
 
 
 // pub fn parser<'a>(tokens: &'a [lexer::Token]) -> TreeNode {

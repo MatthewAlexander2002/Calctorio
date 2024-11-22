@@ -1,4 +1,6 @@
 #![allow(warnings)]
+
+use parser::{TreeNode, Symbol, NonTerminal};
 mod lexer;
 mod parser;
 
@@ -11,18 +13,15 @@ fn main() {
     // println!("{:?}", filename);
     let filename = "/home/matthew/Documents/UNI/Sem 6/SDL/Calctorio/TestSuite/AtomicTests/Addition";
     let tokens = lexer::lexer(filename);
-    match parser::parse(tokens) {
-        Ok(tree) => {
-            tree.borrow().debug_print(0);
-        }
-        Err(err) => {
-            println!("Error: {}", err);
-        }
+
+    // parser::parser(&tokens);
+
+    match parser::parser(&tokens) {
+        Ok(tree) => println!("Parse successful: {:?}", tree),
+        Err(e) => println!("Parse error: {}", e),
     }
+    
 }
-//     let root = parser::parser(&tokens);
-//     print_tree(&root, 0);
-// }
 
 // fn print_tree(node: &parser::TreeNode, depth: usize) {
 //     for _ in 0..depth {
