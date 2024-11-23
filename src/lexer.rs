@@ -2,7 +2,7 @@ use std::vec;
 use std::fs::File;
 use std::io::prelude::*;
 
-//enum token that catagories each enum into sub catagories i.e., operators, types etc.
+//enum token that categories each enum into sub categories i.e., operators, types etc.
 // then each sub category is a enum within its self
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
@@ -100,7 +100,7 @@ pub fn lexer(file_loc: &str) -> Vec<Token> {
     //these have been replaced by the enum but until the enum is fin they will be left here 
     //probably need a better name for symbols and scope
     // let legal_symbols: Vec<&str> = vec!["int", "double", "const", "if", "for", "print", "size", "toINT", "toDouble", "break", "return"];
-    // let legal_binary_opaterators: Vec<&str> = vec!["&&", "||", "<", ">", "<=", ">=", "<>", "=="];
+    // let legal_binary_operators: Vec<&str> = vec!["&&", "||", "<", ">", "<=", ">=", "<>", "=="];
     // let legal_operator: Vec<&str> = vec!["=", "+", "-", "*", "/", "%"];
     // let legal_scope: Vec<&str> = vec!["(", ")", "{", "}", "[", "]", ";", "/*", "*/"];
     // let mut token_start = 0;
