@@ -194,6 +194,9 @@ fn build_parse_table() -> HashMap<(NonTerminal, Token), Production> {
     table.insert((NonTerminal::Ex, Token::BinaryOps(BinaryOpsTK::NotEqual)), Production::Rule(vec![Symbol::NonTerminal(NonTerminal::BoolEx)]));
     table.insert((NonTerminal::Ex, Token::Utilities(UtilitiesTK::ToINT)), Production::Rule(vec![Symbol::NonTerminal(NonTerminal::BoolEx)]));
     table.insert((NonTerminal::Ex, Token::Utilities(UtilitiesTK::ToDouble)), Production::Rule(vec![Symbol::NonTerminal(NonTerminal::BoolEx)]));
+    table.insert((NonTerminal::Ex, Token::Variable(VariableTK::VarName(String::new()))), Production::Rule(vec![Symbol::NonTerminal(NonTerminal::BoolEx)]));
+    table.insert((NonTerminal::Ex, Token::Type(TypeTK::IntVal(0))), Production::Rule(vec![Symbol::NonTerminal(NonTerminal::BoolEx)]));
+    table.insert((NonTerminal::Ex, Token::Type(TypeTK::DoubleVal(String::new()))), Production::Rule(vec![Symbol::NonTerminal(NonTerminal::BoolEx)]));
     // BoolEx
     table.insert((NonTerminal::BoolEx, Token::Ops(OpsTK::Plus)), Production::Rule(vec![Symbol::NonTerminal(NonTerminal::RelEx), Symbol::NonTerminal(NonTerminal::BoolExP)]));
     table.insert((NonTerminal::BoolEx, Token::Ops(OpsTK::Minus)), Production::Rule(vec![Symbol::NonTerminal(NonTerminal::RelEx), Symbol::NonTerminal(NonTerminal::BoolExP)]));
@@ -210,6 +213,9 @@ fn build_parse_table() -> HashMap<(NonTerminal, Token), Production> {
     table.insert((NonTerminal::BoolEx, Token::BinaryOps(BinaryOpsTK::NotEqual)), Production::Rule(vec![Symbol::NonTerminal(NonTerminal::RelEx), Symbol::NonTerminal(NonTerminal::BoolExP)]));
     table.insert((NonTerminal::BoolEx, Token::Utilities(UtilitiesTK::ToINT)), Production::Rule(vec![Symbol::NonTerminal(NonTerminal::RelEx), Symbol::NonTerminal(NonTerminal::BoolExP)]));
     table.insert((NonTerminal::BoolEx, Token::Utilities(UtilitiesTK::ToDouble)), Production::Rule(vec![Symbol::NonTerminal(NonTerminal::RelEx), Symbol::NonTerminal(NonTerminal::BoolExP)]));
+    table.insert((NonTerminal::BoolEx, Token::Variable(VariableTK::VarName(String::new()))), Production::Rule(vec![Symbol::NonTerminal(NonTerminal::RelEx), Symbol::NonTerminal(NonTerminal::BoolExP)]));
+    table.insert((NonTerminal::BoolEx, Token::Type(TypeTK::IntVal(0))), Production::Rule(vec![Symbol::NonTerminal(NonTerminal::RelEx), Symbol::NonTerminal(NonTerminal::BoolExP)]));
+    table.insert((NonTerminal::BoolEx, Token::Type(TypeTK::DoubleVal(String::new()))), Production::Rule(vec![Symbol::NonTerminal(NonTerminal::RelEx), Symbol::NonTerminal(NonTerminal::BoolExP)]));
     // BoolExP
     table.insert((NonTerminal::BoolExP, Token::Scope(ScopeTK::BracketR)), Production::Epsilon);
     table.insert((NonTerminal::BoolExP, Token::BinaryOps(BinaryOpsTK::And)), Production::Rule(vec![Symbol::NonTerminal(NonTerminal::BoolOp), Symbol::NonTerminal(NonTerminal::BoolEx)]));
@@ -279,7 +285,7 @@ fn build_parse_table() -> HashMap<(NonTerminal, Token), Production> {
     table.insert((NonTerminal::ArithVal, Token::Type(TypeTK::IntVal(0))), Production::Rule(vec![Symbol::NonTerminal(NonTerminal::Number)]));
     table.insert((NonTerminal::ArithVal, Token::Type(TypeTK::DoubleVal(String::new()))), Production::Rule(vec![Symbol::NonTerminal(NonTerminal::Number)]));
     // String
-    //Handle in code to Move onto the next step with LL(2)
+    // Handle in code to Move onto the next step with LL(2)
     table.insert((NonTerminal::String, Token::Variable(VariableTK::VarName(String::new()))),  Production::Epsilon);
     //StringP
     table.insert((NonTerminal::StringP, Token::Type(TypeTK::IntVal(0))),  Production::Epsilon);
@@ -359,6 +365,59 @@ fn parse_non_terminal(non_terminal: NonTerminal, tokens: &[Token], index: &mut u
         return  Err("Unexpected end of input.".to_string());
     };
 
+    // if matches!(non_terminal, NonTerminal::Ex) {
+    //     if matches!(current_token, Token::Type(TypeTK::IntVal(_)) | Token::Type(TypeTK::DoubleVal(_))) {
+    //         node.children.push(TreeNode {
+    //             children: vec![],
+    //             Symbol: Symbol::Terminal(current_token.clone()),
+    //         });
+    //         *index += 1; 
+    //         return Ok(node);
+    //     }
+        
+    //     if let Token::Variable(VariableTK::VarName(_)) = current_token {
+    //         node.children.push(TreeNode {
+    //             children: vec![],
+    //             Symbol: Symbol::Terminal(current_token.clone()),
+    //         });
+    //         *index += 1; 
+    //         return Ok(node);
+    //     }
+    // }
+    
+    // if matches!(non_terminal, NonTerminal::VName) {
+    //     if let Token::Variable(VariableTK::VarName(_)) = current_token {
+    //         node.children.push(TreeNode {
+    //             children: vec![],
+    //             Symbol: Symbol::Terminal(current_token.clone()),
+    //         });
+    //         *index += 1;
+    //         return Ok(node);
+    //     } else {
+    //         return Err(format!("Expected a variable name, found {:?}", current_token));
+    //     }
+    // }
+
+    // // if matches!(non_terminal, NonTerminal::Number) {
+    // //     if matches!(current_token, Token::Type(TypeTK::IntVal(_)) | Token::Type(TypeTK::DoubleVal(_))) {
+    // //         node.children.push(TreeNode {
+    // //             children: vec![],
+    // //             Symbol: Symbol::Terminal(current_token.clone()),
+    // //         });
+    // //         *index += 1;
+    // //         return Ok(node);
+    // //     } else {
+    // //         return Err(format!("Expected a number (int or double), found {:?}", current_token));
+    // //     }
+    // // }
+    if matches!(current_token, Token::Type(TypeTK::IntVal(_))) {
+        //just stuff the token it expects when reading the table 
+    }
+
+    if matches!(current_token, Token::Type(TypeTK::DoubleVal(_))) {
+
+    }
+
     if let Some(production) = table.get(&(non_terminal.clone(), current_token.clone())) {
         match production {
             Production::Rule(symbols) => {
@@ -397,6 +456,8 @@ fn parse_non_terminal(non_terminal: NonTerminal, tokens: &[Token], index: &mut u
 
     Ok(node)
 }
+
+
 
 //best example
 // pub fn parser(tokens: Vec<lexer::Token>, root: TreeNode) {
