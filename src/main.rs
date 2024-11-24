@@ -5,6 +5,7 @@ use std::fs;
 use std::path::Path;
 mod lexer;
 mod parser;
+mod semantic;
 
 fn main() {
     let test_dir = Path::new("/home/matthew/Documents/UNI/Sem 6/SDL/Calctorio/TestSuite");
