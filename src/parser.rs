@@ -289,9 +289,7 @@ fn build_parse_table() -> HashMap<(NonTerminal, Token), Production> {
     table.insert((NonTerminal::ArithVal, Token::Type(TypeTK::IntVal(0))), Production::Rule(vec![Symbol::NonTerminal(NonTerminal::Number)]));
     table.insert((NonTerminal::ArithVal, Token::Type(TypeTK::DoubleVal(String::new()))), Production::Rule(vec![Symbol::NonTerminal(NonTerminal::Number)]));
     // String
-    // Handle in code to Move onto the next step with LL(2)
     table.insert((NonTerminal::String, Token::Variable(VariableTK::VarName(String::new()))),  Production::Rule(vec![Symbol::NonTerminal(NonTerminal::VName), Symbol::NonTerminal(NonTerminal::StringP)]));
-
     //StringP
     table.insert((NonTerminal::StringP, Token::Type(TypeTK::IntVal(0))),  Production::Epsilon);
     table.insert((NonTerminal::StringP, Token::Type(TypeTK::DoubleVal(String::new()))), Production::Epsilon);
@@ -391,10 +389,9 @@ fn parse_non_terminal(non_terminal: NonTerminal, tokens: &[Token], index: &mut u
         return  Err("Unexpected end of input.".to_string());
     };
 
-    // if let Some(production) = table.get(&(non_terminal.clone(), current_token.clone())) {
-        println!("Parsing non-terminal: {:?}", non_terminal);
-        println!("Current token: {:?}", current_token);
-        println!();
+    println!("Parsing non-terminal: {:?}", non_terminal);
+    println!("Current token: {:?}", current_token);
+    println!();
         
     if let Some(production) = table.get(&(non_terminal.clone(), token_stuffer(current_token.clone()))) {
         match production {
