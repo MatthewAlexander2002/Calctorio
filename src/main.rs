@@ -20,7 +20,10 @@ fn main() {
         println!("\nTesting file: {}", file);
         let tokens = lexer::lexer(&file);
         match parser::parser(&tokens) {
-            Ok(tree) => println!("Parse successful: {:?}", tree),
+            Ok(tree) => {
+                println!("Parse successful:");
+                print_tree(&tree, 0);
+            },
             Err(e) => println!("Parse error: {}", e),
         }
         println!("\n--------------------");
@@ -41,4 +44,19 @@ fn find_test_files(path: &Path) -> Vec<String> {
         }
     }
     files
+}
+
+fn print_tree(node: &TreeNode, indent: usize) {
+    let indent_str = " ".repeat(indent);
+    match &node.Symbol {
+        Symbol::Terminal(t) => {
+            println!("{}Symbol: {:?}", indent_str, t);
+        }
+        Symbol::NonTerminal(nt) => {
+            println!("{}NonTerminal: {:?}", indent_str, nt);
+            for child in &node.children {
+                print_tree(child, indent + 2);
+            }
+        }
+    }
 }
