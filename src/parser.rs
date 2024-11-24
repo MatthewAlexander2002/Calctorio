@@ -296,6 +296,7 @@ fn build_parse_table() -> HashMap<(NonTerminal, Token), Production> {
     table.insert((NonTerminal::StringP, Token::Type(TypeTK::IntVal(0))),  Production::Epsilon);
     table.insert((NonTerminal::StringP, Token::Type(TypeTK::DoubleVal(String::new()))), Production::Epsilon);
     table.insert((NonTerminal::StringP, Token::Scope(ScopeTK::Semi)), Production::Epsilon);
+    table.insert((NonTerminal::StringP, Token::Scope(ScopeTK::BracketR)), Production::Epsilon);
     table.insert((NonTerminal::StringP, Token::Ops(OpsTK::Plus)),  Production::Epsilon);
     table.insert((NonTerminal::StringP, Token::Ops(OpsTK::Minus)),  Production::Epsilon);
     table.insert((NonTerminal::StringP, Token::Ops(OpsTK::Times)),  Production::Epsilon);
@@ -348,7 +349,7 @@ pub fn parser(tokens: &[Token]) -> Result<TreeNode, String> {
 
     let root = parse_non_terminal(NonTerminal::Prog, tokens, &mut index, &table)?;
 
-    if index < tokens.len() {
+    if index < tokens.len() && !matches!(tokens[index], Token::EOF) {
         return Err(format!(
             "Unexpected token at the end: {:?}",
             tokens.get(index)

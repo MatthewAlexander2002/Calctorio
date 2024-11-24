@@ -11,7 +11,7 @@ fn main() {
     // let filename = &args[1];
     
     // println!("{:?}", filename);
-    let filename = "/home/matthew/Documents/UNI/Sem 6/SDL/Calctorio/TestSuite/AtomicTests/Addition";
+    let filename = "/home/matthew/Documents/UNI/Sem 6/SDL/Calctorio/TestSuite/AtomicTests/EOF";
     let tokens = lexer::lexer(filename);
 
     // parser::parser(&tokens);
