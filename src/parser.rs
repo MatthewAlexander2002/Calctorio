@@ -218,6 +218,7 @@ fn build_parse_table() -> HashMap<(NonTerminal, Token), Production> {
     table.insert((NonTerminal::BoolEx, Token::Type(TypeTK::DoubleVal(String::new()))), Production::Rule(vec![Symbol::NonTerminal(NonTerminal::RelEx), Symbol::NonTerminal(NonTerminal::BoolExP)]));
     // BoolExP
     table.insert((NonTerminal::BoolExP, Token::Scope(ScopeTK::BracketR)), Production::Epsilon);
+    table.insert((NonTerminal::BoolExP, Token::Scope(ScopeTK::Semi)), Production::Epsilon);
     table.insert((NonTerminal::BoolExP, Token::BinaryOps(BinaryOpsTK::And)), Production::Rule(vec![Symbol::NonTerminal(NonTerminal::BoolOp), Symbol::NonTerminal(NonTerminal::BoolEx)]));
     table.insert((NonTerminal::BoolExP, Token::BinaryOps(BinaryOpsTK::Or)), Production::Rule(vec![Symbol::NonTerminal(NonTerminal::BoolOp), Symbol::NonTerminal(NonTerminal::BoolEx)]));
     // BoolOp
@@ -262,6 +263,9 @@ fn build_parse_table() -> HashMap<(NonTerminal, Token), Production> {
     table.insert((NonTerminal::ArithEx, Token::Scope(ScopeTK::BracketL)), Production::Rule(vec![Symbol::Terminal(Token::Scope(ScopeTK::BracketL)), Symbol::NonTerminal(NonTerminal::ArithEx),Symbol::Terminal(Token::Scope(ScopeTK::BracketR))]));
     table.insert((NonTerminal::ArithEx, Token::Utilities(UtilitiesTK::ToINT)), Production::Rule(vec![Symbol::Terminal(Token::Utilities(UtilitiesTK::ToINT)), Symbol::Terminal(Token::Scope(ScopeTK::BracketL)), Symbol::NonTerminal(NonTerminal::ArithEx),Symbol::Terminal(Token::Scope(ScopeTK::BracketR))]));
     table.insert((NonTerminal::ArithEx, Token::Utilities(UtilitiesTK::ToDouble)), Production::Rule(vec![Symbol::Terminal(Token::Utilities(UtilitiesTK::ToDouble)), Symbol::Terminal(Token::Scope(ScopeTK::BracketL)), Symbol::NonTerminal(NonTerminal::ArithEx),Symbol::Terminal(Token::Scope(ScopeTK::BracketR))]));
+    table.insert((NonTerminal::ArithEx, Token::Variable(VariableTK::VarName(String::new()))), Production::Rule(vec![Symbol::NonTerminal(NonTerminal::ArithVal), Symbol::NonTerminal(NonTerminal::ArithExP)]));
+    table.insert((NonTerminal::ArithEx, Token::Type(TypeTK::IntVal(0))), Production::Rule(vec![Symbol::NonTerminal(NonTerminal::ArithVal), Symbol::NonTerminal(NonTerminal::ArithExP)]));
+    table.insert((NonTerminal::ArithEx, Token::Type(TypeTK::DoubleVal(String::new()))), Production::Rule(vec![Symbol::NonTerminal(NonTerminal::ArithVal), Symbol::NonTerminal(NonTerminal::ArithExP)]));
     // ArithExP
     table.insert((NonTerminal::ArithExP, Token::Scope(ScopeTK::Semi)), Production::Epsilon);
     table.insert((NonTerminal::ArithExP, Token::Scope(ScopeTK::BracketR)), Production::Epsilon);    
@@ -286,7 +290,8 @@ fn build_parse_table() -> HashMap<(NonTerminal, Token), Production> {
     table.insert((NonTerminal::ArithVal, Token::Type(TypeTK::DoubleVal(String::new()))), Production::Rule(vec![Symbol::NonTerminal(NonTerminal::Number)]));
     // String
     // Handle in code to Move onto the next step with LL(2)
-    table.insert((NonTerminal::String, Token::Variable(VariableTK::VarName(String::new()))),  Production::Epsilon);
+    table.insert((NonTerminal::String, Token::Variable(VariableTK::VarName(String::new()))),  Production::Rule(vec![Symbol::NonTerminal(NonTerminal::VName), Symbol::NonTerminal(NonTerminal::StringP)]));
+
     //StringP
     table.insert((NonTerminal::StringP, Token::Type(TypeTK::IntVal(0))),  Production::Epsilon);
     table.insert((NonTerminal::StringP, Token::Type(TypeTK::DoubleVal(String::new()))), Production::Epsilon);
@@ -329,10 +334,10 @@ fn build_parse_table() -> HashMap<(NonTerminal, Token), Production> {
     table.insert((NonTerminal::Type, Token::Type(TypeTK::Int)), Production::Rule(vec![Symbol::Terminal(Token::Type(TypeTK::Int))]));
     table.insert((NonTerminal::Type, Token::Type(TypeTK::Double)), Production::Rule(vec![Symbol::Terminal(Token::Type(TypeTK::Double))]));
     // VName
-    table.insert((NonTerminal::VName, Token::Variable(VariableTK::VarName(String::new()))), Production::Rule(vec![Symbol::NonTerminal(NonTerminal::String)]));    
+    table.insert((NonTerminal::VName, Token::Variable(VariableTK::VarName(String::new()))), Production::Rule(vec![Symbol::Terminal(Token::Variable(VariableTK::VarName(String::new())))])); 
     // Number
-    table.insert((NonTerminal::Number, Token::Type(TypeTK::IntVal(0))), Production::Rule(vec![Symbol::NonTerminal(NonTerminal::Number)]));
-    table.insert((NonTerminal::Number, Token::Type(TypeTK::DoubleVal(String::new()))), Production::Rule(vec![Symbol::NonTerminal(NonTerminal::Number)]));
+    table.insert((NonTerminal::Number, Token::Type(TypeTK::IntVal(0))), Production::Rule(vec![Symbol::Terminal(Token::Type(TypeTK::IntVal(0)))]));
+    table.insert((NonTerminal::Number, Token::Type(TypeTK::DoubleVal(String::new()))), Production::Rule(vec![Symbol::Terminal(Token::Type(TypeTK::DoubleVal(String::new())))]));
 
     table
 } 
@@ -353,6 +358,23 @@ pub fn parser(tokens: &[Token]) -> Result<TreeNode, String> {
     Ok(root)
 }
 
+//if the token is a value to get past the parse table having issues with it not being the exact same value it replaces the token temperately with the one it expects
+fn token_stuffer(current_token: Token) -> Token{
+    if matches!(current_token, Token::Type(TypeTK::IntVal(_))) {
+         return Token::Type(TypeTK::IntVal(0));
+    }
+
+    if matches!(current_token, Token::Type(TypeTK::DoubleVal(_))) {
+        return Token::Type(TypeTK::DoubleVal(String::new()));
+    }
+
+    if matches!(current_token, Token::Variable(VariableTK::VarName(_))) {
+        return Token::Variable(VariableTK::VarName(String::new()));
+    }
+
+    current_token.clone()
+}
+
 fn parse_non_terminal(non_terminal: NonTerminal, tokens: &[Token], index: &mut usize, table: &HashMap<(NonTerminal, Token), Production>) -> Result<TreeNode, String> {
     let mut node = TreeNode{
         children: vec![],
@@ -365,77 +387,22 @@ fn parse_non_terminal(non_terminal: NonTerminal, tokens: &[Token], index: &mut u
         return  Err("Unexpected end of input.".to_string());
     };
 
-    // if matches!(non_terminal, NonTerminal::Ex) {
-    //     if matches!(current_token, Token::Type(TypeTK::IntVal(_)) | Token::Type(TypeTK::DoubleVal(_))) {
-    //         node.children.push(TreeNode {
-    //             children: vec![],
-    //             Symbol: Symbol::Terminal(current_token.clone()),
-    //         });
-    //         *index += 1; 
-    //         return Ok(node);
-    //     }
+    // if let Some(production) = table.get(&(non_terminal.clone(), current_token.clone())) {
+        println!("Parsing non-terminal: {:?}", non_terminal);
+        println!("Current token: {:?}", current_token);
+        println!();
         
-    //     if let Token::Variable(VariableTK::VarName(_)) = current_token {
-    //         node.children.push(TreeNode {
-    //             children: vec![],
-    //             Symbol: Symbol::Terminal(current_token.clone()),
-    //         });
-    //         *index += 1; 
-    //         return Ok(node);
-    //     }
-    // }
-    
-    // if matches!(non_terminal, NonTerminal::VName) {
-    //     if let Token::Variable(VariableTK::VarName(_)) = current_token {
-    //         node.children.push(TreeNode {
-    //             children: vec![],
-    //             Symbol: Symbol::Terminal(current_token.clone()),
-    //         });
-    //         *index += 1;
-    //         return Ok(node);
-    //     } else {
-    //         return Err(format!("Expected a variable name, found {:?}", current_token));
-    //     }
-    // }
-
-    // // if matches!(non_terminal, NonTerminal::Number) {
-    // //     if matches!(current_token, Token::Type(TypeTK::IntVal(_)) | Token::Type(TypeTK::DoubleVal(_))) {
-    // //         node.children.push(TreeNode {
-    // //             children: vec![],
-    // //             Symbol: Symbol::Terminal(current_token.clone()),
-    // //         });
-    // //         *index += 1;
-    // //         return Ok(node);
-    // //     } else {
-    // //         return Err(format!("Expected a number (int or double), found {:?}", current_token));
-    // //     }
-    // // }
-    if matches!(current_token, Token::Type(TypeTK::IntVal(_))) {
-        //just stuff the token it expects when reading the table 
-    }
-
-    if matches!(current_token, Token::Type(TypeTK::DoubleVal(_))) {
-
-    }
-
-    if let Some(production) = table.get(&(non_terminal.clone(), current_token.clone())) {
+    if let Some(production) = table.get(&(non_terminal.clone(), token_stuffer(current_token.clone()))) {
         match production {
             Production::Rule(symbols) => {
                 for symbol in symbols {
                     match symbol {
-                        Symbol::Terminal(expected_token) => {
-                            if *index < tokens.len() && &tokens[*index] == expected_token {
-                                *index += 1;
-                                node.children.push(TreeNode {
-                                    children: vec![],
-                                    Symbol: Symbol::Terminal(expected_token.clone()),
-                                });
-                            } else {
-                                return Err(format!(
-                                    "Expected token {:?}, found {:?}",
-                                    expected_token, tokens.get(*index)
-                                ));
-                            }
+                        Symbol::Terminal(_expected_token) => {
+                            node.children.push(TreeNode {
+                                children: vec![],
+                                Symbol: Symbol::Terminal(current_token.clone()), 
+                            });
+                            *index += 1; 
                         }
                         Symbol::NonTerminal(next_non_terminal) => {
                             node.children.push(parse_non_terminal(next_non_terminal.clone(), tokens, index, table)?);
