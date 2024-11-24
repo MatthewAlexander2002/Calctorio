@@ -2,9 +2,10 @@ use std::vec;
 use std::fs::File;
 use std::io::prelude::*;
 
-//enum token that catagories each enum into sub catagories i.e., operators, types etc.
-// then each sub catgory is a enum within its self
+//enum token that categories each enum into sub categories i.e., operators, types etc.
+// then each sub category is a enum within its self
 
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum Token {
     Type(TypeTK),
     ControlFlow(ControlFlowTK),
@@ -13,16 +14,19 @@ pub enum Token {
     Ops(OpsTK),
     Scope(ScopeTK),
     Variable(VariableTK),
+    EOF,
 }
 
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum TypeTK { //need both a 
     Int, // int
     Double, // double
     IntVal(i32), // i.e. 8
-    DoubleVal(f32), // i.e. 8.88
+    DoubleVal(String), // i.e. 8.88 //has to be a string b/c floats don't hash
     Const, // const
 }
 
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Copy)]
 pub enum ControlFlowTK {
     If, // if
     For, // for
@@ -32,6 +36,7 @@ pub enum ControlFlowTK {
     Return, // return
 }
 
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Copy)]
 pub enum UtilitiesTK {
     Print, // print
     Size, // size
@@ -42,6 +47,7 @@ pub enum UtilitiesTK {
     SpeechMarks, // "
 }
 
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Copy)]
 pub enum BinaryOpsTK {
     And, // &&
     Or, // ||
@@ -53,6 +59,7 @@ pub enum BinaryOpsTK {
     Equal, // ==
 }
 
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Copy)]
 pub enum OpsTK {
     Assignment, // =
     Plus, // +
@@ -62,6 +69,7 @@ pub enum OpsTK {
     Modulo, // %
 }
 
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Copy)]
 pub enum ScopeTK {
     BracketL, // (
     BracketR, // )
@@ -70,10 +78,12 @@ pub enum ScopeTK {
     SquareBracketL, // [
     SquareBracketR, // ]
     Semi, // ;
+    Comma, // ,
     NewLine, // \r\n //carriage return, new line
     WhiteSpace, // \s " " //white space
 }
 
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum VariableTK {
     VarName(String),
 }
@@ -90,7 +100,7 @@ pub fn lexer(file_loc: &str) -> Vec<Token> {
     //these have been replaced by the enum but until the enum is fin they will be left here 
     //probably need a better name for symbols and scope
     // let legal_symbols: Vec<&str> = vec!["int", "double", "const", "if", "for", "print", "size", "toINT", "toDouble", "break", "return"];
-    // let legal_binary_opaterators: Vec<&str> = vec!["&&", "||", "<", ">", "<=", ">=", "<>", "=="];
+    // let legal_binary_operators: Vec<&str> = vec!["&&", "||", "<", ">", "<=", ">=", "<>", "=="];
     // let legal_operator: Vec<&str> = vec!["=", "+", "-", "*", "/", "%"];
     // let legal_scope: Vec<&str> = vec!["(", ")", "{", "}", "[", "]", ";", "/*", "*/"];
     // let mut token_start = 0;
@@ -101,6 +111,36 @@ pub fn lexer(file_loc: &str) -> Vec<Token> {
     // let mut found_tokens: Vec<String> = vec![];
 
     while let Some(c) = char_iter.next() {
+        if c.is_whitespace() {
+            if !current_token.is_empty() {
+                found_tokens.push(string_to_token(current_token.clone()));
+                println!("{:?}", current_token);
+                current_token.clear();
+            }
+            continue;
+        }
+
+        if c == '/' && char_iter.peek() == Some(&'/') {
+            while let Some(next_char) = char_iter.next() {
+                if next_char == '\n' {
+                    break;
+                }
+            }
+            continue;
+        }
+
+        if c == '/' && char_iter.peek() == Some(&'*') {
+            char_iter.next();
+            while let Some(next_char) = char_iter.next() {
+                if next_char == '*' && char_iter.peek() == Some(&'/') {
+                    // Consume the '/' character
+                    char_iter.next();
+                    break;
+                }
+            }
+            continue;
+        }
+
 
         //need to change this to check if it has
         if c == '/' && char_iter.peek() == Some(&'*') {
@@ -168,7 +208,7 @@ pub fn lexer(file_loc: &str) -> Vec<Token> {
             println!("{:?}", current_token);
             current_token.clear();
         //consider changing this to a .contains on a array but i will refactor later when i figure out whats the faster op
-        } else if c == ' ' || c == ';' || c == '\n' || c == '\t' || c == '"' || c == '=' || c == '+' || c == '-' || c == '*' || c == '/' || c == '%' || c == '*' || c == '(' || c == ')' || c == '{' || c == '}' || c == '[' || c == ']' {
+        } else if c == ';' || c == '"' || c == '=' || c == '+' || c == '-' || c == '*' || c == '/' || c == '%' || c == '*' || c == '(' || c == ')' || c == '{' || c == '}' || c == '[' || c == ']' || c == ',' {
             if c == ' ' && current_token.is_empty() {
                 //make sure that leading white space doesn't end up in the next token
                 current_token.push(c);
@@ -195,9 +235,11 @@ pub fn lexer(file_loc: &str) -> Vec<Token> {
         }
     }
 
-    // if !current_token.is_empty() {
-    //     found_tokens.push(current_token);
-    // }
+    if !current_token.is_empty() {
+        found_tokens.push(string_to_token(current_token.clone()));
+        println!("{:?}", current_token);
+    }
+    found_tokens.push(Token::EOF);
 
     return found_tokens;
 }
@@ -210,7 +252,7 @@ fn string_to_token (current_string: String) -> Token {
     } else if let Ok(int_val) = current_string.parse::<i32>() {
         return Token::Type(TypeTK::IntVal(int_val));
     } else if let Ok(double_val) = current_string.parse::<f32>() {
-        return Token::Type(TypeTK::DoubleVal(double_val));
+        return Token::Type(TypeTK::DoubleVal(current_string));
     } else if current_string == "const" {
         return Token::Type(TypeTK::Const);
     } else if current_string == "if" { //Control Flow
@@ -281,10 +323,8 @@ fn string_to_token (current_string: String) -> Token {
         return Token::Scope(ScopeTK::SquareBracketR);
     } else if current_string == ";" {
         return Token::Scope(ScopeTK::Semi);
-    } else if current_string == "\r" || current_string == "\n" {
-        return Token::Scope(ScopeTK::NewLine);
-    } else if current_string == " " {
-        return Token::Scope(ScopeTK::WhiteSpace);
+    } else if current_string == "," {
+        return Token::Scope(ScopeTK::Comma);
     } else {
         return Token::Variable(VariableTK::VarName(current_string)); // Variable Name
     }
