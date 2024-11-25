@@ -390,10 +390,10 @@ fn parse_non_terminal(non_terminal: NonTerminal, tokens: &[Token], index: &mut u
     };
 
     println!("Parsing non-terminal: {:?}", non_terminal);
-    println!("Current token: {:?}", current_token);
+    println!("Current token: {:?}", tokens[*index].clone());
     println!();
         
-    if let Some(production) = table.get(&(non_terminal.clone(), token_stuffer(current_token.clone()))) {
+    if let Some(production) = table.get(&(non_terminal.clone(), token_stuffer(tokens[*index].clone()))) {
         match production {
             Production::Rule(symbols) => {
                 for symbol in symbols {
@@ -401,7 +401,7 @@ fn parse_non_terminal(non_terminal: NonTerminal, tokens: &[Token], index: &mut u
                         Symbol::Terminal(_expected_token) => {
                             node.children.push(TreeNode {
                                 children: vec![],
-                                Symbol: Symbol::Terminal(current_token.clone()), 
+                                Symbol: Symbol::Terminal(tokens[*index].clone()), //for some reason current token is different IDK weird
                             });
                             *index += 1; 
                         }
