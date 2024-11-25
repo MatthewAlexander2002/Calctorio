@@ -11,21 +11,17 @@ fn process_node(node: &mut TreeNode) {
     let mut new_children = Vec::new();
 
     for mut child in node.children.drain(..) {
-        // Recursively process the child node
-        process_node(&mut child);
-
         match child.Symbol {
             Symbol::NonTerminal(_) => {
-                // Only retain children of the non-terminal in the tree
-                new_children.extend(child.children.drain(..));
+                for mut grandchild in child.children.drain(..) {
+                    process_node(&mut grandchild); 
+                    new_children.push(grandchild); 
+                }
             }
             Symbol::Terminal(_) => {
-                // Keep terminal nodes as they are
                 new_children.push(child);
             }
         }
     }
-
-    // Replace the current node's children with the updated list
     node.children = new_children;
 }
