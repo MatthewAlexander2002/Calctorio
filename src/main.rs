@@ -8,6 +8,7 @@ mod parser;
 mod semantic;
 
 fn main() {
+    // let test_dir = Path::new("/home/matthew/Documents/UNI/Sem 6/SDL/Calctorio/TestSuite");
     let test_dir = Path::new("/home/matthew/Documents/UNI/Sem 6/SDL/Calctorio/TestSuite");
     let test_files = find_test_files(test_dir);
 
@@ -23,11 +24,31 @@ fn main() {
             Ok(tree) => {
                 println!("Parse successful:");
                 print_tree(&tree, 0);
+                semantic::semantic_analysis(tree);
             },
             Err(e) => println!("Parse error: {}", e),
         }
         println!("\n--------------------");
-    } 
+    }
+
+    let file = "/home/matthew/Documents/UNI/Sem 6/SDL/Calctorio/TestSuite/AtomicTests/ToDOUBLE";
+    let tokens = lexer::lexer(&file);
+        match parser::parser(&tokens) {
+            Ok(tree) => {
+                println!("Parse successful:");
+                print_tree(&tree, 0);
+                println!("\n--------------------"); 
+                match semantic::semantic_analysis(tree) {
+                    Ok(analyzed_tree) => {
+                        println!("Semantic Analysis successful:");
+                        print_tree(&analyzed_tree, 0);
+                    },
+                    Err(e) => println!("Semantic error: {}", e),
+                }
+            },
+            Err(e) => println!("Parse error: {}", e),
+        }
+    println!("\n--------------------"); 
 }
 
 fn find_test_files(path: &Path) -> Vec<String> {
