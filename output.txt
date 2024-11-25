@@ -738,182 +738,508 @@ NonTerminal: Prog
 
 --------------------
 Semantic Analysis successful:
-NonTerminal: Prog
-  NonTerminal: FuncList
-    NonTerminal: FuncDecl
-      NonTerminal: Decl
-        NonTerminal: Type
-          Symbol: Type(Int)
-        NonTerminal: VName
-          Symbol: Variable(VarName("main"))
-      Symbol: Scope(BracketL)
-      Symbol: Scope(BracketR)
-      Symbol: Scope(CurlyBracketL)
-      NonTerminal: StatementList
-        NonTerminal: Statement
-          NonTerminal: VarDecl
-            NonTerminal: Decl
-              NonTerminal: Type
-                Symbol: Type(Int)
-              NonTerminal: VName
-                Symbol: Variable(VarName("a"))
-            NonTerminal: VarDeclP
-              Symbol: Ops(Assignment)
-              NonTerminal: Ex
-                NonTerminal: BoolEx
-                  NonTerminal: RelEx
-                    NonTerminal: ArithEx
-                      NonTerminal: ArithVal
-                        NonTerminal: Number
-                          Symbol: Type(IntVal(2))
-            Symbol: Scope(Semi)
-        NonTerminal: StatementList
-          NonTerminal: Statement
-            NonTerminal: VarDecl
-              NonTerminal: Decl
-                NonTerminal: Type
-                  Symbol: Type(Int)
-                NonTerminal: VName
-                  Symbol: Variable(VarName("b"))
-              NonTerminal: VarDeclP
-                Symbol: Ops(Assignment)
-                NonTerminal: Ex
-                  NonTerminal: BoolEx
-                    NonTerminal: RelEx
-                      NonTerminal: ArithEx
-                        NonTerminal: ArithVal
-                          NonTerminal: Number
-                            Symbol: Type(IntVal(1))
-              Symbol: Scope(Semi)
-          NonTerminal: StatementList
-            NonTerminal: Statement
-              NonTerminal: VarDecl
-                NonTerminal: Decl
-                  NonTerminal: Type
-                    Symbol: Type(Double)
-                  NonTerminal: VName
-                    Symbol: Variable(VarName("c"))
-                NonTerminal: VarDeclP
-                  Symbol: Ops(Assignment)
-                  NonTerminal: Ex
-                    NonTerminal: BoolEx
-                      NonTerminal: RelEx
-                        NonTerminal: ArithEx
-                          NonTerminal: ArithVal
-                            NonTerminal: Number
-                              Symbol: Type(DoubleVal("1.0"))
-                Symbol: Scope(Semi)
-            NonTerminal: StatementList
-              NonTerminal: Statement
-                NonTerminal: VarDecl
-                  NonTerminal: Decl
-                    NonTerminal: Type
-                      Symbol: Type(Double)
-                    NonTerminal: VName
-                      Symbol: Variable(VarName("d"))
-                  NonTerminal: VarDeclP
-                    Symbol: Ops(Assignment)
-                    NonTerminal: Ex
-                      NonTerminal: BoolEx
-                        NonTerminal: RelEx
-                          NonTerminal: ArithEx
-                            NonTerminal: ArithVal
-                              NonTerminal: Number
-                                Symbol: Type(DoubleVal("2.5"))
-                  Symbol: Scope(Semi)
-              NonTerminal: StatementList
-                NonTerminal: Statement
-                  NonTerminal: VarDecl
-                    NonTerminal: Decl
-                      NonTerminal: Type
-                        Symbol: Type(Int)
-                      NonTerminal: VName
-                        Symbol: Variable(VarName("INTRes"))
-                    Symbol: Scope(Semi)
-                NonTerminal: StatementList
-                  NonTerminal: Statement
-                    NonTerminal: VarDecl
-                      NonTerminal: Decl
-                        NonTerminal: Type
-                          Symbol: Type(Double)
-                        NonTerminal: VName
-                          Symbol: Variable(VarName("DOUBLERes"))
-                      Symbol: Scope(Semi)
-                  NonTerminal: StatementList
-                    NonTerminal: Statement
-                      NonTerminal: Assignment
-                        NonTerminal: VName
-                          Symbol: Variable(VarName("INTRes"))
-                        Symbol: Ops(Assignment)
-                        NonTerminal: Ex
-                          NonTerminal: BoolEx
-                            NonTerminal: RelEx
-                              NonTerminal: ArithEx
-                                NonTerminal: ArithVal
-                                  NonTerminal: String
-                                    NonTerminal: VName
-                                      Symbol: Variable(VarName("a"))
-                                NonTerminal: ArithExP
-                                  NonTerminal: ArithOp
-                                    Symbol: Ops(Plus)
-                                  NonTerminal: ArithEx
-                                    NonTerminal: ArithVal
-                                      NonTerminal: String
-                                        NonTerminal: VName
-                                          Symbol: Variable(VarName("b"))
-                        Symbol: Scope(Semi)
-                    NonTerminal: StatementList
-                      NonTerminal: Statement
-                        NonTerminal: Assignment
-                          NonTerminal: VName
-                            Symbol: Variable(VarName("DOUBLERes"))
-                          Symbol: Ops(Assignment)
-                          NonTerminal: Ex
-                            NonTerminal: BoolEx
-                              NonTerminal: RelEx
-                                NonTerminal: ArithEx
-                                  NonTerminal: ArithVal
-                                    NonTerminal: String
-                                      NonTerminal: VName
-                                        Symbol: Variable(VarName("c"))
-                                  NonTerminal: ArithExP
-                                    NonTerminal: ArithOp
-                                      Symbol: Ops(Plus)
-                                    NonTerminal: ArithEx
-                                      NonTerminal: ArithVal
-                                        NonTerminal: String
-                                          NonTerminal: VName
-                                            Symbol: Variable(VarName("d"))
-                          Symbol: Scope(Semi)
-                      NonTerminal: StatementList
-                        NonTerminal: Statement
-                          Symbol: Utilities(Print)
-                          Symbol: Scope(BracketL)
-                          NonTerminal: Text
-                            NonTerminal: TextElement
-                              NonTerminal: String
-                                NonTerminal: VName
-                                  Symbol: Variable(VarName("INTRes"))
-                          Symbol: Scope(BracketR)
-                          Symbol: Scope(Semi)
-                        NonTerminal: StatementList
-                          NonTerminal: Statement
-                            Symbol: Utilities(Print)
-                            Symbol: Scope(BracketL)
-                            NonTerminal: Text
-                              NonTerminal: TextElement
-                                NonTerminal: String
-                                  NonTerminal: VName
-                                    Symbol: Variable(VarName("DOUBLERes"))
-                            Symbol: Scope(BracketR)
-                            Symbol: Scope(Semi)
-                          NonTerminal: StatementList
-                            NonTerminal: Statement
-                              Symbol: ControlFlow(Return)
-                              NonTerminal: ReturnTail
-                                NonTerminal: Number
-                                  Symbol: Type(IntVal(0))
-                              Symbol: Scope(Semi)
-      Symbol: Scope(CurlyBracketR)
+TreeNode {
+    children: [
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Type(
+                    Int,
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Variable(
+                    VarName(
+                        "main",
+                    ),
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Scope(
+                    BracketL,
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Scope(
+                    BracketR,
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Scope(
+                    CurlyBracketL,
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Type(
+                    Int,
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Variable(
+                    VarName(
+                        "a",
+                    ),
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Ops(
+                    Assignment,
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Type(
+                    IntVal(
+                        2,
+                    ),
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Scope(
+                    Semi,
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Type(
+                    Int,
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Variable(
+                    VarName(
+                        "b",
+                    ),
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Ops(
+                    Assignment,
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Type(
+                    IntVal(
+                        1,
+                    ),
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Scope(
+                    Semi,
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Type(
+                    Double,
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Variable(
+                    VarName(
+                        "c",
+                    ),
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Ops(
+                    Assignment,
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Type(
+                    DoubleVal(
+                        "1.0",
+                    ),
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Scope(
+                    Semi,
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Type(
+                    Double,
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Variable(
+                    VarName(
+                        "d",
+                    ),
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Ops(
+                    Assignment,
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Type(
+                    DoubleVal(
+                        "2.5",
+                    ),
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Scope(
+                    Semi,
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Type(
+                    Int,
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Variable(
+                    VarName(
+                        "INTRes",
+                    ),
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Scope(
+                    Semi,
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Type(
+                    Double,
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Variable(
+                    VarName(
+                        "DOUBLERes",
+                    ),
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Scope(
+                    Semi,
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Variable(
+                    VarName(
+                        "INTRes",
+                    ),
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Ops(
+                    Assignment,
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Variable(
+                    VarName(
+                        "a",
+                    ),
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Ops(
+                    Plus,
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Variable(
+                    VarName(
+                        "b",
+                    ),
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Scope(
+                    Semi,
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Variable(
+                    VarName(
+                        "DOUBLERes",
+                    ),
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Ops(
+                    Assignment,
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Variable(
+                    VarName(
+                        "c",
+                    ),
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Ops(
+                    Plus,
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Variable(
+                    VarName(
+                        "d",
+                    ),
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Scope(
+                    Semi,
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Utilities(
+                    Print,
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Scope(
+                    BracketL,
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Variable(
+                    VarName(
+                        "INTRes",
+                    ),
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Scope(
+                    BracketR,
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Scope(
+                    Semi,
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Utilities(
+                    Print,
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Scope(
+                    BracketL,
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Variable(
+                    VarName(
+                        "DOUBLERes",
+                    ),
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Scope(
+                    BracketR,
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Scope(
+                    Semi,
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                ControlFlow(
+                    Return,
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Type(
+                    IntVal(
+                        0,
+                    ),
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Scope(
+                    Semi,
+                ),
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: Terminal(
+                Scope(
+                    CurlyBracketR,
+                ),
+            ),
+        },
+    ],
+    Symbol: NonTerminal(
+        Prog,
+    ),
+}
 
 --------------------

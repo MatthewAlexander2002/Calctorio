@@ -37,10 +37,12 @@ fn main() {
                 println!("Parse successful:");
                 print_tree(&tree, 0);
                 println!("\n--------------------"); 
+                // println!("{:#?}", tree); 
                 match semantic::semantic_analysis(tree) {
                     Ok(analyzed_tree) => {
                         println!("Semantic Analysis successful:");
-                        print_tree(&analyzed_tree, 0);
+                        // print_tree(&analyzed_tree, 0);
+                        println!("{:#?}", analyzed_tree); 
                     },
                     Err(e) => println!("Semantic error: {}", e),
                 }
