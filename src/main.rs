@@ -9,29 +9,28 @@ mod semantic;
 
 fn main() {
     // let test_dir = Path::new("/home/matthew/Documents/UNI/Sem 6/SDL/Calctorio/TestSuite");
-    let test_dir = Path::new("/home/matthew/Documents/UNI/Sem 6/SDL/Calctorio/TestSuite");
-    let test_files = find_test_files(test_dir);
+    // let test_files = find_test_files(test_dir);
 
-    println!("\nFound test files:");
-    for file in &test_files {
-        println!("{}", file);
-    }
+    // println!("\nFound test files:");
+    // for file in &test_files {
+    //     println!("{}", file);
+    // }
 
-    for file in test_files {
-        println!("\nTesting file: {}", file);
-        let tokens = lexer::lexer(&file);
-        match parser::parser(&tokens) {
-            Ok(tree) => {
-                println!("Parse successful:");
-                print_tree(&tree, 0);
-                semantic::semantic_analysis(tree);
-            },
-            Err(e) => println!("Parse error: {}", e),
-        }
-        println!("\n--------------------");
-    }
+    // for file in test_files {
+    //     println!("\nTesting file: {}", file);
+    //     let tokens = lexer::lexer(&file);
+    //     match parser::parser(&tokens) {
+    //         Ok(tree) => {
+    //             println!("Parse successful:");
+    //             print_tree(&tree, 0);
+    //             semantic::semantic_analysis(tree);
+    //         },
+    //         Err(e) => println!("Parse error: {}", e),
+    //     }
+    //     println!("\n--------------------");
+    // }
 
-    let file = "/home/matthew/Documents/UNI/Sem 6/SDL/Calctorio/TestSuite/AtomicTests/ToDOUBLE";
+    let file = "/home/matthew/Documents/UNI/Sem 6/SDL/Calctorio/TestSuite/AtomicTests/Addition";
     let tokens = lexer::lexer(&file);
         match parser::parser(&tokens) {
             Ok(tree) => {

@@ -1,0 +1,919 @@
+With text: 
+int main() {
+    /*This is a comment*/
+    int a = 2;
+    int b = 1;
+    double c = 1.0;
+    double d = 2.5;
+    int INTRes;
+    double DOUBLERes;
+
+    INTRes = a + b;
+    DOUBLERes = c + d;
+
+    print(INTRes);
+    print(DOUBLERes);
+
+    return 0; 
+}
+"int"
+"main"
+"("
+")"
+"{"
+"int"
+"a"
+"="
+"2"
+";"
+"int"
+"b"
+"="
+"1"
+";"
+"double"
+"c"
+"="
+"1.0"
+";"
+"double"
+"d"
+"="
+"2.5"
+";"
+"int"
+"INTRes"
+";"
+"double"
+"DOUBLERes"
+";"
+"INTRes"
+"="
+"a"
+"+"
+"b"
+";"
+"DOUBLERes"
+"="
+"c"
+"+"
+"d"
+";"
+"print"
+"("
+"INTRes"
+")"
+";"
+"print"
+"("
+"DOUBLERes"
+")"
+";"
+"return"
+"0"
+";"
+"}"
+Parsing non-terminal: Prog
+Current token: Type(Int)
+
+Parsing non-terminal: FuncList
+Current token: Type(Int)
+
+Parsing non-terminal: FuncDecl
+Current token: Type(Int)
+
+Parsing non-terminal: Decl
+Current token: Type(Int)
+
+Parsing non-terminal: Type
+Current token: Type(Int)
+
+Parsing non-terminal: VName
+Current token: Variable(VarName("main"))
+
+Parsing non-terminal: ListOfParams
+Current token: Scope(BracketR)
+
+Parsing non-terminal: StatementList
+Current token: Type(Int)
+
+Parsing non-terminal: Statement
+Current token: Type(Int)
+
+Parsing non-terminal: VarDecl
+Current token: Type(Int)
+
+Parsing non-terminal: Decl
+Current token: Type(Int)
+
+Parsing non-terminal: Type
+Current token: Type(Int)
+
+Parsing non-terminal: VName
+Current token: Variable(VarName("a"))
+
+Parsing non-terminal: VarDeclP
+Current token: Ops(Assignment)
+
+Parsing non-terminal: Ex
+Current token: Type(IntVal(2))
+
+Parsing non-terminal: BoolEx
+Current token: Type(IntVal(2))
+
+Parsing non-terminal: RelEx
+Current token: Type(IntVal(2))
+
+Parsing non-terminal: ArithEx
+Current token: Type(IntVal(2))
+
+Parsing non-terminal: ArithVal
+Current token: Type(IntVal(2))
+
+Parsing non-terminal: Number
+Current token: Type(IntVal(2))
+
+Parsing non-terminal: ArithExP
+Current token: Scope(Semi)
+
+Parsing non-terminal: RelExP
+Current token: Scope(Semi)
+
+Parsing non-terminal: BoolExP
+Current token: Scope(Semi)
+
+Parsing non-terminal: StatementList
+Current token: Type(Int)
+
+Parsing non-terminal: Statement
+Current token: Type(Int)
+
+Parsing non-terminal: VarDecl
+Current token: Type(Int)
+
+Parsing non-terminal: Decl
+Current token: Type(Int)
+
+Parsing non-terminal: Type
+Current token: Type(Int)
+
+Parsing non-terminal: VName
+Current token: Variable(VarName("b"))
+
+Parsing non-terminal: VarDeclP
+Current token: Ops(Assignment)
+
+Parsing non-terminal: Ex
+Current token: Type(IntVal(1))
+
+Parsing non-terminal: BoolEx
+Current token: Type(IntVal(1))
+
+Parsing non-terminal: RelEx
+Current token: Type(IntVal(1))
+
+Parsing non-terminal: ArithEx
+Current token: Type(IntVal(1))
+
+Parsing non-terminal: ArithVal
+Current token: Type(IntVal(1))
+
+Parsing non-terminal: Number
+Current token: Type(IntVal(1))
+
+Parsing non-terminal: ArithExP
+Current token: Scope(Semi)
+
+Parsing non-terminal: RelExP
+Current token: Scope(Semi)
+
+Parsing non-terminal: BoolExP
+Current token: Scope(Semi)
+
+Parsing non-terminal: StatementList
+Current token: Type(Double)
+
+Parsing non-terminal: Statement
+Current token: Type(Double)
+
+Parsing non-terminal: VarDecl
+Current token: Type(Double)
+
+Parsing non-terminal: Decl
+Current token: Type(Double)
+
+Parsing non-terminal: Type
+Current token: Type(Double)
+
+Parsing non-terminal: VName
+Current token: Variable(VarName("c"))
+
+Parsing non-terminal: VarDeclP
+Current token: Ops(Assignment)
+
+Parsing non-terminal: Ex
+Current token: Type(DoubleVal("1.0"))
+
+Parsing non-terminal: BoolEx
+Current token: Type(DoubleVal("1.0"))
+
+Parsing non-terminal: RelEx
+Current token: Type(DoubleVal("1.0"))
+
+Parsing non-terminal: ArithEx
+Current token: Type(DoubleVal("1.0"))
+
+Parsing non-terminal: ArithVal
+Current token: Type(DoubleVal("1.0"))
+
+Parsing non-terminal: Number
+Current token: Type(DoubleVal("1.0"))
+
+Parsing non-terminal: ArithExP
+Current token: Scope(Semi)
+
+Parsing non-terminal: RelExP
+Current token: Scope(Semi)
+
+Parsing non-terminal: BoolExP
+Current token: Scope(Semi)
+
+Parsing non-terminal: StatementList
+Current token: Type(Double)
+
+Parsing non-terminal: Statement
+Current token: Type(Double)
+
+Parsing non-terminal: VarDecl
+Current token: Type(Double)
+
+Parsing non-terminal: Decl
+Current token: Type(Double)
+
+Parsing non-terminal: Type
+Current token: Type(Double)
+
+Parsing non-terminal: VName
+Current token: Variable(VarName("d"))
+
+Parsing non-terminal: VarDeclP
+Current token: Ops(Assignment)
+
+Parsing non-terminal: Ex
+Current token: Type(DoubleVal("2.5"))
+
+Parsing non-terminal: BoolEx
+Current token: Type(DoubleVal("2.5"))
+
+Parsing non-terminal: RelEx
+Current token: Type(DoubleVal("2.5"))
+
+Parsing non-terminal: ArithEx
+Current token: Type(DoubleVal("2.5"))
+
+Parsing non-terminal: ArithVal
+Current token: Type(DoubleVal("2.5"))
+
+Parsing non-terminal: Number
+Current token: Type(DoubleVal("2.5"))
+
+Parsing non-terminal: ArithExP
+Current token: Scope(Semi)
+
+Parsing non-terminal: RelExP
+Current token: Scope(Semi)
+
+Parsing non-terminal: BoolExP
+Current token: Scope(Semi)
+
+Parsing non-terminal: StatementList
+Current token: Type(Int)
+
+Parsing non-terminal: Statement
+Current token: Type(Int)
+
+Parsing non-terminal: VarDecl
+Current token: Type(Int)
+
+Parsing non-terminal: Decl
+Current token: Type(Int)
+
+Parsing non-terminal: Type
+Current token: Type(Int)
+
+Parsing non-terminal: VName
+Current token: Variable(VarName("INTRes"))
+
+Parsing non-terminal: VarDeclP
+Current token: Scope(Semi)
+
+Parsing non-terminal: StatementList
+Current token: Type(Double)
+
+Parsing non-terminal: Statement
+Current token: Type(Double)
+
+Parsing non-terminal: VarDecl
+Current token: Type(Double)
+
+Parsing non-terminal: Decl
+Current token: Type(Double)
+
+Parsing non-terminal: Type
+Current token: Type(Double)
+
+Parsing non-terminal: VName
+Current token: Variable(VarName("DOUBLERes"))
+
+Parsing non-terminal: VarDeclP
+Current token: Scope(Semi)
+
+Parsing non-terminal: StatementList
+Current token: Variable(VarName("INTRes"))
+
+Parsing non-terminal: Statement
+Current token: Variable(VarName("INTRes"))
+
+Parsing non-terminal: Assignment
+Current token: Variable(VarName("INTRes"))
+
+Parsing non-terminal: VName
+Current token: Variable(VarName("INTRes"))
+
+Parsing non-terminal: Ex
+Current token: Variable(VarName("a"))
+
+Parsing non-terminal: BoolEx
+Current token: Variable(VarName("a"))
+
+Parsing non-terminal: RelEx
+Current token: Variable(VarName("a"))
+
+Parsing non-terminal: ArithEx
+Current token: Variable(VarName("a"))
+
+Parsing non-terminal: ArithVal
+Current token: Variable(VarName("a"))
+
+Parsing non-terminal: String
+Current token: Variable(VarName("a"))
+
+Parsing non-terminal: VName
+Current token: Variable(VarName("a"))
+
+Parsing non-terminal: StringP
+Current token: Ops(Plus)
+
+Parsing non-terminal: ArithExP
+Current token: Ops(Plus)
+
+Parsing non-terminal: ArithOp
+Current token: Ops(Plus)
+
+Parsing non-terminal: ArithEx
+Current token: Variable(VarName("b"))
+
+Parsing non-terminal: ArithVal
+Current token: Variable(VarName("b"))
+
+Parsing non-terminal: String
+Current token: Variable(VarName("b"))
+
+Parsing non-terminal: VName
+Current token: Variable(VarName("b"))
+
+Parsing non-terminal: StringP
+Current token: Scope(Semi)
+
+Parsing non-terminal: ArithExP
+Current token: Scope(Semi)
+
+Parsing non-terminal: RelExP
+Current token: Scope(Semi)
+
+Parsing non-terminal: BoolExP
+Current token: Scope(Semi)
+
+Parsing non-terminal: StatementList
+Current token: Variable(VarName("DOUBLERes"))
+
+Parsing non-terminal: Statement
+Current token: Variable(VarName("DOUBLERes"))
+
+Parsing non-terminal: Assignment
+Current token: Variable(VarName("DOUBLERes"))
+
+Parsing non-terminal: VName
+Current token: Variable(VarName("DOUBLERes"))
+
+Parsing non-terminal: Ex
+Current token: Variable(VarName("c"))
+
+Parsing non-terminal: BoolEx
+Current token: Variable(VarName("c"))
+
+Parsing non-terminal: RelEx
+Current token: Variable(VarName("c"))
+
+Parsing non-terminal: ArithEx
+Current token: Variable(VarName("c"))
+
+Parsing non-terminal: ArithVal
+Current token: Variable(VarName("c"))
+
+Parsing non-terminal: String
+Current token: Variable(VarName("c"))
+
+Parsing non-terminal: VName
+Current token: Variable(VarName("c"))
+
+Parsing non-terminal: StringP
+Current token: Ops(Plus)
+
+Parsing non-terminal: ArithExP
+Current token: Ops(Plus)
+
+Parsing non-terminal: ArithOp
+Current token: Ops(Plus)
+
+Parsing non-terminal: ArithEx
+Current token: Variable(VarName("d"))
+
+Parsing non-terminal: ArithVal
+Current token: Variable(VarName("d"))
+
+Parsing non-terminal: String
+Current token: Variable(VarName("d"))
+
+Parsing non-terminal: VName
+Current token: Variable(VarName("d"))
+
+Parsing non-terminal: StringP
+Current token: Scope(Semi)
+
+Parsing non-terminal: ArithExP
+Current token: Scope(Semi)
+
+Parsing non-terminal: RelExP
+Current token: Scope(Semi)
+
+Parsing non-terminal: BoolExP
+Current token: Scope(Semi)
+
+Parsing non-terminal: StatementList
+Current token: Utilities(Print)
+
+Parsing non-terminal: Statement
+Current token: Utilities(Print)
+
+Parsing non-terminal: Text
+Current token: Variable(VarName("INTRes"))
+
+Parsing non-terminal: TextElement
+Current token: Variable(VarName("INTRes"))
+
+Parsing non-terminal: String
+Current token: Variable(VarName("INTRes"))
+
+Parsing non-terminal: VName
+Current token: Variable(VarName("INTRes"))
+
+Parsing non-terminal: StringP
+Current token: Scope(BracketR)
+
+Parsing non-terminal: TextTail
+Current token: Scope(BracketR)
+
+Parsing non-terminal: StatementList
+Current token: Utilities(Print)
+
+Parsing non-terminal: Statement
+Current token: Utilities(Print)
+
+Parsing non-terminal: Text
+Current token: Variable(VarName("DOUBLERes"))
+
+Parsing non-terminal: TextElement
+Current token: Variable(VarName("DOUBLERes"))
+
+Parsing non-terminal: String
+Current token: Variable(VarName("DOUBLERes"))
+
+Parsing non-terminal: VName
+Current token: Variable(VarName("DOUBLERes"))
+
+Parsing non-terminal: StringP
+Current token: Scope(BracketR)
+
+Parsing non-terminal: TextTail
+Current token: Scope(BracketR)
+
+Parsing non-terminal: StatementList
+Current token: ControlFlow(Return)
+
+Parsing non-terminal: Statement
+Current token: ControlFlow(Return)
+
+Parsing non-terminal: ReturnTail
+Current token: Type(IntVal(0))
+
+Parsing non-terminal: Number
+Current token: Type(IntVal(0))
+
+Parsing non-terminal: StatementList
+Current token: Scope(CurlyBracketR)
+
+Parsing non-terminal: FuncList
+Current token: EOF
+
+Parse successful:
+NonTerminal: Prog
+  NonTerminal: FuncList
+    NonTerminal: FuncDecl
+      NonTerminal: Decl
+        NonTerminal: Type
+          Symbol: Type(Int)
+        NonTerminal: VName
+          Symbol: Variable(VarName("main"))
+      Symbol: Scope(BracketL)
+      NonTerminal: ListOfParams
+      Symbol: Scope(BracketR)
+      Symbol: Scope(CurlyBracketL)
+      NonTerminal: StatementList
+        NonTerminal: Statement
+          NonTerminal: VarDecl
+            NonTerminal: Decl
+              NonTerminal: Type
+                Symbol: Type(Int)
+              NonTerminal: VName
+                Symbol: Variable(VarName("a"))
+            NonTerminal: VarDeclP
+              Symbol: Ops(Assignment)
+              NonTerminal: Ex
+                NonTerminal: BoolEx
+                  NonTerminal: RelEx
+                    NonTerminal: ArithEx
+                      NonTerminal: ArithVal
+                        NonTerminal: Number
+                          Symbol: Type(IntVal(2))
+                      NonTerminal: ArithExP
+                    NonTerminal: RelExP
+                  NonTerminal: BoolExP
+            Symbol: Scope(Semi)
+        NonTerminal: StatementList
+          NonTerminal: Statement
+            NonTerminal: VarDecl
+              NonTerminal: Decl
+                NonTerminal: Type
+                  Symbol: Type(Int)
+                NonTerminal: VName
+                  Symbol: Variable(VarName("b"))
+              NonTerminal: VarDeclP
+                Symbol: Ops(Assignment)
+                NonTerminal: Ex
+                  NonTerminal: BoolEx
+                    NonTerminal: RelEx
+                      NonTerminal: ArithEx
+                        NonTerminal: ArithVal
+                          NonTerminal: Number
+                            Symbol: Type(IntVal(1))
+                        NonTerminal: ArithExP
+                      NonTerminal: RelExP
+                    NonTerminal: BoolExP
+              Symbol: Scope(Semi)
+          NonTerminal: StatementList
+            NonTerminal: Statement
+              NonTerminal: VarDecl
+                NonTerminal: Decl
+                  NonTerminal: Type
+                    Symbol: Type(Double)
+                  NonTerminal: VName
+                    Symbol: Variable(VarName("c"))
+                NonTerminal: VarDeclP
+                  Symbol: Ops(Assignment)
+                  NonTerminal: Ex
+                    NonTerminal: BoolEx
+                      NonTerminal: RelEx
+                        NonTerminal: ArithEx
+                          NonTerminal: ArithVal
+                            NonTerminal: Number
+                              Symbol: Type(DoubleVal("1.0"))
+                          NonTerminal: ArithExP
+                        NonTerminal: RelExP
+                      NonTerminal: BoolExP
+                Symbol: Scope(Semi)
+            NonTerminal: StatementList
+              NonTerminal: Statement
+                NonTerminal: VarDecl
+                  NonTerminal: Decl
+                    NonTerminal: Type
+                      Symbol: Type(Double)
+                    NonTerminal: VName
+                      Symbol: Variable(VarName("d"))
+                  NonTerminal: VarDeclP
+                    Symbol: Ops(Assignment)
+                    NonTerminal: Ex
+                      NonTerminal: BoolEx
+                        NonTerminal: RelEx
+                          NonTerminal: ArithEx
+                            NonTerminal: ArithVal
+                              NonTerminal: Number
+                                Symbol: Type(DoubleVal("2.5"))
+                            NonTerminal: ArithExP
+                          NonTerminal: RelExP
+                        NonTerminal: BoolExP
+                  Symbol: Scope(Semi)
+              NonTerminal: StatementList
+                NonTerminal: Statement
+                  NonTerminal: VarDecl
+                    NonTerminal: Decl
+                      NonTerminal: Type
+                        Symbol: Type(Int)
+                      NonTerminal: VName
+                        Symbol: Variable(VarName("INTRes"))
+                    NonTerminal: VarDeclP
+                    Symbol: Scope(Semi)
+                NonTerminal: StatementList
+                  NonTerminal: Statement
+                    NonTerminal: VarDecl
+                      NonTerminal: Decl
+                        NonTerminal: Type
+                          Symbol: Type(Double)
+                        NonTerminal: VName
+                          Symbol: Variable(VarName("DOUBLERes"))
+                      NonTerminal: VarDeclP
+                      Symbol: Scope(Semi)
+                  NonTerminal: StatementList
+                    NonTerminal: Statement
+                      NonTerminal: Assignment
+                        NonTerminal: VName
+                          Symbol: Variable(VarName("INTRes"))
+                        Symbol: Ops(Assignment)
+                        NonTerminal: Ex
+                          NonTerminal: BoolEx
+                            NonTerminal: RelEx
+                              NonTerminal: ArithEx
+                                NonTerminal: ArithVal
+                                  NonTerminal: String
+                                    NonTerminal: VName
+                                      Symbol: Variable(VarName("a"))
+                                    NonTerminal: StringP
+                                NonTerminal: ArithExP
+                                  NonTerminal: ArithOp
+                                    Symbol: Ops(Plus)
+                                  NonTerminal: ArithEx
+                                    NonTerminal: ArithVal
+                                      NonTerminal: String
+                                        NonTerminal: VName
+                                          Symbol: Variable(VarName("b"))
+                                        NonTerminal: StringP
+                                    NonTerminal: ArithExP
+                              NonTerminal: RelExP
+                            NonTerminal: BoolExP
+                        Symbol: Scope(Semi)
+                    NonTerminal: StatementList
+                      NonTerminal: Statement
+                        NonTerminal: Assignment
+                          NonTerminal: VName
+                            Symbol: Variable(VarName("DOUBLERes"))
+                          Symbol: Ops(Assignment)
+                          NonTerminal: Ex
+                            NonTerminal: BoolEx
+                              NonTerminal: RelEx
+                                NonTerminal: ArithEx
+                                  NonTerminal: ArithVal
+                                    NonTerminal: String
+                                      NonTerminal: VName
+                                        Symbol: Variable(VarName("c"))
+                                      NonTerminal: StringP
+                                  NonTerminal: ArithExP
+                                    NonTerminal: ArithOp
+                                      Symbol: Ops(Plus)
+                                    NonTerminal: ArithEx
+                                      NonTerminal: ArithVal
+                                        NonTerminal: String
+                                          NonTerminal: VName
+                                            Symbol: Variable(VarName("d"))
+                                          NonTerminal: StringP
+                                      NonTerminal: ArithExP
+                                NonTerminal: RelExP
+                              NonTerminal: BoolExP
+                          Symbol: Scope(Semi)
+                      NonTerminal: StatementList
+                        NonTerminal: Statement
+                          Symbol: Utilities(Print)
+                          Symbol: Scope(BracketL)
+                          NonTerminal: Text
+                            NonTerminal: TextElement
+                              NonTerminal: String
+                                NonTerminal: VName
+                                  Symbol: Variable(VarName("INTRes"))
+                                NonTerminal: StringP
+                            NonTerminal: TextTail
+                          Symbol: Scope(BracketR)
+                          Symbol: Scope(Semi)
+                        NonTerminal: StatementList
+                          NonTerminal: Statement
+                            Symbol: Utilities(Print)
+                            Symbol: Scope(BracketL)
+                            NonTerminal: Text
+                              NonTerminal: TextElement
+                                NonTerminal: String
+                                  NonTerminal: VName
+                                    Symbol: Variable(VarName("DOUBLERes"))
+                                  NonTerminal: StringP
+                              NonTerminal: TextTail
+                            Symbol: Scope(BracketR)
+                            Symbol: Scope(Semi)
+                          NonTerminal: StatementList
+                            NonTerminal: Statement
+                              Symbol: ControlFlow(Return)
+                              NonTerminal: ReturnTail
+                                NonTerminal: Number
+                                  Symbol: Type(IntVal(0))
+                              Symbol: Scope(Semi)
+                            NonTerminal: StatementList
+      Symbol: Scope(CurlyBracketR)
+    NonTerminal: FuncList
+
+--------------------
+Semantic Analysis successful:
+NonTerminal: Prog
+  NonTerminal: FuncList
+    NonTerminal: FuncDecl
+      NonTerminal: Decl
+        NonTerminal: Type
+          Symbol: Type(Int)
+        NonTerminal: VName
+          Symbol: Variable(VarName("main"))
+      Symbol: Scope(BracketL)
+      Symbol: Scope(BracketR)
+      Symbol: Scope(CurlyBracketL)
+      NonTerminal: StatementList
+        NonTerminal: Statement
+          NonTerminal: VarDecl
+            NonTerminal: Decl
+              NonTerminal: Type
+                Symbol: Type(Int)
+              NonTerminal: VName
+                Symbol: Variable(VarName("a"))
+            NonTerminal: VarDeclP
+              Symbol: Ops(Assignment)
+              NonTerminal: Ex
+                NonTerminal: BoolEx
+                  NonTerminal: RelEx
+                    NonTerminal: ArithEx
+                      NonTerminal: ArithVal
+                        NonTerminal: Number
+                          Symbol: Type(IntVal(2))
+            Symbol: Scope(Semi)
+        NonTerminal: StatementList
+          NonTerminal: Statement
+            NonTerminal: VarDecl
+              NonTerminal: Decl
+                NonTerminal: Type
+                  Symbol: Type(Int)
+                NonTerminal: VName
+                  Symbol: Variable(VarName("b"))
+              NonTerminal: VarDeclP
+                Symbol: Ops(Assignment)
+                NonTerminal: Ex
+                  NonTerminal: BoolEx
+                    NonTerminal: RelEx
+                      NonTerminal: ArithEx
+                        NonTerminal: ArithVal
+                          NonTerminal: Number
+                            Symbol: Type(IntVal(1))
+              Symbol: Scope(Semi)
+          NonTerminal: StatementList
+            NonTerminal: Statement
+              NonTerminal: VarDecl
+                NonTerminal: Decl
+                  NonTerminal: Type
+                    Symbol: Type(Double)
+                  NonTerminal: VName
+                    Symbol: Variable(VarName("c"))
+                NonTerminal: VarDeclP
+                  Symbol: Ops(Assignment)
+                  NonTerminal: Ex
+                    NonTerminal: BoolEx
+                      NonTerminal: RelEx
+                        NonTerminal: ArithEx
+                          NonTerminal: ArithVal
+                            NonTerminal: Number
+                              Symbol: Type(DoubleVal("1.0"))
+                Symbol: Scope(Semi)
+            NonTerminal: StatementList
+              NonTerminal: Statement
+                NonTerminal: VarDecl
+                  NonTerminal: Decl
+                    NonTerminal: Type
+                      Symbol: Type(Double)
+                    NonTerminal: VName
+                      Symbol: Variable(VarName("d"))
+                  NonTerminal: VarDeclP
+                    Symbol: Ops(Assignment)
+                    NonTerminal: Ex
+                      NonTerminal: BoolEx
+                        NonTerminal: RelEx
+                          NonTerminal: ArithEx
+                            NonTerminal: ArithVal
+                              NonTerminal: Number
+                                Symbol: Type(DoubleVal("2.5"))
+                  Symbol: Scope(Semi)
+              NonTerminal: StatementList
+                NonTerminal: Statement
+                  NonTerminal: VarDecl
+                    NonTerminal: Decl
+                      NonTerminal: Type
+                        Symbol: Type(Int)
+                      NonTerminal: VName
+                        Symbol: Variable(VarName("INTRes"))
+                    Symbol: Scope(Semi)
+                NonTerminal: StatementList
+                  NonTerminal: Statement
+                    NonTerminal: VarDecl
+                      NonTerminal: Decl
+                        NonTerminal: Type
+                          Symbol: Type(Double)
+                        NonTerminal: VName
+                          Symbol: Variable(VarName("DOUBLERes"))
+                      Symbol: Scope(Semi)
+                  NonTerminal: StatementList
+                    NonTerminal: Statement
+                      NonTerminal: Assignment
+                        NonTerminal: VName
+                          Symbol: Variable(VarName("INTRes"))
+                        Symbol: Ops(Assignment)
+                        NonTerminal: Ex
+                          NonTerminal: BoolEx
+                            NonTerminal: RelEx
+                              NonTerminal: ArithEx
+                                NonTerminal: ArithVal
+                                  NonTerminal: String
+                                    NonTerminal: VName
+                                      Symbol: Variable(VarName("a"))
+                                NonTerminal: ArithExP
+                                  NonTerminal: ArithOp
+                                    Symbol: Ops(Plus)
+                                  NonTerminal: ArithEx
+                                    NonTerminal: ArithVal
+                                      NonTerminal: String
+                                        NonTerminal: VName
+                                          Symbol: Variable(VarName("b"))
+                        Symbol: Scope(Semi)
+                    NonTerminal: StatementList
+                      NonTerminal: Statement
+                        NonTerminal: Assignment
+                          NonTerminal: VName
+                            Symbol: Variable(VarName("DOUBLERes"))
+                          Symbol: Ops(Assignment)
+                          NonTerminal: Ex
+                            NonTerminal: BoolEx
+                              NonTerminal: RelEx
+                                NonTerminal: ArithEx
+                                  NonTerminal: ArithVal
+                                    NonTerminal: String
+                                      NonTerminal: VName
+                                        Symbol: Variable(VarName("c"))
+                                  NonTerminal: ArithExP
+                                    NonTerminal: ArithOp
+                                      Symbol: Ops(Plus)
+                                    NonTerminal: ArithEx
+                                      NonTerminal: ArithVal
+                                        NonTerminal: String
+                                          NonTerminal: VName
+                                            Symbol: Variable(VarName("d"))
+                          Symbol: Scope(Semi)
+                      NonTerminal: StatementList
+                        NonTerminal: Statement
+                          Symbol: Utilities(Print)
+                          Symbol: Scope(BracketL)
+                          NonTerminal: Text
+                            NonTerminal: TextElement
+                              NonTerminal: String
+                                NonTerminal: VName
+                                  Symbol: Variable(VarName("INTRes"))
+                          Symbol: Scope(BracketR)
+                          Symbol: Scope(Semi)
+                        NonTerminal: StatementList
+                          NonTerminal: Statement
+                            Symbol: Utilities(Print)
+                            Symbol: Scope(BracketL)
+                            NonTerminal: Text
+                              NonTerminal: TextElement
+                                NonTerminal: String
+                                  NonTerminal: VName
+                                    Symbol: Variable(VarName("DOUBLERes"))
+                            Symbol: Scope(BracketR)
+                            Symbol: Scope(Semi)
+                          NonTerminal: StatementList
+                            NonTerminal: Statement
+                              Symbol: ControlFlow(Return)
+                              NonTerminal: ReturnTail
+                                NonTerminal: Number
+                                  Symbol: Type(IntVal(0))
+                              Symbol: Scope(Semi)
+      Symbol: Scope(CurlyBracketR)
+
+--------------------
