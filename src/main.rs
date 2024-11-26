@@ -6,6 +6,7 @@ use std::path::Path;
 mod lexer;
 mod parser;
 mod semantic;
+mod interpreter;
 
 fn main() {
     // let test_dir = Path::new("/home/matthew/Documents/UNI/Sem 6/SDL/Calctorio/TestSuite");
@@ -43,6 +44,8 @@ fn main() {
                         println!("Semantic Analysis successful:");
                         print_tree(&analyzed_tree, 0);
                         // println!("{:#?}", analyzed_tree); 
+                        interpreter::interpret(&analyzed_tree);
+
                     },
                     Err(e) => println!("Semantic error: {}", e),
                 }
