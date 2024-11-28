@@ -45,7 +45,6 @@ fn main() {
                         print_tree(&analyzed_tree, 0);
                         // println!("{:#?}", analyzed_tree); 
                         interpreter::interpret(&analyzed_tree);
-
                     },
                     Err(e) => println!("Semantic error: {}", e),
                 }
