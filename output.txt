@@ -872,5 +872,1024 @@ NonTerminal: Prog
               NonTerminal: StatementList
     Symbol: Scope(CurlyBracketR)
   NonTerminal: FuncList
+TreeNode {
+    children: [
+        TreeNode {
+            children: [
+                TreeNode {
+                    children: [
+                        TreeNode {
+                            children: [],
+                            Symbol: Terminal(
+                                Type(
+                                    Int,
+                                ),
+                            ),
+                        },
+                    ],
+                    Symbol: NonTerminal(
+                        Type,
+                    ),
+                },
+                TreeNode {
+                    children: [
+                        TreeNode {
+                            children: [],
+                            Symbol: Terminal(
+                                Variable(
+                                    VarName(
+                                        "main",
+                                    ),
+                                ),
+                            ),
+                        },
+                    ],
+                    Symbol: NonTerminal(
+                        VName,
+                    ),
+                },
+                TreeNode {
+                    children: [],
+                    Symbol: Terminal(
+                        Scope(
+                            BracketL,
+                        ),
+                    ),
+                },
+                TreeNode {
+                    children: [],
+                    Symbol: Terminal(
+                        Scope(
+                            BracketR,
+                        ),
+                    ),
+                },
+                TreeNode {
+                    children: [],
+                    Symbol: Terminal(
+                        Scope(
+                            CurlyBracketL,
+                        ),
+                    ),
+                },
+                TreeNode {
+                    children: [
+                        TreeNode {
+                            children: [
+                                TreeNode {
+                                    children: [],
+                                    Symbol: Terminal(
+                                        Type(
+                                            Int,
+                                        ),
+                                    ),
+                                },
+                                TreeNode {
+                                    children: [],
+                                    Symbol: Terminal(
+                                        Variable(
+                                            VarName(
+                                                "a",
+                                            ),
+                                        ),
+                                    ),
+                                },
+                            ],
+                            Symbol: NonTerminal(
+                                Decl,
+                            ),
+                        },
+                        TreeNode {
+                            children: [
+                                TreeNode {
+                                    children: [],
+                                    Symbol: Terminal(
+                                        Ops(
+                                            Assignment,
+                                        ),
+                                    ),
+                                },
+                                TreeNode {
+                                    children: [
+                                        TreeNode {
+                                            children: [
+                                                TreeNode {
+                                                    children: [
+                                                        TreeNode {
+                                                            children: [],
+                                                            Symbol: Terminal(
+                                                                Type(
+                                                                    IntVal(
+                                                                        2,
+                                                                    ),
+                                                                ),
+                                                            ),
+                                                        },
+                                                    ],
+                                                    Symbol: NonTerminal(
+                                                        Number,
+                                                    ),
+                                                },
+                                            ],
+                                            Symbol: NonTerminal(
+                                                ArithEx,
+                                            ),
+                                        },
+                                        TreeNode {
+                                            children: [],
+                                            Symbol: NonTerminal(
+                                                RelExP,
+                                            ),
+                                        },
+                                    ],
+                                    Symbol: NonTerminal(
+                                        BoolEx,
+                                    ),
+                                },
+                            ],
+                            Symbol: NonTerminal(
+                                VarDeclP,
+                            ),
+                        },
+                        TreeNode {
+                            children: [],
+                            Symbol: Terminal(
+                                Scope(
+                                    Semi,
+                                ),
+                            ),
+                        },
+                    ],
+                    Symbol: NonTerminal(
+                        Statement,
+                    ),
+                },
+                TreeNode {
+                    children: [
+                        TreeNode {
+                            children: [
+                                TreeNode {
+                                    children: [
+                                        TreeNode {
+                                            children: [],
+                                            Symbol: Terminal(
+                                                Type(
+                                                    Int,
+                                                ),
+                                            ),
+                                        },
+                                    ],
+                                    Symbol: NonTerminal(
+                                        Type,
+                                    ),
+                                },
+                                TreeNode {
+                                    children: [
+                                        TreeNode {
+                                            children: [],
+                                            Symbol: Terminal(
+                                                Variable(
+                                                    VarName(
+                                                        "b",
+                                                    ),
+                                                ),
+                                            ),
+                                        },
+                                    ],
+                                    Symbol: NonTerminal(
+                                        VName,
+                                    ),
+                                },
+                                TreeNode {
+                                    children: [],
+                                    Symbol: Terminal(
+                                        Ops(
+                                            Assignment,
+                                        ),
+                                    ),
+                                },
+                                TreeNode {
+                                    children: [
+                                        TreeNode {
+                                            children: [
+                                                TreeNode {
+                                                    children: [
+                                                        TreeNode {
+                                                            children: [],
+                                                            Symbol: Terminal(
+                                                                Type(
+                                                                    IntVal(
+                                                                        1,
+                                                                    ),
+                                                                ),
+                                                            ),
+                                                        },
+                                                    ],
+                                                    Symbol: NonTerminal(
+                                                        ArithVal,
+                                                    ),
+                                                },
+                                                TreeNode {
+                                                    children: [],
+                                                    Symbol: NonTerminal(
+                                                        ArithExP,
+                                                    ),
+                                                },
+                                            ],
+                                            Symbol: NonTerminal(
+                                                RelEx,
+                                            ),
+                                        },
+                                        TreeNode {
+                                            children: [],
+                                            Symbol: NonTerminal(
+                                                BoolExP,
+                                            ),
+                                        },
+                                    ],
+                                    Symbol: NonTerminal(
+                                        Ex,
+                                    ),
+                                },
+                                TreeNode {
+                                    children: [],
+                                    Symbol: Terminal(
+                                        Scope(
+                                            Semi,
+                                        ),
+                                    ),
+                                },
+                            ],
+                            Symbol: NonTerminal(
+                                VarDecl,
+                            ),
+                        },
+                        TreeNode {
+                            children: [
+                                TreeNode {
+                                    children: [
+                                        TreeNode {
+                                            children: [],
+                                            Symbol: Terminal(
+                                                Type(
+                                                    Double,
+                                                ),
+                                            ),
+                                        },
+                                        TreeNode {
+                                            children: [],
+                                            Symbol: Terminal(
+                                                Variable(
+                                                    VarName(
+                                                        "c",
+                                                    ),
+                                                ),
+                                            ),
+                                        },
+                                    ],
+                                    Symbol: NonTerminal(
+                                        Decl,
+                                    ),
+                                },
+                                TreeNode {
+                                    children: [
+                                        TreeNode {
+                                            children: [],
+                                            Symbol: Terminal(
+                                                Ops(
+                                                    Assignment,
+                                                ),
+                                            ),
+                                        },
+                                        TreeNode {
+                                            children: [
+                                                TreeNode {
+                                                    children: [
+                                                        TreeNode {
+                                                            children: [
+                                                                TreeNode {
+                                                                    children: [],
+                                                                    Symbol: Terminal(
+                                                                        Type(
+                                                                            DoubleVal(
+                                                                                "1.0",
+                                                                            ),
+                                                                        ),
+                                                                    ),
+                                                                },
+                                                            ],
+                                                            Symbol: NonTerminal(
+                                                                Number,
+                                                            ),
+                                                        },
+                                                    ],
+                                                    Symbol: NonTerminal(
+                                                        ArithEx,
+                                                    ),
+                                                },
+                                                TreeNode {
+                                                    children: [],
+                                                    Symbol: NonTerminal(
+                                                        RelExP,
+                                                    ),
+                                                },
+                                            ],
+                                            Symbol: NonTerminal(
+                                                BoolEx,
+                                            ),
+                                        },
+                                    ],
+                                    Symbol: NonTerminal(
+                                        VarDeclP,
+                                    ),
+                                },
+                                TreeNode {
+                                    children: [],
+                                    Symbol: Terminal(
+                                        Scope(
+                                            Semi,
+                                        ),
+                                    ),
+                                },
+                            ],
+                            Symbol: NonTerminal(
+                                Statement,
+                            ),
+                        },
+                        TreeNode {
+                            children: [
+                                TreeNode {
+                                    children: [
+                                        TreeNode {
+                                            children: [
+                                                TreeNode {
+                                                    children: [],
+                                                    Symbol: Terminal(
+                                                        Type(
+                                                            Double,
+                                                        ),
+                                                    ),
+                                                },
+                                            ],
+                                            Symbol: NonTerminal(
+                                                Type,
+                                            ),
+                                        },
+                                        TreeNode {
+                                            children: [
+                                                TreeNode {
+                                                    children: [],
+                                                    Symbol: Terminal(
+                                                        Variable(
+                                                            VarName(
+                                                                "d",
+                                                            ),
+                                                        ),
+                                                    ),
+                                                },
+                                            ],
+                                            Symbol: NonTerminal(
+                                                VName,
+                                            ),
+                                        },
+                                        TreeNode {
+                                            children: [],
+                                            Symbol: Terminal(
+                                                Ops(
+                                                    Assignment,
+                                                ),
+                                            ),
+                                        },
+                                        TreeNode {
+                                            children: [
+                                                TreeNode {
+                                                    children: [
+                                                        TreeNode {
+                                                            children: [
+                                                                TreeNode {
+                                                                    children: [],
+                                                                    Symbol: Terminal(
+                                                                        Type(
+                                                                            DoubleVal(
+                                                                                "2.5",
+                                                                            ),
+                                                                        ),
+                                                                    ),
+                                                                },
+                                                            ],
+                                                            Symbol: NonTerminal(
+                                                                ArithVal,
+                                                            ),
+                                                        },
+                                                        TreeNode {
+                                                            children: [],
+                                                            Symbol: NonTerminal(
+                                                                ArithExP,
+                                                            ),
+                                                        },
+                                                    ],
+                                                    Symbol: NonTerminal(
+                                                        RelEx,
+                                                    ),
+                                                },
+                                                TreeNode {
+                                                    children: [],
+                                                    Symbol: NonTerminal(
+                                                        BoolExP,
+                                                    ),
+                                                },
+                                            ],
+                                            Symbol: NonTerminal(
+                                                Ex,
+                                            ),
+                                        },
+                                        TreeNode {
+                                            children: [],
+                                            Symbol: Terminal(
+                                                Scope(
+                                                    Semi,
+                                                ),
+                                            ),
+                                        },
+                                    ],
+                                    Symbol: NonTerminal(
+                                        VarDecl,
+                                    ),
+                                },
+                                TreeNode {
+                                    children: [
+                                        TreeNode {
+                                            children: [
+                                                TreeNode {
+                                                    children: [],
+                                                    Symbol: Terminal(
+                                                        Type(
+                                                            Int,
+                                                        ),
+                                                    ),
+                                                },
+                                                TreeNode {
+                                                    children: [],
+                                                    Symbol: Terminal(
+                                                        Variable(
+                                                            VarName(
+                                                                "INTRes",
+                                                            ),
+                                                        ),
+                                                    ),
+                                                },
+                                            ],
+                                            Symbol: NonTerminal(
+                                                Decl,
+                                            ),
+                                        },
+                                        TreeNode {
+                                            children: [],
+                                            Symbol: NonTerminal(
+                                                VarDeclP,
+                                            ),
+                                        },
+                                        TreeNode {
+                                            children: [],
+                                            Symbol: Terminal(
+                                                Scope(
+                                                    Semi,
+                                                ),
+                                            ),
+                                        },
+                                    ],
+                                    Symbol: NonTerminal(
+                                        Statement,
+                                    ),
+                                },
+                                TreeNode {
+                                    children: [
+                                        TreeNode {
+                                            children: [
+                                                TreeNode {
+                                                    children: [
+                                                        TreeNode {
+                                                            children: [],
+                                                            Symbol: Terminal(
+                                                                Type(
+                                                                    Double,
+                                                                ),
+                                                            ),
+                                                        },
+                                                    ],
+                                                    Symbol: NonTerminal(
+                                                        Type,
+                                                    ),
+                                                },
+                                                TreeNode {
+                                                    children: [
+                                                        TreeNode {
+                                                            children: [],
+                                                            Symbol: Terminal(
+                                                                Variable(
+                                                                    VarName(
+                                                                        "DOUBLERes",
+                                                                    ),
+                                                                ),
+                                                            ),
+                                                        },
+                                                    ],
+                                                    Symbol: NonTerminal(
+                                                        VName,
+                                                    ),
+                                                },
+                                                TreeNode {
+                                                    children: [],
+                                                    Symbol: Terminal(
+                                                        Scope(
+                                                            Semi,
+                                                        ),
+                                                    ),
+                                                },
+                                            ],
+                                            Symbol: NonTerminal(
+                                                VarDecl,
+                                            ),
+                                        },
+                                        TreeNode {
+                                            children: [
+                                                TreeNode {
+                                                    children: [
+                                                        TreeNode {
+                                                            children: [],
+                                                            Symbol: Terminal(
+                                                                Variable(
+                                                                    VarName(
+                                                                        "INTRes",
+                                                                    ),
+                                                                ),
+                                                            ),
+                                                        },
+                                                    ],
+                                                    Symbol: NonTerminal(
+                                                        VName,
+                                                    ),
+                                                },
+                                                TreeNode {
+                                                    children: [],
+                                                    Symbol: Terminal(
+                                                        Ops(
+                                                            Assignment,
+                                                        ),
+                                                    ),
+                                                },
+                                                TreeNode {
+                                                    children: [
+                                                        TreeNode {
+                                                            children: [
+                                                                TreeNode {
+                                                                    children: [
+                                                                        TreeNode {
+                                                                            children: [
+                                                                                TreeNode {
+                                                                                    children: [],
+                                                                                    Symbol: Terminal(
+                                                                                        Variable(
+                                                                                            VarName(
+                                                                                                "a",
+                                                                                            ),
+                                                                                        ),
+                                                                                    ),
+                                                                                },
+                                                                            ],
+                                                                            Symbol: NonTerminal(
+                                                                                VName,
+                                                                            ),
+                                                                        },
+                                                                        TreeNode {
+                                                                            children: [],
+                                                                            Symbol: NonTerminal(
+                                                                                StringP,
+                                                                            ),
+                                                                        },
+                                                                    ],
+                                                                    Symbol: NonTerminal(
+                                                                        ArithVal,
+                                                                    ),
+                                                                },
+                                                                TreeNode {
+                                                                    children: [
+                                                                        TreeNode {
+                                                                            children: [],
+                                                                            Symbol: Terminal(
+                                                                                Ops(
+                                                                                    Plus,
+                                                                                ),
+                                                                            ),
+                                                                        },
+                                                                        TreeNode {
+                                                                            children: [
+                                                                                TreeNode {
+                                                                                    children: [
+                                                                                        TreeNode {
+                                                                                            children: [],
+                                                                                            Symbol: Terminal(
+                                                                                                Variable(
+                                                                                                    VarName(
+                                                                                                        "b",
+                                                                                                    ),
+                                                                                                ),
+                                                                                            ),
+                                                                                        },
+                                                                                    ],
+                                                                                    Symbol: NonTerminal(
+                                                                                        VName,
+                                                                                    ),
+                                                                                },
+                                                                                TreeNode {
+                                                                                    children: [],
+                                                                                    Symbol: NonTerminal(
+                                                                                        StringP,
+                                                                                    ),
+                                                                                },
+                                                                            ],
+                                                                            Symbol: NonTerminal(
+                                                                                ArithVal,
+                                                                            ),
+                                                                        },
+                                                                        TreeNode {
+                                                                            children: [],
+                                                                            Symbol: NonTerminal(
+                                                                                ArithExP,
+                                                                            ),
+                                                                        },
+                                                                    ],
+                                                                    Symbol: NonTerminal(
+                                                                        ArithExP,
+                                                                    ),
+                                                                },
+                                                            ],
+                                                            Symbol: NonTerminal(
+                                                                RelEx,
+                                                            ),
+                                                        },
+                                                        TreeNode {
+                                                            children: [],
+                                                            Symbol: NonTerminal(
+                                                                BoolExP,
+                                                            ),
+                                                        },
+                                                    ],
+                                                    Symbol: NonTerminal(
+                                                        Ex,
+                                                    ),
+                                                },
+                                                TreeNode {
+                                                    children: [],
+                                                    Symbol: Terminal(
+                                                        Scope(
+                                                            Semi,
+                                                        ),
+                                                    ),
+                                                },
+                                            ],
+                                            Symbol: NonTerminal(
+                                                Statement,
+                                            ),
+                                        },
+                                        TreeNode {
+                                            children: [
+                                                TreeNode {
+                                                    children: [
+                                                        TreeNode {
+                                                            children: [],
+                                                            Symbol: Terminal(
+                                                                Variable(
+                                                                    VarName(
+                                                                        "DOUBLERes",
+                                                                    ),
+                                                                ),
+                                                            ),
+                                                        },
+                                                        TreeNode {
+                                                            children: [],
+                                                            Symbol: Terminal(
+                                                                Ops(
+                                                                    Assignment,
+                                                                ),
+                                                            ),
+                                                        },
+                                                        TreeNode {
+                                                            children: [
+                                                                TreeNode {
+                                                                    children: [
+                                                                        TreeNode {
+                                                                            children: [
+                                                                                TreeNode {
+                                                                                    children: [],
+                                                                                    Symbol: Terminal(
+                                                                                        Variable(
+                                                                                            VarName(
+                                                                                                "c",
+                                                                                            ),
+                                                                                        ),
+                                                                                    ),
+                                                                                },
+                                                                            ],
+                                                                            Symbol: NonTerminal(
+                                                                                String,
+                                                                            ),
+                                                                        },
+                                                                        TreeNode {
+                                                                            children: [
+                                                                                TreeNode {
+                                                                                    children: [],
+                                                                                    Symbol: Terminal(
+                                                                                        Ops(
+                                                                                            Plus,
+                                                                                        ),
+                                                                                    ),
+                                                                                },
+                                                                            ],
+                                                                            Symbol: NonTerminal(
+                                                                                ArithOp,
+                                                                            ),
+                                                                        },
+                                                                        TreeNode {
+                                                                            children: [
+                                                                                TreeNode {
+                                                                                    children: [
+                                                                                        TreeNode {
+                                                                                            children: [],
+                                                                                            Symbol: Terminal(
+                                                                                                Variable(
+                                                                                                    VarName(
+                                                                                                        "d",
+                                                                                                    ),
+                                                                                                ),
+                                                                                            ),
+                                                                                        },
+                                                                                    ],
+                                                                                    Symbol: NonTerminal(
+                                                                                        String,
+                                                                                    ),
+                                                                                },
+                                                                            ],
+                                                                            Symbol: NonTerminal(
+                                                                                ArithEx,
+                                                                            ),
+                                                                        },
+                                                                    ],
+                                                                    Symbol: NonTerminal(
+                                                                        ArithEx,
+                                                                    ),
+                                                                },
+                                                                TreeNode {
+                                                                    children: [],
+                                                                    Symbol: NonTerminal(
+                                                                        RelExP,
+                                                                    ),
+                                                                },
+                                                            ],
+                                                            Symbol: NonTerminal(
+                                                                BoolEx,
+                                                            ),
+                                                        },
+                                                        TreeNode {
+                                                            children: [],
+                                                            Symbol: Terminal(
+                                                                Scope(
+                                                                    Semi,
+                                                                ),
+                                                            ),
+                                                        },
+                                                    ],
+                                                    Symbol: NonTerminal(
+                                                        Assignment,
+                                                    ),
+                                                },
+                                                TreeNode {
+                                                    children: [
+                                                        TreeNode {
+                                                            children: [],
+                                                            Symbol: Terminal(
+                                                                Utilities(
+                                                                    Print,
+                                                                ),
+                                                            ),
+                                                        },
+                                                        TreeNode {
+                                                            children: [],
+                                                            Symbol: Terminal(
+                                                                Scope(
+                                                                    BracketL,
+                                                                ),
+                                                            ),
+                                                        },
+                                                        TreeNode {
+                                                            children: [
+                                                                TreeNode {
+                                                                    children: [
+                                                                        TreeNode {
+                                                                            children: [],
+                                                                            Symbol: Terminal(
+                                                                                Variable(
+                                                                                    VarName(
+                                                                                        "INTRes",
+                                                                                    ),
+                                                                                ),
+                                                                            ),
+                                                                        },
+                                                                    ],
+                                                                    Symbol: NonTerminal(
+                                                                        VName,
+                                                                    ),
+                                                                },
+                                                                TreeNode {
+                                                                    children: [],
+                                                                    Symbol: NonTerminal(
+                                                                        StringP,
+                                                                    ),
+                                                                },
+                                                            ],
+                                                            Symbol: NonTerminal(
+                                                                TextElement,
+                                                            ),
+                                                        },
+                                                        TreeNode {
+                                                            children: [],
+                                                            Symbol: NonTerminal(
+                                                                TextTail,
+                                                            ),
+                                                        },
+                                                        TreeNode {
+                                                            children: [],
+                                                            Symbol: Terminal(
+                                                                Scope(
+                                                                    BracketR,
+                                                                ),
+                                                            ),
+                                                        },
+                                                        TreeNode {
+                                                            children: [],
+                                                            Symbol: Terminal(
+                                                                Scope(
+                                                                    Semi,
+                                                                ),
+                                                            ),
+                                                        },
+                                                    ],
+                                                    Symbol: NonTerminal(
+                                                        Statement,
+                                                    ),
+                                                },
+                                                TreeNode {
+                                                    children: [
+                                                        TreeNode {
+                                                            children: [],
+                                                            Symbol: Terminal(
+                                                                Utilities(
+                                                                    Print,
+                                                                ),
+                                                            ),
+                                                        },
+                                                        TreeNode {
+                                                            children: [],
+                                                            Symbol: Terminal(
+                                                                Scope(
+                                                                    BracketL,
+                                                                ),
+                                                            ),
+                                                        },
+                                                        TreeNode {
+                                                            children: [
+                                                                TreeNode {
+                                                                    children: [
+                                                                        TreeNode {
+                                                                            children: [],
+                                                                            Symbol: Terminal(
+                                                                                Variable(
+                                                                                    VarName(
+                                                                                        "DOUBLERes",
+                                                                                    ),
+                                                                                ),
+                                                                            ),
+                                                                        },
+                                                                    ],
+                                                                    Symbol: NonTerminal(
+                                                                        String,
+                                                                    ),
+                                                                },
+                                                            ],
+                                                            Symbol: NonTerminal(
+                                                                Text,
+                                                            ),
+                                                        },
+                                                        TreeNode {
+                                                            children: [],
+                                                            Symbol: Terminal(
+                                                                Scope(
+                                                                    BracketR,
+                                                                ),
+                                                            ),
+                                                        },
+                                                        TreeNode {
+                                                            children: [],
+                                                            Symbol: Terminal(
+                                                                Scope(
+                                                                    Semi,
+                                                                ),
+                                                            ),
+                                                        },
+                                                        TreeNode {
+                                                            children: [
+                                                                TreeNode {
+                                                                    children: [],
+                                                                    Symbol: Terminal(
+                                                                        ControlFlow(
+                                                                            Return,
+                                                                        ),
+                                                                    ),
+                                                                },
+                                                                TreeNode {
+                                                                    children: [
+                                                                        TreeNode {
+                                                                            children: [],
+                                                                            Symbol: Terminal(
+                                                                                Type(
+                                                                                    IntVal(
+                                                                                        0,
+                                                                                    ),
+                                                                                ),
+                                                                            ),
+                                                                        },
+                                                                    ],
+                                                                    Symbol: NonTerminal(
+                                                                        Number,
+                                                                    ),
+                                                                },
+                                                                TreeNode {
+                                                                    children: [],
+                                                                    Symbol: Terminal(
+                                                                        Scope(
+                                                                            Semi,
+                                                                        ),
+                                                                    ),
+                                                                },
+                                                            ],
+                                                            Symbol: NonTerminal(
+                                                                Statement,
+                                                            ),
+                                                        },
+                                                        TreeNode {
+                                                            children: [],
+                                                            Symbol: NonTerminal(
+                                                                StatementList,
+                                                            ),
+                                                        },
+                                                    ],
+                                                    Symbol: NonTerminal(
+                                                        StatementList,
+                                                    ),
+                                                },
+                                            ],
+                                            Symbol: NonTerminal(
+                                                StatementList,
+                                            ),
+                                        },
+                                    ],
+                                    Symbol: NonTerminal(
+                                        StatementList,
+                                    ),
+                                },
+                            ],
+                            Symbol: NonTerminal(
+                                StatementList,
+                            ),
+                        },
+                    ],
+                    Symbol: NonTerminal(
+                        StatementList,
+                    ),
+                },
+                TreeNode {
+                    children: [],
+                    Symbol: Terminal(
+                        Scope(
+                            CurlyBracketR,
+                        ),
+                    ),
+                },
+            ],
+            Symbol: NonTerminal(
+                FuncDecl,
+            ),
+        },
+        TreeNode {
+            children: [],
+            Symbol: NonTerminal(
+                FuncList,
+            ),
+        },
+    ],
+    Symbol: NonTerminal(
+        Prog,
+    ),
+}
 
 --------------------

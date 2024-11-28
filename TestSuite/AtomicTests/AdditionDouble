@@ -1,0 +1,12 @@
+int main() {
+    /*This is a comment*/
+    double c = 1.0;
+    double d = 2.5;
+    double DOUBLERes;
+
+    DOUBLERes = c + d;
+
+    print(DOUBLERes);
+
+    return 0; 
+}
