@@ -48,9 +48,6 @@ fn process_node(node: &TreeNode, symbol_table: &mut HashMap<String, f64>) {
                     var_name = name.clone();
                     // println!("{:?}", var_name);
                 }
-                // if let Symbol::NonTerminal(NonTerminal::Ex) = node.children[1].children[1].Symbol {
-                //     value = evaluate_expression(&node.children[1].children[1].children[0].children[0].children[0], &symbol_table);
-                // }
                                                                             //VarDecl, VarDeclP, Ex, BoolEx, RelEx, ArithEx, ArithVal, Number, IntVal
                 if let Symbol::Terminal(Token::Type(TypeTK::IntVal(val))) = node.children[1].children[1].children[0].children[0].children[0].children[0].children[0].children[0].Symbol {
                     value = val as f64;
@@ -62,39 +59,10 @@ fn process_node(node: &TreeNode, symbol_table: &mut HashMap<String, f64>) {
                     // *LAST_VAR.lock().unwrap() = var_name.clone();
                 }
             },
-            // NonTerminal::Decl => {
-            //     let mut var_name = String::new();
-            //     for child in &node.children {
-            //         if let Symbol::NonTerminal(NonTerminal::VName) = &child.Symbol {
-            //             for child in &child.children {
-            //                 if let Symbol::Terminal(Token::Variable(VariableTK::VarName(name))) = &child.Symbol {
-            //                     var_name = name.clone();
-            //                 }
-            //             }
-            //         }
-            //     }
-            //     if !var_name.is_empty() && var_name != "main" {
-            //         symbol_table.insert(var_name.clone(), 0.0); // Initialize to 0.0
-            //         println!("{:?}", symbol_table);
-            //         *LAST_VAR.lock().unwrap() = var_name.clone();
-            //     }
-            // }
             
             NonTerminal::Assignment => {
                 let mut var_name = String::new();
                 let mut value = 0.0;
-                // for child in &node.children {
-                //     match &child.Symbol {
-                //         Symbol::Terminal(Token::Variable(VariableTK::VarName(name))) => {
-                //             var_name = name.clone();
-                //             println!("{:?}", var_name);
-                //         }
-                //         _ => {
-                //             //Assignment, Ex, BoolEx, RelEx, ArithEx
-                //             // value = evaluate_expression(&child.children[2].children[0].children[0].children[0], symbol_table);
-                //         }
-                //     }
-                // }
 
                 if let Symbol::Terminal(Token::Variable(VariableTK::VarName(ref name))) = node.children[0].children[0].Symbol {
                     var_name = name.clone();
@@ -118,18 +86,6 @@ fn process_node(node: &TreeNode, symbol_table: &mut HashMap<String, f64>) {
         _ => {}
     }
 }
-
-// fn find_value(node: &TreeNode) -> f64 {
-//     let mut value = 0.0;
-//     for child in &node.children {
-//         if let Symbol::Terminal(Token::Type(TypeTK::IntVal(val))) = &child.Symbol {
-//             value = *val as f64;
-//         } else {
-//             value = find_value(child);
-//         }
-//     }
-//     value
-// }
 
 fn is_print_statement(node: &TreeNode) -> bool {
     // Check for Utilities(Print) at any level in the children
