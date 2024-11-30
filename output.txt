@@ -3,16 +3,11 @@ int main() {
     /*This is a comment*/
     int a = 2;
     int b = 1;
-    double c = 1.0;
-    double d = 2.5;
     int INTRes;
-    double DOUBLERes;
 
     INTRes = a + b;
-    DOUBLERes = c + d;
 
     print(INTRes);
-    print(DOUBLERes);
 
     return 0; 
 }
@@ -31,21 +26,8 @@ int main() {
 "="
 "1"
 ";"
-"double"
-"c"
-"="
-"1.0"
-";"
-"double"
-"d"
-"="
-"2.5"
-";"
 "int"
 "INTRes"
-";"
-"double"
-"DOUBLERes"
 ";"
 "INTRes"
 "="
@@ -53,20 +35,9 @@ int main() {
 "+"
 "b"
 ";"
-"DOUBLERes"
-"="
-"c"
-"+"
-"d"
-";"
 "print"
 "("
 "INTRes"
-")"
-";"
-"print"
-"("
-"DOUBLERes"
 ")"
 ";"
 "return"
@@ -191,102 +162,6 @@ Parsing non-terminal: BoolExP
 Current token: Scope(Semi)
 
 Parsing non-terminal: StatementList
-Current token: Type(Double)
-
-Parsing non-terminal: Statement
-Current token: Type(Double)
-
-Parsing non-terminal: VarDecl
-Current token: Type(Double)
-
-Parsing non-terminal: Decl
-Current token: Type(Double)
-
-Parsing non-terminal: Type
-Current token: Type(Double)
-
-Parsing non-terminal: VName
-Current token: Variable(VarName("c"))
-
-Parsing non-terminal: VarDeclP
-Current token: Ops(Assignment)
-
-Parsing non-terminal: Ex
-Current token: Type(DoubleVal("1.0"))
-
-Parsing non-terminal: BoolEx
-Current token: Type(DoubleVal("1.0"))
-
-Parsing non-terminal: RelEx
-Current token: Type(DoubleVal("1.0"))
-
-Parsing non-terminal: ArithEx
-Current token: Type(DoubleVal("1.0"))
-
-Parsing non-terminal: ArithVal
-Current token: Type(DoubleVal("1.0"))
-
-Parsing non-terminal: Number
-Current token: Type(DoubleVal("1.0"))
-
-Parsing non-terminal: ArithExP
-Current token: Scope(Semi)
-
-Parsing non-terminal: RelExP
-Current token: Scope(Semi)
-
-Parsing non-terminal: BoolExP
-Current token: Scope(Semi)
-
-Parsing non-terminal: StatementList
-Current token: Type(Double)
-
-Parsing non-terminal: Statement
-Current token: Type(Double)
-
-Parsing non-terminal: VarDecl
-Current token: Type(Double)
-
-Parsing non-terminal: Decl
-Current token: Type(Double)
-
-Parsing non-terminal: Type
-Current token: Type(Double)
-
-Parsing non-terminal: VName
-Current token: Variable(VarName("d"))
-
-Parsing non-terminal: VarDeclP
-Current token: Ops(Assignment)
-
-Parsing non-terminal: Ex
-Current token: Type(DoubleVal("2.5"))
-
-Parsing non-terminal: BoolEx
-Current token: Type(DoubleVal("2.5"))
-
-Parsing non-terminal: RelEx
-Current token: Type(DoubleVal("2.5"))
-
-Parsing non-terminal: ArithEx
-Current token: Type(DoubleVal("2.5"))
-
-Parsing non-terminal: ArithVal
-Current token: Type(DoubleVal("2.5"))
-
-Parsing non-terminal: Number
-Current token: Type(DoubleVal("2.5"))
-
-Parsing non-terminal: ArithExP
-Current token: Scope(Semi)
-
-Parsing non-terminal: RelExP
-Current token: Scope(Semi)
-
-Parsing non-terminal: BoolExP
-Current token: Scope(Semi)
-
-Parsing non-terminal: StatementList
 Current token: Type(Int)
 
 Parsing non-terminal: Statement
@@ -303,27 +178,6 @@ Current token: Type(Int)
 
 Parsing non-terminal: VName
 Current token: Variable(VarName("INTRes"))
-
-Parsing non-terminal: VarDeclP
-Current token: Scope(Semi)
-
-Parsing non-terminal: StatementList
-Current token: Type(Double)
-
-Parsing non-terminal: Statement
-Current token: Type(Double)
-
-Parsing non-terminal: VarDecl
-Current token: Type(Double)
-
-Parsing non-terminal: Decl
-Current token: Type(Double)
-
-Parsing non-terminal: Type
-Current token: Type(Double)
-
-Parsing non-terminal: VName
-Current token: Variable(VarName("DOUBLERes"))
 
 Parsing non-terminal: VarDeclP
 Current token: Scope(Semi)
@@ -395,72 +249,6 @@ Parsing non-terminal: BoolExP
 Current token: Scope(Semi)
 
 Parsing non-terminal: StatementList
-Current token: Variable(VarName("DOUBLERes"))
-
-Parsing non-terminal: Statement
-Current token: Variable(VarName("DOUBLERes"))
-
-Parsing non-terminal: Assignment
-Current token: Variable(VarName("DOUBLERes"))
-
-Parsing non-terminal: VName
-Current token: Variable(VarName("DOUBLERes"))
-
-Parsing non-terminal: Ex
-Current token: Variable(VarName("c"))
-
-Parsing non-terminal: BoolEx
-Current token: Variable(VarName("c"))
-
-Parsing non-terminal: RelEx
-Current token: Variable(VarName("c"))
-
-Parsing non-terminal: ArithEx
-Current token: Variable(VarName("c"))
-
-Parsing non-terminal: ArithVal
-Current token: Variable(VarName("c"))
-
-Parsing non-terminal: String
-Current token: Variable(VarName("c"))
-
-Parsing non-terminal: VName
-Current token: Variable(VarName("c"))
-
-Parsing non-terminal: StringP
-Current token: Ops(Plus)
-
-Parsing non-terminal: ArithExP
-Current token: Ops(Plus)
-
-Parsing non-terminal: ArithOp
-Current token: Ops(Plus)
-
-Parsing non-terminal: ArithEx
-Current token: Variable(VarName("d"))
-
-Parsing non-terminal: ArithVal
-Current token: Variable(VarName("d"))
-
-Parsing non-terminal: String
-Current token: Variable(VarName("d"))
-
-Parsing non-terminal: VName
-Current token: Variable(VarName("d"))
-
-Parsing non-terminal: StringP
-Current token: Scope(Semi)
-
-Parsing non-terminal: ArithExP
-Current token: Scope(Semi)
-
-Parsing non-terminal: RelExP
-Current token: Scope(Semi)
-
-Parsing non-terminal: BoolExP
-Current token: Scope(Semi)
-
-Parsing non-terminal: StatementList
 Current token: Utilities(Print)
 
 Parsing non-terminal: Statement
@@ -477,30 +265,6 @@ Current token: Variable(VarName("INTRes"))
 
 Parsing non-terminal: VName
 Current token: Variable(VarName("INTRes"))
-
-Parsing non-terminal: StringP
-Current token: Scope(BracketR)
-
-Parsing non-terminal: TextTail
-Current token: Scope(BracketR)
-
-Parsing non-terminal: StatementList
-Current token: Utilities(Print)
-
-Parsing non-terminal: Statement
-Current token: Utilities(Print)
-
-Parsing non-terminal: Text
-Current token: Variable(VarName("DOUBLERes"))
-
-Parsing non-terminal: TextElement
-Current token: Variable(VarName("DOUBLERes"))
-
-Parsing non-terminal: String
-Current token: Variable(VarName("DOUBLERes"))
-
-Parsing non-terminal: VName
-Current token: Variable(VarName("DOUBLERes"))
 
 Parsing non-terminal: StringP
 Current token: Scope(BracketR)
@@ -586,1310 +350,152 @@ NonTerminal: Prog
               NonTerminal: VarDecl
                 NonTerminal: Decl
                   NonTerminal: Type
-                    Symbol: Type(Double)
+                    Symbol: Type(Int)
                   NonTerminal: VName
-                    Symbol: Variable(VarName("c"))
+                    Symbol: Variable(VarName("INTRes"))
                 NonTerminal: VarDeclP
+                Symbol: Scope(Semi)
+            NonTerminal: StatementList
+              NonTerminal: Statement
+                NonTerminal: Assignment
+                  NonTerminal: VName
+                    Symbol: Variable(VarName("INTRes"))
                   Symbol: Ops(Assignment)
                   NonTerminal: Ex
                     NonTerminal: BoolEx
                       NonTerminal: RelEx
                         NonTerminal: ArithEx
                           NonTerminal: ArithVal
-                            NonTerminal: Number
-                              Symbol: Type(DoubleVal("1.0"))
+                            NonTerminal: String
+                              NonTerminal: VName
+                                Symbol: Variable(VarName("a"))
+                              NonTerminal: StringP
                           NonTerminal: ArithExP
+                            NonTerminal: ArithOp
+                              Symbol: Ops(Plus)
+                            NonTerminal: ArithEx
+                              NonTerminal: ArithVal
+                                NonTerminal: String
+                                  NonTerminal: VName
+                                    Symbol: Variable(VarName("b"))
+                                  NonTerminal: StringP
+                              NonTerminal: ArithExP
                         NonTerminal: RelExP
                       NonTerminal: BoolExP
-                Symbol: Scope(Semi)
-            NonTerminal: StatementList
-              NonTerminal: Statement
-                NonTerminal: VarDecl
-                  NonTerminal: Decl
-                    NonTerminal: Type
-                      Symbol: Type(Double)
-                    NonTerminal: VName
-                      Symbol: Variable(VarName("d"))
-                  NonTerminal: VarDeclP
-                    Symbol: Ops(Assignment)
-                    NonTerminal: Ex
-                      NonTerminal: BoolEx
-                        NonTerminal: RelEx
-                          NonTerminal: ArithEx
-                            NonTerminal: ArithVal
-                              NonTerminal: Number
-                                Symbol: Type(DoubleVal("2.5"))
-                            NonTerminal: ArithExP
-                          NonTerminal: RelExP
-                        NonTerminal: BoolExP
                   Symbol: Scope(Semi)
               NonTerminal: StatementList
                 NonTerminal: Statement
-                  NonTerminal: VarDecl
-                    NonTerminal: Decl
-                      NonTerminal: Type
-                        Symbol: Type(Int)
-                      NonTerminal: VName
-                        Symbol: Variable(VarName("INTRes"))
-                    NonTerminal: VarDeclP
-                    Symbol: Scope(Semi)
-                NonTerminal: StatementList
-                  NonTerminal: Statement
-                    NonTerminal: VarDecl
-                      NonTerminal: Decl
-                        NonTerminal: Type
-                          Symbol: Type(Double)
-                        NonTerminal: VName
-                          Symbol: Variable(VarName("DOUBLERes"))
-                      NonTerminal: VarDeclP
-                      Symbol: Scope(Semi)
-                  NonTerminal: StatementList
-                    NonTerminal: Statement
-                      NonTerminal: Assignment
+                  Symbol: Utilities(Print)
+                  Symbol: Scope(BracketL)
+                  NonTerminal: Text
+                    NonTerminal: TextElement
+                      NonTerminal: String
                         NonTerminal: VName
                           Symbol: Variable(VarName("INTRes"))
-                        Symbol: Ops(Assignment)
-                        NonTerminal: Ex
-                          NonTerminal: BoolEx
-                            NonTerminal: RelEx
-                              NonTerminal: ArithEx
-                                NonTerminal: ArithVal
-                                  NonTerminal: String
-                                    NonTerminal: VName
-                                      Symbol: Variable(VarName("a"))
-                                    NonTerminal: StringP
-                                NonTerminal: ArithExP
-                                  NonTerminal: ArithOp
-                                    Symbol: Ops(Plus)
-                                  NonTerminal: ArithEx
-                                    NonTerminal: ArithVal
-                                      NonTerminal: String
-                                        NonTerminal: VName
-                                          Symbol: Variable(VarName("b"))
-                                        NonTerminal: StringP
-                                    NonTerminal: ArithExP
-                              NonTerminal: RelExP
-                            NonTerminal: BoolExP
-                        Symbol: Scope(Semi)
-                    NonTerminal: StatementList
-                      NonTerminal: Statement
-                        NonTerminal: Assignment
-                          NonTerminal: VName
-                            Symbol: Variable(VarName("DOUBLERes"))
-                          Symbol: Ops(Assignment)
-                          NonTerminal: Ex
-                            NonTerminal: BoolEx
-                              NonTerminal: RelEx
-                                NonTerminal: ArithEx
-                                  NonTerminal: ArithVal
-                                    NonTerminal: String
-                                      NonTerminal: VName
-                                        Symbol: Variable(VarName("c"))
-                                      NonTerminal: StringP
-                                  NonTerminal: ArithExP
-                                    NonTerminal: ArithOp
-                                      Symbol: Ops(Plus)
-                                    NonTerminal: ArithEx
-                                      NonTerminal: ArithVal
-                                        NonTerminal: String
-                                          NonTerminal: VName
-                                            Symbol: Variable(VarName("d"))
-                                          NonTerminal: StringP
-                                      NonTerminal: ArithExP
-                                NonTerminal: RelExP
-                              NonTerminal: BoolExP
-                          Symbol: Scope(Semi)
-                      NonTerminal: StatementList
-                        NonTerminal: Statement
-                          Symbol: Utilities(Print)
-                          Symbol: Scope(BracketL)
-                          NonTerminal: Text
-                            NonTerminal: TextElement
-                              NonTerminal: String
-                                NonTerminal: VName
-                                  Symbol: Variable(VarName("INTRes"))
-                                NonTerminal: StringP
-                            NonTerminal: TextTail
-                          Symbol: Scope(BracketR)
-                          Symbol: Scope(Semi)
-                        NonTerminal: StatementList
-                          NonTerminal: Statement
-                            Symbol: Utilities(Print)
-                            Symbol: Scope(BracketL)
-                            NonTerminal: Text
-                              NonTerminal: TextElement
-                                NonTerminal: String
-                                  NonTerminal: VName
-                                    Symbol: Variable(VarName("DOUBLERes"))
-                                  NonTerminal: StringP
-                              NonTerminal: TextTail
-                            Symbol: Scope(BracketR)
-                            Symbol: Scope(Semi)
-                          NonTerminal: StatementList
-                            NonTerminal: Statement
-                              Symbol: ControlFlow(Return)
-                              NonTerminal: ReturnTail
-                                NonTerminal: Number
-                                  Symbol: Type(IntVal(0))
-                              Symbol: Scope(Semi)
-                            NonTerminal: StatementList
+                        NonTerminal: StringP
+                    NonTerminal: TextTail
+                  Symbol: Scope(BracketR)
+                  Symbol: Scope(Semi)
+                NonTerminal: StatementList
+                  NonTerminal: Statement
+                    Symbol: ControlFlow(Return)
+                    NonTerminal: ReturnTail
+                      NonTerminal: Number
+                        Symbol: Type(IntVal(0))
+                    Symbol: Scope(Semi)
+                  NonTerminal: StatementList
       Symbol: Scope(CurlyBracketR)
     NonTerminal: FuncList
 
 --------------------
-Semantic Analysis successful:
-NonTerminal: Prog
-  NonTerminal: FuncDecl
-    NonTerminal: Type
-      Symbol: Type(Int)
-    NonTerminal: VName
-      Symbol: Variable(VarName("main"))
-    Symbol: Scope(BracketL)
-    Symbol: Scope(BracketR)
-    Symbol: Scope(CurlyBracketL)
-    NonTerminal: Statement
-      NonTerminal: Decl
-        Symbol: Type(Int)
-        Symbol: Variable(VarName("a"))
-      NonTerminal: VarDeclP
-        Symbol: Ops(Assignment)
-        NonTerminal: BoolEx
-          NonTerminal: ArithEx
-            NonTerminal: Number
-              Symbol: Type(IntVal(2))
-          NonTerminal: RelExP
-      Symbol: Scope(Semi)
-    NonTerminal: StatementList
-      NonTerminal: VarDecl
-        NonTerminal: Type
-          Symbol: Type(Int)
-        NonTerminal: VName
-          Symbol: Variable(VarName("b"))
-        Symbol: Ops(Assignment)
-        NonTerminal: Ex
-          NonTerminal: RelEx
-            NonTerminal: ArithVal
-              Symbol: Type(IntVal(1))
-            NonTerminal: ArithExP
-          NonTerminal: BoolExP
-        Symbol: Scope(Semi)
-      NonTerminal: Statement
-        NonTerminal: Decl
-          Symbol: Type(Double)
-          Symbol: Variable(VarName("c"))
-        NonTerminal: VarDeclP
-          Symbol: Ops(Assignment)
-          NonTerminal: BoolEx
-            NonTerminal: ArithEx
-              NonTerminal: Number
-                Symbol: Type(DoubleVal("1.0"))
-            NonTerminal: RelExP
-        Symbol: Scope(Semi)
-      NonTerminal: StatementList
-        NonTerminal: VarDecl
-          NonTerminal: Type
-            Symbol: Type(Double)
-          NonTerminal: VName
-            Symbol: Variable(VarName("d"))
-          Symbol: Ops(Assignment)
-          NonTerminal: Ex
-            NonTerminal: RelEx
-              NonTerminal: ArithVal
-                Symbol: Type(DoubleVal("2.5"))
-              NonTerminal: ArithExP
-            NonTerminal: BoolExP
-          Symbol: Scope(Semi)
-        NonTerminal: Statement
-          NonTerminal: Decl
-            Symbol: Type(Int)
-            Symbol: Variable(VarName("INTRes"))
-          NonTerminal: VarDeclP
-          Symbol: Scope(Semi)
-        NonTerminal: StatementList
-          NonTerminal: VarDecl
-            NonTerminal: Type
-              Symbol: Type(Double)
-            NonTerminal: VName
-              Symbol: Variable(VarName("DOUBLERes"))
-            Symbol: Scope(Semi)
-          NonTerminal: Statement
-            NonTerminal: VName
-              Symbol: Variable(VarName("INTRes"))
-            Symbol: Ops(Assignment)
-            NonTerminal: Ex
-              NonTerminal: RelEx
-                NonTerminal: ArithVal
-                  NonTerminal: VName
-                    Symbol: Variable(VarName("a"))
-                  NonTerminal: StringP
-                NonTerminal: ArithExP
-                  Symbol: Ops(Plus)
-                  NonTerminal: ArithVal
-                    NonTerminal: VName
-                      Symbol: Variable(VarName("b"))
-                    NonTerminal: StringP
-                  NonTerminal: ArithExP
-              NonTerminal: BoolExP
-            Symbol: Scope(Semi)
-          NonTerminal: StatementList
-            NonTerminal: Assignment
-              Symbol: Variable(VarName("DOUBLERes"))
-              Symbol: Ops(Assignment)
-              NonTerminal: BoolEx
-                NonTerminal: ArithEx
-                  NonTerminal: String
-                    Symbol: Variable(VarName("c"))
-                  NonTerminal: ArithOp
-                    Symbol: Ops(Plus)
-                  NonTerminal: ArithEx
-                    NonTerminal: String
-                      Symbol: Variable(VarName("d"))
-                NonTerminal: RelExP
-              Symbol: Scope(Semi)
-            NonTerminal: Statement
-              Symbol: Utilities(Print)
-              Symbol: Scope(BracketL)
-              NonTerminal: TextElement
-                NonTerminal: VName
-                  Symbol: Variable(VarName("INTRes"))
-                NonTerminal: StringP
-              NonTerminal: TextTail
-              Symbol: Scope(BracketR)
-              Symbol: Scope(Semi)
-            NonTerminal: StatementList
-              Symbol: Utilities(Print)
-              Symbol: Scope(BracketL)
-              NonTerminal: Text
-                NonTerminal: String
-                  Symbol: Variable(VarName("DOUBLERes"))
-              Symbol: Scope(BracketR)
-              Symbol: Scope(Semi)
-              NonTerminal: Statement
-                Symbol: ControlFlow(Return)
-                NonTerminal: Number
-                  Symbol: Type(IntVal(0))
-                Symbol: Scope(Semi)
-              NonTerminal: StatementList
-    Symbol: Scope(CurlyBracketR)
-  NonTerminal: FuncList
-TreeNode {
-    children: [
-        TreeNode {
-            children: [
-                TreeNode {
-                    children: [
-                        TreeNode {
-                            children: [],
-                            Symbol: Terminal(
-                                Type(
-                                    Int,
-                                ),
-                            ),
-                        },
-                    ],
-                    Symbol: NonTerminal(
-                        Type,
-                    ),
-                },
-                TreeNode {
-                    children: [
-                        TreeNode {
-                            children: [],
-                            Symbol: Terminal(
-                                Variable(
-                                    VarName(
-                                        "main",
-                                    ),
-                                ),
-                            ),
-                        },
-                    ],
-                    Symbol: NonTerminal(
-                        VName,
-                    ),
-                },
-                TreeNode {
-                    children: [],
-                    Symbol: Terminal(
-                        Scope(
-                            BracketL,
-                        ),
-                    ),
-                },
-                TreeNode {
-                    children: [],
-                    Symbol: Terminal(
-                        Scope(
-                            BracketR,
-                        ),
-                    ),
-                },
-                TreeNode {
-                    children: [],
-                    Symbol: Terminal(
-                        Scope(
-                            CurlyBracketL,
-                        ),
-                    ),
-                },
-                TreeNode {
-                    children: [
-                        TreeNode {
-                            children: [
-                                TreeNode {
-                                    children: [],
-                                    Symbol: Terminal(
-                                        Type(
-                                            Int,
-                                        ),
-                                    ),
-                                },
-                                TreeNode {
-                                    children: [],
-                                    Symbol: Terminal(
-                                        Variable(
-                                            VarName(
-                                                "a",
-                                            ),
-                                        ),
-                                    ),
-                                },
-                            ],
-                            Symbol: NonTerminal(
-                                Decl,
-                            ),
-                        },
-                        TreeNode {
-                            children: [
-                                TreeNode {
-                                    children: [],
-                                    Symbol: Terminal(
-                                        Ops(
-                                            Assignment,
-                                        ),
-                                    ),
-                                },
-                                TreeNode {
-                                    children: [
-                                        TreeNode {
-                                            children: [
-                                                TreeNode {
-                                                    children: [
-                                                        TreeNode {
-                                                            children: [],
-                                                            Symbol: Terminal(
-                                                                Type(
-                                                                    IntVal(
-                                                                        2,
-                                                                    ),
-                                                                ),
-                                                            ),
-                                                        },
-                                                    ],
-                                                    Symbol: NonTerminal(
-                                                        Number,
-                                                    ),
-                                                },
-                                            ],
-                                            Symbol: NonTerminal(
-                                                ArithEx,
-                                            ),
-                                        },
-                                        TreeNode {
-                                            children: [],
-                                            Symbol: NonTerminal(
-                                                RelExP,
-                                            ),
-                                        },
-                                    ],
-                                    Symbol: NonTerminal(
-                                        BoolEx,
-                                    ),
-                                },
-                            ],
-                            Symbol: NonTerminal(
-                                VarDeclP,
-                            ),
-                        },
-                        TreeNode {
-                            children: [],
-                            Symbol: Terminal(
-                                Scope(
-                                    Semi,
-                                ),
-                            ),
-                        },
-                    ],
-                    Symbol: NonTerminal(
-                        Statement,
-                    ),
-                },
-                TreeNode {
-                    children: [
-                        TreeNode {
-                            children: [
-                                TreeNode {
-                                    children: [
-                                        TreeNode {
-                                            children: [],
-                                            Symbol: Terminal(
-                                                Type(
-                                                    Int,
-                                                ),
-                                            ),
-                                        },
-                                    ],
-                                    Symbol: NonTerminal(
-                                        Type,
-                                    ),
-                                },
-                                TreeNode {
-                                    children: [
-                                        TreeNode {
-                                            children: [],
-                                            Symbol: Terminal(
-                                                Variable(
-                                                    VarName(
-                                                        "b",
-                                                    ),
-                                                ),
-                                            ),
-                                        },
-                                    ],
-                                    Symbol: NonTerminal(
-                                        VName,
-                                    ),
-                                },
-                                TreeNode {
-                                    children: [],
-                                    Symbol: Terminal(
-                                        Ops(
-                                            Assignment,
-                                        ),
-                                    ),
-                                },
-                                TreeNode {
-                                    children: [
-                                        TreeNode {
-                                            children: [
-                                                TreeNode {
-                                                    children: [
-                                                        TreeNode {
-                                                            children: [],
-                                                            Symbol: Terminal(
-                                                                Type(
-                                                                    IntVal(
-                                                                        1,
-                                                                    ),
-                                                                ),
-                                                            ),
-                                                        },
-                                                    ],
-                                                    Symbol: NonTerminal(
-                                                        ArithVal,
-                                                    ),
-                                                },
-                                                TreeNode {
-                                                    children: [],
-                                                    Symbol: NonTerminal(
-                                                        ArithExP,
-                                                    ),
-                                                },
-                                            ],
-                                            Symbol: NonTerminal(
-                                                RelEx,
-                                            ),
-                                        },
-                                        TreeNode {
-                                            children: [],
-                                            Symbol: NonTerminal(
-                                                BoolExP,
-                                            ),
-                                        },
-                                    ],
-                                    Symbol: NonTerminal(
-                                        Ex,
-                                    ),
-                                },
-                                TreeNode {
-                                    children: [],
-                                    Symbol: Terminal(
-                                        Scope(
-                                            Semi,
-                                        ),
-                                    ),
-                                },
-                            ],
-                            Symbol: NonTerminal(
-                                VarDecl,
-                            ),
-                        },
-                        TreeNode {
-                            children: [
-                                TreeNode {
-                                    children: [
-                                        TreeNode {
-                                            children: [],
-                                            Symbol: Terminal(
-                                                Type(
-                                                    Double,
-                                                ),
-                                            ),
-                                        },
-                                        TreeNode {
-                                            children: [],
-                                            Symbol: Terminal(
-                                                Variable(
-                                                    VarName(
-                                                        "c",
-                                                    ),
-                                                ),
-                                            ),
-                                        },
-                                    ],
-                                    Symbol: NonTerminal(
-                                        Decl,
-                                    ),
-                                },
-                                TreeNode {
-                                    children: [
-                                        TreeNode {
-                                            children: [],
-                                            Symbol: Terminal(
-                                                Ops(
-                                                    Assignment,
-                                                ),
-                                            ),
-                                        },
-                                        TreeNode {
-                                            children: [
-                                                TreeNode {
-                                                    children: [
-                                                        TreeNode {
-                                                            children: [
-                                                                TreeNode {
-                                                                    children: [],
-                                                                    Symbol: Terminal(
-                                                                        Type(
-                                                                            DoubleVal(
-                                                                                "1.0",
-                                                                            ),
-                                                                        ),
-                                                                    ),
-                                                                },
-                                                            ],
-                                                            Symbol: NonTerminal(
-                                                                Number,
-                                                            ),
-                                                        },
-                                                    ],
-                                                    Symbol: NonTerminal(
-                                                        ArithEx,
-                                                    ),
-                                                },
-                                                TreeNode {
-                                                    children: [],
-                                                    Symbol: NonTerminal(
-                                                        RelExP,
-                                                    ),
-                                                },
-                                            ],
-                                            Symbol: NonTerminal(
-                                                BoolEx,
-                                            ),
-                                        },
-                                    ],
-                                    Symbol: NonTerminal(
-                                        VarDeclP,
-                                    ),
-                                },
-                                TreeNode {
-                                    children: [],
-                                    Symbol: Terminal(
-                                        Scope(
-                                            Semi,
-                                        ),
-                                    ),
-                                },
-                            ],
-                            Symbol: NonTerminal(
-                                Statement,
-                            ),
-                        },
-                        TreeNode {
-                            children: [
-                                TreeNode {
-                                    children: [
-                                        TreeNode {
-                                            children: [
-                                                TreeNode {
-                                                    children: [],
-                                                    Symbol: Terminal(
-                                                        Type(
-                                                            Double,
-                                                        ),
-                                                    ),
-                                                },
-                                            ],
-                                            Symbol: NonTerminal(
-                                                Type,
-                                            ),
-                                        },
-                                        TreeNode {
-                                            children: [
-                                                TreeNode {
-                                                    children: [],
-                                                    Symbol: Terminal(
-                                                        Variable(
-                                                            VarName(
-                                                                "d",
-                                                            ),
-                                                        ),
-                                                    ),
-                                                },
-                                            ],
-                                            Symbol: NonTerminal(
-                                                VName,
-                                            ),
-                                        },
-                                        TreeNode {
-                                            children: [],
-                                            Symbol: Terminal(
-                                                Ops(
-                                                    Assignment,
-                                                ),
-                                            ),
-                                        },
-                                        TreeNode {
-                                            children: [
-                                                TreeNode {
-                                                    children: [
-                                                        TreeNode {
-                                                            children: [
-                                                                TreeNode {
-                                                                    children: [],
-                                                                    Symbol: Terminal(
-                                                                        Type(
-                                                                            DoubleVal(
-                                                                                "2.5",
-                                                                            ),
-                                                                        ),
-                                                                    ),
-                                                                },
-                                                            ],
-                                                            Symbol: NonTerminal(
-                                                                ArithVal,
-                                                            ),
-                                                        },
-                                                        TreeNode {
-                                                            children: [],
-                                                            Symbol: NonTerminal(
-                                                                ArithExP,
-                                                            ),
-                                                        },
-                                                    ],
-                                                    Symbol: NonTerminal(
-                                                        RelEx,
-                                                    ),
-                                                },
-                                                TreeNode {
-                                                    children: [],
-                                                    Symbol: NonTerminal(
-                                                        BoolExP,
-                                                    ),
-                                                },
-                                            ],
-                                            Symbol: NonTerminal(
-                                                Ex,
-                                            ),
-                                        },
-                                        TreeNode {
-                                            children: [],
-                                            Symbol: Terminal(
-                                                Scope(
-                                                    Semi,
-                                                ),
-                                            ),
-                                        },
-                                    ],
-                                    Symbol: NonTerminal(
-                                        VarDecl,
-                                    ),
-                                },
-                                TreeNode {
-                                    children: [
-                                        TreeNode {
-                                            children: [
-                                                TreeNode {
-                                                    children: [],
-                                                    Symbol: Terminal(
-                                                        Type(
-                                                            Int,
-                                                        ),
-                                                    ),
-                                                },
-                                                TreeNode {
-                                                    children: [],
-                                                    Symbol: Terminal(
-                                                        Variable(
-                                                            VarName(
-                                                                "INTRes",
-                                                            ),
-                                                        ),
-                                                    ),
-                                                },
-                                            ],
-                                            Symbol: NonTerminal(
-                                                Decl,
-                                            ),
-                                        },
-                                        TreeNode {
-                                            children: [],
-                                            Symbol: NonTerminal(
-                                                VarDeclP,
-                                            ),
-                                        },
-                                        TreeNode {
-                                            children: [],
-                                            Symbol: Terminal(
-                                                Scope(
-                                                    Semi,
-                                                ),
-                                            ),
-                                        },
-                                    ],
-                                    Symbol: NonTerminal(
-                                        Statement,
-                                    ),
-                                },
-                                TreeNode {
-                                    children: [
-                                        TreeNode {
-                                            children: [
-                                                TreeNode {
-                                                    children: [
-                                                        TreeNode {
-                                                            children: [],
-                                                            Symbol: Terminal(
-                                                                Type(
-                                                                    Double,
-                                                                ),
-                                                            ),
-                                                        },
-                                                    ],
-                                                    Symbol: NonTerminal(
-                                                        Type,
-                                                    ),
-                                                },
-                                                TreeNode {
-                                                    children: [
-                                                        TreeNode {
-                                                            children: [],
-                                                            Symbol: Terminal(
-                                                                Variable(
-                                                                    VarName(
-                                                                        "DOUBLERes",
-                                                                    ),
-                                                                ),
-                                                            ),
-                                                        },
-                                                    ],
-                                                    Symbol: NonTerminal(
-                                                        VName,
-                                                    ),
-                                                },
-                                                TreeNode {
-                                                    children: [],
-                                                    Symbol: Terminal(
-                                                        Scope(
-                                                            Semi,
-                                                        ),
-                                                    ),
-                                                },
-                                            ],
-                                            Symbol: NonTerminal(
-                                                VarDecl,
-                                            ),
-                                        },
-                                        TreeNode {
-                                            children: [
-                                                TreeNode {
-                                                    children: [
-                                                        TreeNode {
-                                                            children: [],
-                                                            Symbol: Terminal(
-                                                                Variable(
-                                                                    VarName(
-                                                                        "INTRes",
-                                                                    ),
-                                                                ),
-                                                            ),
-                                                        },
-                                                    ],
-                                                    Symbol: NonTerminal(
-                                                        VName,
-                                                    ),
-                                                },
-                                                TreeNode {
-                                                    children: [],
-                                                    Symbol: Terminal(
-                                                        Ops(
-                                                            Assignment,
-                                                        ),
-                                                    ),
-                                                },
-                                                TreeNode {
-                                                    children: [
-                                                        TreeNode {
-                                                            children: [
-                                                                TreeNode {
-                                                                    children: [
-                                                                        TreeNode {
-                                                                            children: [
-                                                                                TreeNode {
-                                                                                    children: [],
-                                                                                    Symbol: Terminal(
-                                                                                        Variable(
-                                                                                            VarName(
-                                                                                                "a",
-                                                                                            ),
-                                                                                        ),
-                                                                                    ),
-                                                                                },
-                                                                            ],
-                                                                            Symbol: NonTerminal(
-                                                                                VName,
-                                                                            ),
-                                                                        },
-                                                                        TreeNode {
-                                                                            children: [],
-                                                                            Symbol: NonTerminal(
-                                                                                StringP,
-                                                                            ),
-                                                                        },
-                                                                    ],
-                                                                    Symbol: NonTerminal(
-                                                                        ArithVal,
-                                                                    ),
-                                                                },
-                                                                TreeNode {
-                                                                    children: [
-                                                                        TreeNode {
-                                                                            children: [],
-                                                                            Symbol: Terminal(
-                                                                                Ops(
-                                                                                    Plus,
-                                                                                ),
-                                                                            ),
-                                                                        },
-                                                                        TreeNode {
-                                                                            children: [
-                                                                                TreeNode {
-                                                                                    children: [
-                                                                                        TreeNode {
-                                                                                            children: [],
-                                                                                            Symbol: Terminal(
-                                                                                                Variable(
-                                                                                                    VarName(
-                                                                                                        "b",
-                                                                                                    ),
-                                                                                                ),
-                                                                                            ),
-                                                                                        },
-                                                                                    ],
-                                                                                    Symbol: NonTerminal(
-                                                                                        VName,
-                                                                                    ),
-                                                                                },
-                                                                                TreeNode {
-                                                                                    children: [],
-                                                                                    Symbol: NonTerminal(
-                                                                                        StringP,
-                                                                                    ),
-                                                                                },
-                                                                            ],
-                                                                            Symbol: NonTerminal(
-                                                                                ArithVal,
-                                                                            ),
-                                                                        },
-                                                                        TreeNode {
-                                                                            children: [],
-                                                                            Symbol: NonTerminal(
-                                                                                ArithExP,
-                                                                            ),
-                                                                        },
-                                                                    ],
-                                                                    Symbol: NonTerminal(
-                                                                        ArithExP,
-                                                                    ),
-                                                                },
-                                                            ],
-                                                            Symbol: NonTerminal(
-                                                                RelEx,
-                                                            ),
-                                                        },
-                                                        TreeNode {
-                                                            children: [],
-                                                            Symbol: NonTerminal(
-                                                                BoolExP,
-                                                            ),
-                                                        },
-                                                    ],
-                                                    Symbol: NonTerminal(
-                                                        Ex,
-                                                    ),
-                                                },
-                                                TreeNode {
-                                                    children: [],
-                                                    Symbol: Terminal(
-                                                        Scope(
-                                                            Semi,
-                                                        ),
-                                                    ),
-                                                },
-                                            ],
-                                            Symbol: NonTerminal(
-                                                Statement,
-                                            ),
-                                        },
-                                        TreeNode {
-                                            children: [
-                                                TreeNode {
-                                                    children: [
-                                                        TreeNode {
-                                                            children: [],
-                                                            Symbol: Terminal(
-                                                                Variable(
-                                                                    VarName(
-                                                                        "DOUBLERes",
-                                                                    ),
-                                                                ),
-                                                            ),
-                                                        },
-                                                        TreeNode {
-                                                            children: [],
-                                                            Symbol: Terminal(
-                                                                Ops(
-                                                                    Assignment,
-                                                                ),
-                                                            ),
-                                                        },
-                                                        TreeNode {
-                                                            children: [
-                                                                TreeNode {
-                                                                    children: [
-                                                                        TreeNode {
-                                                                            children: [
-                                                                                TreeNode {
-                                                                                    children: [],
-                                                                                    Symbol: Terminal(
-                                                                                        Variable(
-                                                                                            VarName(
-                                                                                                "c",
-                                                                                            ),
-                                                                                        ),
-                                                                                    ),
-                                                                                },
-                                                                            ],
-                                                                            Symbol: NonTerminal(
-                                                                                String,
-                                                                            ),
-                                                                        },
-                                                                        TreeNode {
-                                                                            children: [
-                                                                                TreeNode {
-                                                                                    children: [],
-                                                                                    Symbol: Terminal(
-                                                                                        Ops(
-                                                                                            Plus,
-                                                                                        ),
-                                                                                    ),
-                                                                                },
-                                                                            ],
-                                                                            Symbol: NonTerminal(
-                                                                                ArithOp,
-                                                                            ),
-                                                                        },
-                                                                        TreeNode {
-                                                                            children: [
-                                                                                TreeNode {
-                                                                                    children: [
-                                                                                        TreeNode {
-                                                                                            children: [],
-                                                                                            Symbol: Terminal(
-                                                                                                Variable(
-                                                                                                    VarName(
-                                                                                                        "d",
-                                                                                                    ),
-                                                                                                ),
-                                                                                            ),
-                                                                                        },
-                                                                                    ],
-                                                                                    Symbol: NonTerminal(
-                                                                                        String,
-                                                                                    ),
-                                                                                },
-                                                                            ],
-                                                                            Symbol: NonTerminal(
-                                                                                ArithEx,
-                                                                            ),
-                                                                        },
-                                                                    ],
-                                                                    Symbol: NonTerminal(
-                                                                        ArithEx,
-                                                                    ),
-                                                                },
-                                                                TreeNode {
-                                                                    children: [],
-                                                                    Symbol: NonTerminal(
-                                                                        RelExP,
-                                                                    ),
-                                                                },
-                                                            ],
-                                                            Symbol: NonTerminal(
-                                                                BoolEx,
-                                                            ),
-                                                        },
-                                                        TreeNode {
-                                                            children: [],
-                                                            Symbol: Terminal(
-                                                                Scope(
-                                                                    Semi,
-                                                                ),
-                                                            ),
-                                                        },
-                                                    ],
-                                                    Symbol: NonTerminal(
-                                                        Assignment,
-                                                    ),
-                                                },
-                                                TreeNode {
-                                                    children: [
-                                                        TreeNode {
-                                                            children: [],
-                                                            Symbol: Terminal(
-                                                                Utilities(
-                                                                    Print,
-                                                                ),
-                                                            ),
-                                                        },
-                                                        TreeNode {
-                                                            children: [],
-                                                            Symbol: Terminal(
-                                                                Scope(
-                                                                    BracketL,
-                                                                ),
-                                                            ),
-                                                        },
-                                                        TreeNode {
-                                                            children: [
-                                                                TreeNode {
-                                                                    children: [
-                                                                        TreeNode {
-                                                                            children: [],
-                                                                            Symbol: Terminal(
-                                                                                Variable(
-                                                                                    VarName(
-                                                                                        "INTRes",
-                                                                                    ),
-                                                                                ),
-                                                                            ),
-                                                                        },
-                                                                    ],
-                                                                    Symbol: NonTerminal(
-                                                                        VName,
-                                                                    ),
-                                                                },
-                                                                TreeNode {
-                                                                    children: [],
-                                                                    Symbol: NonTerminal(
-                                                                        StringP,
-                                                                    ),
-                                                                },
-                                                            ],
-                                                            Symbol: NonTerminal(
-                                                                TextElement,
-                                                            ),
-                                                        },
-                                                        TreeNode {
-                                                            children: [],
-                                                            Symbol: NonTerminal(
-                                                                TextTail,
-                                                            ),
-                                                        },
-                                                        TreeNode {
-                                                            children: [],
-                                                            Symbol: Terminal(
-                                                                Scope(
-                                                                    BracketR,
-                                                                ),
-                                                            ),
-                                                        },
-                                                        TreeNode {
-                                                            children: [],
-                                                            Symbol: Terminal(
-                                                                Scope(
-                                                                    Semi,
-                                                                ),
-                                                            ),
-                                                        },
-                                                    ],
-                                                    Symbol: NonTerminal(
-                                                        Statement,
-                                                    ),
-                                                },
-                                                TreeNode {
-                                                    children: [
-                                                        TreeNode {
-                                                            children: [],
-                                                            Symbol: Terminal(
-                                                                Utilities(
-                                                                    Print,
-                                                                ),
-                                                            ),
-                                                        },
-                                                        TreeNode {
-                                                            children: [],
-                                                            Symbol: Terminal(
-                                                                Scope(
-                                                                    BracketL,
-                                                                ),
-                                                            ),
-                                                        },
-                                                        TreeNode {
-                                                            children: [
-                                                                TreeNode {
-                                                                    children: [
-                                                                        TreeNode {
-                                                                            children: [],
-                                                                            Symbol: Terminal(
-                                                                                Variable(
-                                                                                    VarName(
-                                                                                        "DOUBLERes",
-                                                                                    ),
-                                                                                ),
-                                                                            ),
-                                                                        },
-                                                                    ],
-                                                                    Symbol: NonTerminal(
-                                                                        String,
-                                                                    ),
-                                                                },
-                                                            ],
-                                                            Symbol: NonTerminal(
-                                                                Text,
-                                                            ),
-                                                        },
-                                                        TreeNode {
-                                                            children: [],
-                                                            Symbol: Terminal(
-                                                                Scope(
-                                                                    BracketR,
-                                                                ),
-                                                            ),
-                                                        },
-                                                        TreeNode {
-                                                            children: [],
-                                                            Symbol: Terminal(
-                                                                Scope(
-                                                                    Semi,
-                                                                ),
-                                                            ),
-                                                        },
-                                                        TreeNode {
-                                                            children: [
-                                                                TreeNode {
-                                                                    children: [],
-                                                                    Symbol: Terminal(
-                                                                        ControlFlow(
-                                                                            Return,
-                                                                        ),
-                                                                    ),
-                                                                },
-                                                                TreeNode {
-                                                                    children: [
-                                                                        TreeNode {
-                                                                            children: [],
-                                                                            Symbol: Terminal(
-                                                                                Type(
-                                                                                    IntVal(
-                                                                                        0,
-                                                                                    ),
-                                                                                ),
-                                                                            ),
-                                                                        },
-                                                                    ],
-                                                                    Symbol: NonTerminal(
-                                                                        Number,
-                                                                    ),
-                                                                },
-                                                                TreeNode {
-                                                                    children: [],
-                                                                    Symbol: Terminal(
-                                                                        Scope(
-                                                                            Semi,
-                                                                        ),
-                                                                    ),
-                                                                },
-                                                            ],
-                                                            Symbol: NonTerminal(
-                                                                Statement,
-                                                            ),
-                                                        },
-                                                        TreeNode {
-                                                            children: [],
-                                                            Symbol: NonTerminal(
-                                                                StatementList,
-                                                            ),
-                                                        },
-                                                    ],
-                                                    Symbol: NonTerminal(
-                                                        StatementList,
-                                                    ),
-                                                },
-                                            ],
-                                            Symbol: NonTerminal(
-                                                StatementList,
-                                            ),
-                                        },
-                                    ],
-                                    Symbol: NonTerminal(
-                                        StatementList,
-                                    ),
-                                },
-                            ],
-                            Symbol: NonTerminal(
-                                StatementList,
-                            ),
-                        },
-                    ],
-                    Symbol: NonTerminal(
-                        StatementList,
-                    ),
-                },
-                TreeNode {
-                    children: [],
-                    Symbol: Terminal(
-                        Scope(
-                            CurlyBracketR,
-                        ),
-                    ),
-                },
-            ],
-            Symbol: NonTerminal(
-                FuncDecl,
-            ),
-        },
-        TreeNode {
-            children: [],
-            Symbol: NonTerminal(
-                FuncList,
-            ),
-        },
-    ],
-    Symbol: NonTerminal(
-        Prog,
-    ),
-}
+Processing node: NonTerminal(Prog)
+Processing child 0 of StatementList: NonTerminal(FuncList)
+Processing node: NonTerminal(FuncList)
+Processing node: NonTerminal(FuncDecl)
+Processing child 0 of StatementList: NonTerminal(Decl)
+Processing node: NonTerminal(Decl)
+Processing child 1 of StatementList: Terminal(Scope(BracketL))
+Processing node: Terminal(Scope(BracketL))
+Processing child 2 of StatementList: NonTerminal(ListOfParams)
+Processing node: NonTerminal(ListOfParams)
+Processing child 3 of StatementList: Terminal(Scope(BracketR))
+Processing node: Terminal(Scope(BracketR))
+Processing child 4 of StatementList: Terminal(Scope(CurlyBracketL))
+Processing node: Terminal(Scope(CurlyBracketL))
+Processing child 5 of StatementList: NonTerminal(StatementList)
+Processing node: NonTerminal(StatementList)
+Processing child 0 of StatementList: NonTerminal(Statement)
+Processing node: NonTerminal(Statement)
+Processing node: NonTerminal(VarDecl)
+Processing node: NonTerminal(Decl)
+{"a": 0.0}
+Processing node: NonTerminal(VarDeclP)
+Processing node: Terminal(Ops(Assignment))
+Processing node: NonTerminal(Ex)
+Processing node: NonTerminal(BoolEx)
+Processing node: NonTerminal(RelEx)
+Processing node: NonTerminal(ArithEx)
+Processing node: NonTerminal(ArithVal)
+Processing node: NonTerminal(Number)
+Processing node: Terminal(Type(IntVal(2)))
+Processing node: NonTerminal(ArithExP)
+Processing node: NonTerminal(RelExP)
+Processing node: NonTerminal(BoolExP)
+Processing node: Terminal(Scope(Semi))
+Processing child 1 of StatementList: NonTerminal(StatementList)
+Processing node: NonTerminal(StatementList)
+Processing child 0 of StatementList: NonTerminal(Statement)
+Processing node: NonTerminal(Statement)
+Processing node: NonTerminal(VarDecl)
+Processing node: NonTerminal(Decl)
+{"a": 0.0, "b": 0.0}
+Processing node: NonTerminal(VarDeclP)
+Processing node: Terminal(Ops(Assignment))
+Processing node: NonTerminal(Ex)
+Processing node: NonTerminal(BoolEx)
+Processing node: NonTerminal(RelEx)
+Processing node: NonTerminal(ArithEx)
+Processing node: NonTerminal(ArithVal)
+Processing node: NonTerminal(Number)
+Processing node: Terminal(Type(IntVal(1)))
+Processing node: NonTerminal(ArithExP)
+Processing node: NonTerminal(RelExP)
+Processing node: NonTerminal(BoolExP)
+Processing node: Terminal(Scope(Semi))
+Processing child 1 of StatementList: NonTerminal(StatementList)
+Processing node: NonTerminal(StatementList)
+Processing child 0 of StatementList: NonTerminal(Statement)
+Processing node: NonTerminal(Statement)
+Processing node: NonTerminal(VarDecl)
+Processing node: NonTerminal(Decl)
+{"INTRes": 0.0, "a": 0.0, "b": 0.0}
+Processing node: NonTerminal(VarDeclP)
+Processing node: Terminal(Scope(Semi))
+Processing child 1 of StatementList: NonTerminal(StatementList)
+Processing node: NonTerminal(StatementList)
+Processing child 0 of StatementList: NonTerminal(Statement)
+Processing node: NonTerminal(Statement)
+Processing node: NonTerminal(Assignment)
+Processing child 1 of StatementList: NonTerminal(StatementList)
+Processing node: NonTerminal(StatementList)
+Processing child 0 of StatementList: NonTerminal(Statement)
+Processing node: NonTerminal(Statement)
+Found print statement in node: NonTerminal(Statement)
+Processing print statement in node: NonTerminal(Statement)
+Print value: 0
+Processing child 1 of StatementList: NonTerminal(StatementList)
+Processing node: NonTerminal(StatementList)
+Processing child 0 of StatementList: NonTerminal(Statement)
+Processing node: NonTerminal(Statement)
+Processing node: Terminal(ControlFlow(Return))
+Processing node: NonTerminal(ReturnTail)
+Processing node: NonTerminal(Number)
+Processing node: Terminal(Type(IntVal(0)))
+Processing node: Terminal(Scope(Semi))
+Processing child 1 of StatementList: NonTerminal(StatementList)
+Processing node: NonTerminal(StatementList)
+Processing child 6 of StatementList: Terminal(Scope(CurlyBracketR))
+Processing node: Terminal(Scope(CurlyBracketR))
+Processing node: NonTerminal(FuncList)
 
 --------------------

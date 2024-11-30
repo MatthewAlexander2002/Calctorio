@@ -1,9 +1,15 @@
 use crate::lexer::{self, BinaryOpsTK, ControlFlowTK, OpsTK, ScopeTK, Token, TypeTK, UtilitiesTK, VariableTK};
 use crate::parser::{self, NonTerminal, TreeNode, Symbol};
 use std::collections::HashMap;
+use std::env::var;
+use std::sync::Mutex;
+
+lazy_static::lazy_static! {
+    static ref LAST_VAR: Mutex<String> = Mutex::new(String::new());
+}
 
 pub fn interpret(tree: &TreeNode) {
-    let mut symbol_table = HashMap::new(); 
+    let mut symbol_table: HashMap<String, f64> = HashMap::new(); 
     process_node(tree, &mut symbol_table);
 }
 
@@ -18,9 +24,11 @@ fn process_node(node: &TreeNode, symbol_table: &mut HashMap<String, f64>) {
                     println!("Processing child {} of StatementList: {:?}", i, child.Symbol);
                     process_node(child, symbol_table);
                 }
-            }
+            },
+
             NonTerminal::Statement => {
-                if is_print_statement(node) {
+                if let Symbol::Terminal(Token::Utilities(UtilitiesTK::Print)) = node.Symbol{
+                // if is_print_statement(node) {
                     println!("Processing print statement in node: {:?}", node.Symbol);
                     handle_print(node, symbol_table);
                 } else {
@@ -29,35 +37,78 @@ fn process_node(node: &TreeNode, symbol_table: &mut HashMap<String, f64>) {
                         process_node(child, symbol_table);
                     }
                 }
-            }
-            NonTerminal::Decl => {
+            },
+
+            NonTerminal::VarDecl => {
                 let mut var_name = String::new();
-                for child in &node.children {
-                    if let Symbol::Terminal(Token::Variable(VariableTK::VarName(name))) = &child.Symbol {
-                        var_name = name.clone();
-                    }
+                // let mut var_name = node.children[0].children[1].Symbol;
+                let mut value = 0.0;
+
+                if let Symbol::Terminal(Token::Variable(VariableTK::VarName(ref name))) = node.children[0].children[1].children[0].Symbol {
+                    var_name = name.clone();
+                    // println!("{:?}", var_name);
                 }
-                if !var_name.is_empty() {
-                    symbol_table.insert(var_name, 0.0); // Initialize to 0.0
+                // if let Symbol::NonTerminal(NonTerminal::Ex) = node.children[1].children[1].Symbol {
+                //     value = evaluate_expression(&node.children[1].children[1].children[0].children[0].children[0], &symbol_table);
+                // }
+                                                                            //VarDecl, VarDeclP, Ex, BoolEx, RelEx, ArithEx, ArithVal, Number, IntVal
+                if let Symbol::Terminal(Token::Type(TypeTK::IntVal(val))) = node.children[1].children[1].children[0].children[0].children[0].children[0].children[0].children[0].Symbol {
+                    value = val as f64;
+                    // println!("{:?}", value);
                 }
-            }
+                if !var_name.is_empty() && var_name != "main" {
+                    symbol_table.insert(var_name.clone(), value); 
+                    println!("{:?}", symbol_table);
+                    // *LAST_VAR.lock().unwrap() = var_name.clone();
+                }
+            },
+            // NonTerminal::Decl => {
+            //     let mut var_name = String::new();
+            //     for child in &node.children {
+            //         if let Symbol::NonTerminal(NonTerminal::VName) = &child.Symbol {
+            //             for child in &child.children {
+            //                 if let Symbol::Terminal(Token::Variable(VariableTK::VarName(name))) = &child.Symbol {
+            //                     var_name = name.clone();
+            //                 }
+            //             }
+            //         }
+            //     }
+            //     if !var_name.is_empty() && var_name != "main" {
+            //         symbol_table.insert(var_name.clone(), 0.0); // Initialize to 0.0
+            //         println!("{:?}", symbol_table);
+            //         *LAST_VAR.lock().unwrap() = var_name.clone();
+            //     }
+            // }
+            
             NonTerminal::Assignment => {
                 let mut var_name = String::new();
                 let mut value = 0.0;
-                for child in &node.children {
-                    match &child.Symbol {
-                        Symbol::Terminal(Token::Variable(VariableTK::VarName(name))) => {
-                            var_name = name.clone();
-                        }
-                        _ => {
-                            value = evaluate_expression(child, symbol_table);
-                        }
-                    }
+                // for child in &node.children {
+                //     match &child.Symbol {
+                //         Symbol::Terminal(Token::Variable(VariableTK::VarName(name))) => {
+                //             var_name = name.clone();
+                //             println!("{:?}", var_name);
+                //         }
+                //         _ => {
+                //             //Assignment, Ex, BoolEx, RelEx, ArithEx
+                //             // value = evaluate_expression(&child.children[2].children[0].children[0].children[0], symbol_table);
+                //         }
+                //     }
+                // }
+
+                if let Symbol::Terminal(Token::Variable(VariableTK::VarName(ref name))) = node.children[0].children[0].Symbol {
+                    var_name = name.clone();
+                    // println!("{:?}", var_name);
                 }
+
+                value = evaluate_expression(&node.children[2].children[0].children[0].children[0], symbol_table);
+
                 if !var_name.is_empty() {
                     symbol_table.insert(var_name, value);
+                    println!("{:?}", symbol_table);
                 }
-            }
+            },
+
             _ => {
                 for child in &node.children {
                     process_node(child, symbol_table);
@@ -67,6 +118,18 @@ fn process_node(node: &TreeNode, symbol_table: &mut HashMap<String, f64>) {
         _ => {}
     }
 }
+
+// fn find_value(node: &TreeNode) -> f64 {
+//     let mut value = 0.0;
+//     for child in &node.children {
+//         if let Symbol::Terminal(Token::Type(TypeTK::IntVal(val))) = &child.Symbol {
+//             value = *val as f64;
+//         } else {
+//             value = find_value(child);
+//         }
+//     }
+//     value
+// }
 
 fn is_print_statement(node: &TreeNode) -> bool {
     // Check for Utilities(Print) at any level in the children
@@ -124,43 +187,71 @@ fn evaluate_text(node: &TreeNode, symbol_table: &HashMap<String, f64>) -> String
 
     String::new()
 }
-
 fn evaluate_expression(node: &TreeNode, symbol_table: &HashMap<String, f64>) -> f64 {
     match &node.Symbol {
+        // Base case: Directly evaluate terminal values
         Symbol::Terminal(token) => match token {
             Token::Type(TypeTK::IntVal(val)) => *val as f64,
             Token::Type(TypeTK::DoubleVal(val)) => val.parse::<f64>().unwrap_or(0.0),
             Token::Variable(VariableTK::VarName(name)) => {
-                *symbol_table.get(name).unwrap_or(&0.0) // Retrieve variable value
+                *symbol_table.get(name).unwrap_or(&0.0) // Retrieve variable value from symbol table
             }
             _ => 0.0,
         },
-        Symbol::NonTerminal(non_terminal) => match non_terminal {
-            NonTerminal::ArithEx | NonTerminal::RelEx | NonTerminal::BoolEx => {
-                let mut result = 0.0;
-                let mut operation = None;
+        // Recursive case: Handle `ArithEx` and its components
+        Symbol::NonTerminal(NonTerminal::ArithEx) => {
+            let mut result = 0.0;
+            let mut current_op: Option<OpsTK> = None; // To track the current operation
 
-                for child in &node.children {
-                    match &child.Symbol {
-                        Symbol::Terminal(Token::Ops(op)) => {
-                            operation = Some(op);
-                        }
-                        _ => {
-                            let value = evaluate_expression(child, symbol_table);
-                            result = match operation {
-                                Some(OpsTK::Plus) => result + value,
-                                Some(OpsTK::Minus) => result - value,
-                                Some(OpsTK::Times) => result * value,
-                                Some(OpsTK::Divide) => result / value,
-                                _ => value, // Default for the first operand
-                            };
-                        }
+            for child in &node.children {
+                match &child.Symbol {
+                    Symbol::NonTerminal(NonTerminal::ArithVal) => {
+                        // Evaluate the `ArithVal` (number, variable, etc.)
+                        result = evaluate_expression(child, symbol_table);
                     }
+                    Symbol::NonTerminal(NonTerminal::ArithExP) => {
+                        // Process continuation of the expression
+                        result = evaluate_arith_exp_p(child, result, symbol_table);
+                    }
+                    _ => {}
                 }
-                result
             }
-            _ => 0.0,
-        },
+
+            result
+        }
         _ => 0.0,
     }
+}
+
+// Helper function to process `ArithExP` recursively
+fn evaluate_arith_exp_p(node: &TreeNode, accumulated_value: f64, symbol_table: &HashMap<String, f64>) -> f64 {
+    let mut result = accumulated_value;
+    let mut operation = None;
+
+    for child in &node.children {
+        match &child.Symbol {
+            // Identify the arithmetic operation
+            Symbol::NonTerminal(NonTerminal::ArithOp) => {
+                for op_child in &child.children {
+                    if let Symbol::Terminal(Token::Ops(op)) = &op_child.Symbol {
+                        operation = Some(op);
+                    }
+                }
+            }
+            // Evaluate the next `ArithEx`
+            Symbol::NonTerminal(NonTerminal::ArithEx) => {
+                let value = evaluate_expression(child, symbol_table);
+                result = match operation {
+                    Some(OpsTK::Plus) => result + value,
+                    Some(OpsTK::Minus) => result - value,
+                    Some(OpsTK::Times) => result * value,
+                    Some(OpsTK::Divide) => result / value,
+                    _ => result,
+                };
+            }
+            _ => {}
+        }
+    }
+
+    result
 }

@@ -2,7 +2,7 @@ int main() {
     /*This is a comment*/
     int a = 2;
     int b = 1;
-    int INTRes;
+    int INTRes = 0;
 
     INTRes = a + b;
 
