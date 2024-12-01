@@ -49,6 +49,10 @@ fn process_node(node: &TreeNode, symbol_table: &mut HashMap<String, f64>) {
                     value = val as f64;
                     // println!("{:?}", value);
                 }
+                if let Symbol::Terminal(Token::Type(TypeTK::DoubleVal(ref val))) = node.children[1].children[1].children[0].children[0].children[0].children[0].children[0].children[0].Symbol {
+                    value = val.parse::<f64>().unwrap_or(0.0);
+                    // println!("{:?}", value);
+                }
                 if !var_name.is_empty() && var_name != "main" {
                     symbol_table.insert(var_name.clone(), value); 
                     println!("{:?}", symbol_table);
