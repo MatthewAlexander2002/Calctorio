@@ -4,10 +4,6 @@ use std::collections::HashMap;
 use std::env::var;
 use std::sync::Mutex;
 
-lazy_static::lazy_static! {
-    static ref LAST_VAR: Mutex<String> = Mutex::new(String::new());
-}
-
 pub fn interpret(tree: &TreeNode) {
     let mut symbol_table: HashMap<String, f64> = HashMap::new(); 
     process_node(tree, &mut symbol_table);
@@ -27,7 +23,7 @@ fn process_node(node: &TreeNode, symbol_table: &mut HashMap<String, f64>) {
             },
 
             NonTerminal::Statement => {
-                if let Symbol::Terminal(Token::Utilities(UtilitiesTK::Print)) = node.Symbol{
+                if let Symbol::Terminal(Token::Utilities(UtilitiesTK::Print)) = node.children[0].Symbol{
                 // if is_print_statement(node) {
                     println!("Processing print statement in node: {:?}", node.Symbol);
                     handle_print(node, symbol_table);
@@ -183,12 +179,12 @@ fn evaluate_expression(node: &TreeNode, symbol_table: &HashMap<String, f64>) -> 
                     Symbol::NonTerminal(NonTerminal::ArithVal) => {
                         // Recursively evaluate `ArithVal` for the base value
                         result = search_for_arithVal(node, symbol_table);
-                        println!("{:?}", result);
+                        // println!("{:?}", result);
                     }
                     Symbol::NonTerminal(NonTerminal::ArithExP) => {
                         // Evaluate the continuation (`ArithExP`)
                         result = evaluate_arith_exp_p(child, result, symbol_table);
-                        println!("{:?}", result);
+                        // println!("{:?}", result);
                     }
                     _ => {}
                 }
