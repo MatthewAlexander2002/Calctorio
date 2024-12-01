@@ -3,7 +3,7 @@ int main() {
     /*This is a comment*/
     int a = 2;
     int b = 1;
-    int INTRes;
+    int INTRes = 0;
 
     INTRes = a + b;
 
@@ -28,6 +28,8 @@ int main() {
 ";"
 "int"
 "INTRes"
+"="
+"0"
 ";"
 "INTRes"
 "="
@@ -180,6 +182,33 @@ Parsing non-terminal: VName
 Current token: Variable(VarName("INTRes"))
 
 Parsing non-terminal: VarDeclP
+Current token: Ops(Assignment)
+
+Parsing non-terminal: Ex
+Current token: Type(IntVal(0))
+
+Parsing non-terminal: BoolEx
+Current token: Type(IntVal(0))
+
+Parsing non-terminal: RelEx
+Current token: Type(IntVal(0))
+
+Parsing non-terminal: ArithEx
+Current token: Type(IntVal(0))
+
+Parsing non-terminal: ArithVal
+Current token: Type(IntVal(0))
+
+Parsing non-terminal: Number
+Current token: Type(IntVal(0))
+
+Parsing non-terminal: ArithExP
+Current token: Scope(Semi)
+
+Parsing non-terminal: RelExP
+Current token: Scope(Semi)
+
+Parsing non-terminal: BoolExP
 Current token: Scope(Semi)
 
 Parsing non-terminal: StatementList
@@ -354,6 +383,17 @@ NonTerminal: Prog
                   NonTerminal: VName
                     Symbol: Variable(VarName("INTRes"))
                 NonTerminal: VarDeclP
+                  Symbol: Ops(Assignment)
+                  NonTerminal: Ex
+                    NonTerminal: BoolEx
+                      NonTerminal: RelEx
+                        NonTerminal: ArithEx
+                          NonTerminal: ArithVal
+                            NonTerminal: Number
+                              Symbol: Type(IntVal(0))
+                          NonTerminal: ArithExP
+                        NonTerminal: RelExP
+                      NonTerminal: BoolExP
                 Symbol: Scope(Semi)
             NonTerminal: StatementList
               NonTerminal: Statement
@@ -414,6 +454,10 @@ Processing node: NonTerminal(FuncList)
 Processing node: NonTerminal(FuncDecl)
 Processing child 0 of StatementList: NonTerminal(Decl)
 Processing node: NonTerminal(Decl)
+Processing node: NonTerminal(Type)
+Processing node: Terminal(Type(Int))
+Processing node: NonTerminal(VName)
+Processing node: Terminal(Variable(VarName("main")))
 Processing child 1 of StatementList: Terminal(Scope(BracketL))
 Processing node: Terminal(Scope(BracketL))
 Processing child 2 of StatementList: NonTerminal(ListOfParams)
@@ -427,62 +471,44 @@ Processing node: NonTerminal(StatementList)
 Processing child 0 of StatementList: NonTerminal(Statement)
 Processing node: NonTerminal(Statement)
 Processing node: NonTerminal(VarDecl)
-Processing node: NonTerminal(Decl)
-{"a": 0.0}
-Processing node: NonTerminal(VarDeclP)
-Processing node: Terminal(Ops(Assignment))
-Processing node: NonTerminal(Ex)
-Processing node: NonTerminal(BoolEx)
-Processing node: NonTerminal(RelEx)
-Processing node: NonTerminal(ArithEx)
-Processing node: NonTerminal(ArithVal)
-Processing node: NonTerminal(Number)
-Processing node: Terminal(Type(IntVal(2)))
-Processing node: NonTerminal(ArithExP)
-Processing node: NonTerminal(RelExP)
-Processing node: NonTerminal(BoolExP)
-Processing node: Terminal(Scope(Semi))
+{"a": 2.0}
 Processing child 1 of StatementList: NonTerminal(StatementList)
 Processing node: NonTerminal(StatementList)
 Processing child 0 of StatementList: NonTerminal(Statement)
 Processing node: NonTerminal(Statement)
 Processing node: NonTerminal(VarDecl)
-Processing node: NonTerminal(Decl)
-{"a": 0.0, "b": 0.0}
-Processing node: NonTerminal(VarDeclP)
-Processing node: Terminal(Ops(Assignment))
-Processing node: NonTerminal(Ex)
-Processing node: NonTerminal(BoolEx)
-Processing node: NonTerminal(RelEx)
-Processing node: NonTerminal(ArithEx)
-Processing node: NonTerminal(ArithVal)
-Processing node: NonTerminal(Number)
-Processing node: Terminal(Type(IntVal(1)))
-Processing node: NonTerminal(ArithExP)
-Processing node: NonTerminal(RelExP)
-Processing node: NonTerminal(BoolExP)
-Processing node: Terminal(Scope(Semi))
+{"b": 1.0, "a": 2.0}
 Processing child 1 of StatementList: NonTerminal(StatementList)
 Processing node: NonTerminal(StatementList)
 Processing child 0 of StatementList: NonTerminal(Statement)
 Processing node: NonTerminal(Statement)
 Processing node: NonTerminal(VarDecl)
-Processing node: NonTerminal(Decl)
-{"INTRes": 0.0, "a": 0.0, "b": 0.0}
-Processing node: NonTerminal(VarDeclP)
-Processing node: Terminal(Scope(Semi))
+{"b": 1.0, "a": 2.0, "INTRes": 0.0}
 Processing child 1 of StatementList: NonTerminal(StatementList)
 Processing node: NonTerminal(StatementList)
 Processing child 0 of StatementList: NonTerminal(Statement)
 Processing node: NonTerminal(Statement)
 Processing node: NonTerminal(Assignment)
+0.0
+0.0
+0.0
+0.0
+{"b": 1.0, "INTRes": 0.0, "a": 2.0}
 Processing child 1 of StatementList: NonTerminal(StatementList)
 Processing node: NonTerminal(StatementList)
 Processing child 0 of StatementList: NonTerminal(Statement)
 Processing node: NonTerminal(Statement)
-Found print statement in node: NonTerminal(Statement)
-Processing print statement in node: NonTerminal(Statement)
-Print value: 0
+Processing node: Terminal(Utilities(Print))
+Processing node: Terminal(Scope(BracketL))
+Processing node: NonTerminal(Text)
+Processing node: NonTerminal(TextElement)
+Processing node: NonTerminal(String)
+Processing node: NonTerminal(VName)
+Processing node: Terminal(Variable(VarName("INTRes")))
+Processing node: NonTerminal(StringP)
+Processing node: NonTerminal(TextTail)
+Processing node: Terminal(Scope(BracketR))
+Processing node: Terminal(Scope(Semi))
 Processing child 1 of StatementList: NonTerminal(StatementList)
 Processing node: NonTerminal(StatementList)
 Processing child 0 of StatementList: NonTerminal(Statement)

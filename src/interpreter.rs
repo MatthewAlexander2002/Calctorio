@@ -98,8 +98,6 @@ fn is_print_statement(node: &TreeNode) -> bool {
     false
 }
 
-
-
 fn handle_print(node: &TreeNode, symbol_table: &HashMap<String, f64>) {
     // Find and evaluate the `Text` or related content to print
     for child in &node.children {
@@ -112,8 +110,6 @@ fn handle_print(node: &TreeNode, symbol_table: &HashMap<String, f64>) {
         }
     }
 }
-
-
 
 fn evaluate_text(node: &TreeNode, symbol_table: &HashMap<String, f64>) -> String {
     match &node.Symbol {
@@ -143,6 +139,30 @@ fn evaluate_text(node: &TreeNode, symbol_table: &HashMap<String, f64>) -> String
 
     String::new()
 }
+
+fn search_for_arithVal(node: &TreeNode, symbol_table: &HashMap<String, f64>) -> f64 {
+    for child in &node.children {
+        match &child.Symbol {
+            // Base case: Directly evaluate terminal values
+            Symbol::Terminal(token) => match token {
+                Token::Type(TypeTK::IntVal(val)) => return *val as f64,
+                Token::Type(TypeTK::DoubleVal(val)) => return val.parse::<f64>().unwrap_or(0.0),
+                Token::Variable(VariableTK::VarName(name)) => {
+                    return *symbol_table.get(name).unwrap_or(&0.0) // Retrieve variable value from the symbol table
+                }
+                _ => {}
+            },
+            _ => {
+                let result = search_for_arithVal(child, symbol_table);
+                if result != 0.0 {
+                    return result;
+                }
+            }
+        }
+    }
+    0.0
+}
+
 fn evaluate_expression(node: &TreeNode, symbol_table: &HashMap<String, f64>) -> f64 {
     match &node.Symbol {
         // Base case: Directly evaluate terminal values
@@ -150,24 +170,25 @@ fn evaluate_expression(node: &TreeNode, symbol_table: &HashMap<String, f64>) -> 
             Token::Type(TypeTK::IntVal(val)) => *val as f64,
             Token::Type(TypeTK::DoubleVal(val)) => val.parse::<f64>().unwrap_or(0.0),
             Token::Variable(VariableTK::VarName(name)) => {
-                *symbol_table.get(name).unwrap_or(&0.0) // Retrieve variable value from symbol table
+                *symbol_table.get(name).unwrap_or(&0.0) // Retrieve variable value from the symbol table
             }
             _ => 0.0,
         },
-        // Recursive case: Handle `ArithEx` and its components
+        // Recursive case: Handle `ArithEx`
         Symbol::NonTerminal(NonTerminal::ArithEx) => {
             let mut result = 0.0;
-            let mut current_op: Option<OpsTK> = None; // To track the current operation
 
             for child in &node.children {
                 match &child.Symbol {
                     Symbol::NonTerminal(NonTerminal::ArithVal) => {
-                        // Evaluate the `ArithVal` (number, variable, etc.)
-                        result = evaluate_expression(child, symbol_table);
+                        // Recursively evaluate `ArithVal` for the base value
+                        result = search_for_arithVal(node, symbol_table);
+                        println!("{:?}", result);
                     }
                     Symbol::NonTerminal(NonTerminal::ArithExP) => {
-                        // Process continuation of the expression
+                        // Evaluate the continuation (`ArithExP`)
                         result = evaluate_arith_exp_p(child, result, symbol_table);
+                        println!("{:?}", result);
                     }
                     _ => {}
                 }
@@ -177,6 +198,28 @@ fn evaluate_expression(node: &TreeNode, symbol_table: &HashMap<String, f64>) -> 
         }
         _ => 0.0,
     }
+}
+
+fn evaluate_arith_val(node: &TreeNode, symbol_table: &HashMap<String, f64>) -> f64 {
+    for child in &node.children {
+        match &child.Symbol {
+            Symbol::NonTerminal(NonTerminal::String) => {
+                // Drill down into `String → VName → Variable`
+                return evaluate_expression(child, symbol_table);
+            }
+            Symbol::Terminal(token) => match token {
+                Token::Type(TypeTK::IntVal(val)) => return *val as f64,
+                Token::Type(TypeTK::DoubleVal(val)) => return val.parse::<f64>().unwrap_or(0.0),
+                Token::Variable(VariableTK::VarName(name)) => {
+                    return *symbol_table.get(name).unwrap_or(&0.0)
+                }
+                _ => {}
+            },
+            _ => {}
+        }
+    }
+
+    0.0 // Default to 0.0 if no value is found
 }
 
 // Helper function to process `ArithExP` recursively
