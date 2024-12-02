@@ -1,13 +1,292 @@
+use crate::lexer::{self, BinaryOpsTK, ControlFlowTK, OpsTK, ScopeTK, Token, TypeTK, UtilitiesTK, VariableTK};
+use crate::parser::{self, NonTerminal, TreeNode, Symbol};
+use std::collections::HashMap;
+use std::env::var;
+use std::sync::Mutex;
+
+pub fn interpret(tree: &TreeNode) {
+    let mut symbol_table: HashMap<String, (String, f64)> = HashMap::new();
+    process_node(tree, &mut symbol_table);
+}
+
+fn process_node(node: &TreeNode, symbol_table: &mut HashMap<String, (String, f64)>) {
+    println!("Processing node: {:?}", node.Symbol); // Debugging output
+
+    match &node.Symbol {
+        Symbol::NonTerminal(non_terminal) => match non_terminal {
+            NonTerminal::Prog | NonTerminal::FuncDecl | NonTerminal::StatementList => {
+                // Process all children in the list
+                for (i, child) in node.children.iter().enumerate() {
+                    println!("Processing child {} of StatementList: {:?}", i, child.Symbol);
+                    process_node(child, symbol_table);
+                }
+            },
+
+            NonTerminal::Statement => {
+                if let Symbol::Terminal(Token::Utilities(UtilitiesTK::Print)) = node.children[0].Symbol{
+                // if is_print_statement(node) {
+                    println!("Processing print statement in node: {:?}", node.Symbol);
+                    handle_print(node, symbol_table);
+                } else {
+                    // Process non-print statements
+                    for child in &node.children {
+                        process_node(child, symbol_table);
+                    }
+                }
+            },
+
+            NonTerminal::VarDecl => {
+                let mut var_name = String::new();
+                // let mut var_name = node.children[0].children[1].Symbol;
+                let mut value = 0.0;
+                let mut data_type = String::new();
+
+                if let Symbol::Terminal(Token::Variable(VariableTK::VarName(ref name))) = node.children[0].children[1].children[0].Symbol {
+                    var_name = name.clone();
+                    // println!("{:?}", var_name);
+                }
+                                                                            //VarDecl, VarDeclP, Ex, BoolEx, RelEx, ArithEx, ArithVal, Number, IntVal
+                if let Symbol::Terminal(Token::Type(TypeTK::IntVal(val))) = node.children[1].children[1].children[0].children[0].children[0].children[0].children[0].children[0].Symbol {
+                    value = val as f64;
+                    data_type = "int".to_string();
+                    // println!("{:?}", value);
+                }
+                if let Symbol::Terminal(Token::Type(TypeTK::DoubleVal(ref val))) = node.children[1].children[1].children[0].children[0].children[0].children[0].children[0].children[0].Symbol {
+                    value = val.parse::<f64>().unwrap_or(0.0);
+                    data_type = "double".to_string();
+                    // println!("{:?}", value);
+                }
+                if !var_name.is_empty() && var_name != "main" {
+                    symbol_table.insert(var_name.clone(), (data_type, value)); 
+                    println!("{:?}", symbol_table);
+                    // *LAST_VAR.lock().unwrap() = var_name.clone();
+                }
+            },
+            
+            NonTerminal::Assignment => {
+                let mut var_name = String::new();
+                let mut value = 0.0;
+                let mut data_type = String::new();
+
+                if let Symbol::Terminal(Token::Variable(VariableTK::VarName(ref name))) = node.children[0].children[0].Symbol {
+                    var_name = name.clone();
+                    // println!("{:?}", var_name);
+                }
+
+                value = evaluate_expression(&node.children[2].children[0].children[0].children[0], symbol_table);
+
+                if value.fract() == 0.0 {
+                    data_type = "int".to_string();
+                } else {
+                    data_type = "double".to_string();
+                }
+
+                if !var_name.is_empty() {
+                    symbol_table.insert(var_name, (data_type, value));
+                    println!("{:?}", symbol_table);
+                }
+            },
+
+            _ => {
+                for child in &node.children {
+                    process_node(child, symbol_table);
+                }
+            }
+        },
+        _ => {}
+    }
+}
+
+fn is_print_statement(node: &TreeNode) -> bool {
+    // Check for Utilities(Print) at any level in the children
+    for child in &node.children {
+        if let Symbol::Terminal(Token::Utilities(UtilitiesTK::Print)) = child.Symbol {
+            println!("Found print statement in node: {:?}", node.Symbol);
+            return true;
+        }
+    }
+    false
+}
+
+fn handle_print(node: &TreeNode, symbol_table: &HashMap<String, (String, f64)>) {
+    // Find and evaluate the `Text` or related content to print
+    for child in &node.children {
+        match &child.Symbol {
+            Symbol::NonTerminal(NonTerminal::Text) | Symbol::NonTerminal(NonTerminal::TextElement) => {
+                let value_to_print = evaluate_text(child, symbol_table);
+                println!("Print value: {}", value_to_print);
+            }
+            _ => {} // Ignore other parts (e.g., parentheses or semicolon)
+        }
+    }
+}
+
+fn evaluate_text(node: &TreeNode, symbol_table: &HashMap<String, (String, f64)>) -> String {
+    match &node.Symbol {
+        Symbol::NonTerminal(NonTerminal::VName) => {
+            if let Some(child) = node.children.first() {
+                if let Symbol::Terminal(Token::Variable(VariableTK::VarName(name))) = &child.Symbol {
+                    // Retrieve the variable value from the symbol table
+                    return format!("{:?}", symbol_table.get(name).unwrap_or(&(String::new(), 0.0)));
+                }
+            }
+        }
+        Symbol::Terminal(Token::Type(TypeTK::IntVal(val))) => {
+            return format!("{}", val);
+        }
+        Symbol::Terminal(Token::Type(TypeTK::DoubleVal(val))) => {
+            return val.clone();
+        }
+        _ => {
+            // For other cases, recursively evaluate the children
+            let mut result = String::new();
+            for child in &node.children {
+                result += &evaluate_text(child, symbol_table);
+            }
+            return result;
+        }
+    }
+
+    String::new()
+}
+
+fn search_for_arithVal(node: &TreeNode, symbol_table: &HashMap<String, (String, f64)>) -> f64 {
+    for child in &node.children {
+        match &child.Symbol {
+            // Base case: Directly evaluate terminal values
+            Symbol::Terminal(token) => match token {
+                Token::Type(TypeTK::IntVal(val)) => return *val as f64,
+                Token::Type(TypeTK::DoubleVal(val)) => return val.parse::<f64>().unwrap_or(0.0),
+                Token::Variable(VariableTK::VarName(name)) => {
+                    return symbol_table.get(name).map(|(_, val)| *val).unwrap_or(0.0) // Retrieve variable value from the symbol table
+                }
+                _ => {}
+            },
+            _ => {
+                let result = search_for_arithVal(child, symbol_table);
+                if result != 0.0 {
+                    return result;
+                }
+            }
+        }
+    }
+    0.0
+}
+
+fn evaluate_expression(node: &TreeNode, symbol_table: &HashMap<String, (String, f64)>) -> f64 {
+    match &node.Symbol {
+        // Base case: Directly evaluate terminal values
+        Symbol::Terminal(token) => match token {
+            Token::Type(TypeTK::IntVal(val)) => *val as f64,
+            Token::Type(TypeTK::DoubleVal(val)) => val.parse::<f64>().unwrap_or(0.0),
+            Token::Variable(VariableTK::VarName(name)) => {
+                symbol_table.get(name).map(|(_, val)| *val).unwrap_or(0.0) // Retrieve variable value from the symbol table
+            }
+            _ => 0.0,
+        },
+        // Recursive case: Handle `ArithEx`
+        Symbol::NonTerminal(NonTerminal::ArithEx) => {
+            let mut result = 0.0;
+
+            for child in &node.children {
+                match &child.Symbol {
+                    Symbol::NonTerminal(NonTerminal::ArithVal) => {
+                        // Recursively evaluate `ArithVal` for the base value
+                        result = search_for_arithVal(node, symbol_table);
+                        // println!("{:?}", result);
+                    }
+                    Symbol::NonTerminal(NonTerminal::ArithExP) => {
+                        // Evaluate the continuation (`ArithExP`)
+                        result = evaluate_arith_exp_p(child, result, symbol_table);
+                        // println!("{:?}", result);
+                    }
+                    _ => {}
+                }
+            }
+
+            result
+        }
+        _ => 0.0,
+    }
+}
+
+fn evaluate_arith_val(node: &TreeNode, symbol_table: &HashMap<String, (String, f64)>) -> f64 {
+    for child in &node.children {
+        match &child.Symbol {
+            Symbol::NonTerminal(NonTerminal::String) => {
+                // Drill down into `String → VName → Variable`
+                return evaluate_expression(child, symbol_table);
+            }
+            Symbol::Terminal(token) => match token {
+                Token::Type(TypeTK::IntVal(val)) => return *val as f64,
+                Token::Type(TypeTK::DoubleVal(val)) => return val.parse::<f64>().unwrap_or(0.0),
+                Token::Variable(VariableTK::VarName(name)) => {
+                    return symbol_table.get(name).map(|(_, val)| *val).unwrap_or(0.0)
+                }
+                _ => {}
+            },
+            _ => {}
+        }
+    }
+
+    0.0 // Default to 0.0 if no value is found
+}
+
+// Helper function to process `ArithExP` recursively
+fn evaluate_arith_exp_p(node: &TreeNode, accumulated_value: f64, symbol_table: &HashMap<String, (String, f64)>) -> f64 {
+    let mut result = accumulated_value;
+    let mut operation = None;
+
+    for child in &node.children {
+        match &child.Symbol {
+            // Identify the arithmetic operation
+            Symbol::NonTerminal(NonTerminal::ArithOp) => {
+                for op_child in &child.children {
+                    if let Symbol::Terminal(Token::Ops(op)) = &op_child.Symbol {
+                        operation = Some(op);
+                    }
+                    for opP_child in &op_child.children {
+                        if let Symbol::Terminal(Token::Ops(op)) = &opP_child.Symbol {
+                            operation = Some(op);
+                        }
+                    }
+                }
+            }
+            // Evaluate the next `ArithEx`
+            Symbol::NonTerminal(NonTerminal::ArithEx) => {
+                let value = evaluate_expression(child, symbol_table);
+                result = match operation {
+                    Some(OpsTK::Plus) => result + value,
+                    Some(OpsTK::Minus) => result - value,
+                    Some(OpsTK::Times) => result * value,
+                    Some(OpsTK::Divide) => result / value,
+                    Some(OpsTK::Modulo) => result % value,
+                    _ => result,
+                };
+            }
+            _ => {}
+        }
+    }
+
+    result
+}
+
 With text: 
 int main() {
-    /*This is a comment*/
-    int a = 2;
-    int b = 1;
-    int INTRes = 0;
+    /*This should be able handle in / where a remanded occurs*/
+    int a = 26;
+    int b = 5;
+    double c = 8.4;
+    double d = 2.0;
 
-    INTRes = a + b;
+    int INTRes = 0;
+    double DOUBLERes = 0.0;
+
+    INTRes = a / b;
+    DOUBLERes = c / d;
 
     print(INTRes);
+    print(DOUBLERes);
 
     return 0; 
 }
@@ -19,27 +298,53 @@ int main() {
 "int"
 "a"
 "="
-"2"
+"26"
 ";"
 "int"
 "b"
 "="
-"1"
+"5"
+";"
+"double"
+"c"
+"="
+"8.4"
+";"
+"double"
+"d"
+"="
+"2.0"
 ";"
 "int"
 "INTRes"
 "="
 "0"
 ";"
+"double"
+"DOUBLERes"
+"="
+"0.0"
+";"
 "INTRes"
 "="
 "a"
-"+"
+"/"
 "b"
+";"
+"DOUBLERes"
+"="
+"c"
+"/"
+"d"
 ";"
 "print"
 "("
 "INTRes"
+")"
+";"
+"print"
+"("
+"DOUBLERes"
 ")"
 ";"
 "return"
@@ -89,22 +394,22 @@ Parsing non-terminal: VarDeclP
 Current token: Ops(Assignment)
 
 Parsing non-terminal: Ex
-Current token: Type(IntVal(2))
+Current token: Type(IntVal(26))
 
 Parsing non-terminal: BoolEx
-Current token: Type(IntVal(2))
+Current token: Type(IntVal(26))
 
 Parsing non-terminal: RelEx
-Current token: Type(IntVal(2))
+Current token: Type(IntVal(26))
 
 Parsing non-terminal: ArithEx
-Current token: Type(IntVal(2))
+Current token: Type(IntVal(26))
 
 Parsing non-terminal: ArithVal
-Current token: Type(IntVal(2))
+Current token: Type(IntVal(26))
 
 Parsing non-terminal: Number
-Current token: Type(IntVal(2))
+Current token: Type(IntVal(26))
 
 Parsing non-terminal: ArithExP
 Current token: Scope(Semi)
@@ -137,22 +442,118 @@ Parsing non-terminal: VarDeclP
 Current token: Ops(Assignment)
 
 Parsing non-terminal: Ex
-Current token: Type(IntVal(1))
+Current token: Type(IntVal(5))
 
 Parsing non-terminal: BoolEx
-Current token: Type(IntVal(1))
+Current token: Type(IntVal(5))
 
 Parsing non-terminal: RelEx
-Current token: Type(IntVal(1))
+Current token: Type(IntVal(5))
 
 Parsing non-terminal: ArithEx
-Current token: Type(IntVal(1))
+Current token: Type(IntVal(5))
 
 Parsing non-terminal: ArithVal
-Current token: Type(IntVal(1))
+Current token: Type(IntVal(5))
 
 Parsing non-terminal: Number
-Current token: Type(IntVal(1))
+Current token: Type(IntVal(5))
+
+Parsing non-terminal: ArithExP
+Current token: Scope(Semi)
+
+Parsing non-terminal: RelExP
+Current token: Scope(Semi)
+
+Parsing non-terminal: BoolExP
+Current token: Scope(Semi)
+
+Parsing non-terminal: StatementList
+Current token: Type(Double)
+
+Parsing non-terminal: Statement
+Current token: Type(Double)
+
+Parsing non-terminal: VarDecl
+Current token: Type(Double)
+
+Parsing non-terminal: Decl
+Current token: Type(Double)
+
+Parsing non-terminal: Type
+Current token: Type(Double)
+
+Parsing non-terminal: VName
+Current token: Variable(VarName("c"))
+
+Parsing non-terminal: VarDeclP
+Current token: Ops(Assignment)
+
+Parsing non-terminal: Ex
+Current token: Type(DoubleVal("8.4"))
+
+Parsing non-terminal: BoolEx
+Current token: Type(DoubleVal("8.4"))
+
+Parsing non-terminal: RelEx
+Current token: Type(DoubleVal("8.4"))
+
+Parsing non-terminal: ArithEx
+Current token: Type(DoubleVal("8.4"))
+
+Parsing non-terminal: ArithVal
+Current token: Type(DoubleVal("8.4"))
+
+Parsing non-terminal: Number
+Current token: Type(DoubleVal("8.4"))
+
+Parsing non-terminal: ArithExP
+Current token: Scope(Semi)
+
+Parsing non-terminal: RelExP
+Current token: Scope(Semi)
+
+Parsing non-terminal: BoolExP
+Current token: Scope(Semi)
+
+Parsing non-terminal: StatementList
+Current token: Type(Double)
+
+Parsing non-terminal: Statement
+Current token: Type(Double)
+
+Parsing non-terminal: VarDecl
+Current token: Type(Double)
+
+Parsing non-terminal: Decl
+Current token: Type(Double)
+
+Parsing non-terminal: Type
+Current token: Type(Double)
+
+Parsing non-terminal: VName
+Current token: Variable(VarName("d"))
+
+Parsing non-terminal: VarDeclP
+Current token: Ops(Assignment)
+
+Parsing non-terminal: Ex
+Current token: Type(DoubleVal("2.0"))
+
+Parsing non-terminal: BoolEx
+Current token: Type(DoubleVal("2.0"))
+
+Parsing non-terminal: RelEx
+Current token: Type(DoubleVal("2.0"))
+
+Parsing non-terminal: ArithEx
+Current token: Type(DoubleVal("2.0"))
+
+Parsing non-terminal: ArithVal
+Current token: Type(DoubleVal("2.0"))
+
+Parsing non-terminal: Number
+Current token: Type(DoubleVal("2.0"))
 
 Parsing non-terminal: ArithExP
 Current token: Scope(Semi)
@@ -201,6 +602,54 @@ Current token: Type(IntVal(0))
 
 Parsing non-terminal: Number
 Current token: Type(IntVal(0))
+
+Parsing non-terminal: ArithExP
+Current token: Scope(Semi)
+
+Parsing non-terminal: RelExP
+Current token: Scope(Semi)
+
+Parsing non-terminal: BoolExP
+Current token: Scope(Semi)
+
+Parsing non-terminal: StatementList
+Current token: Type(Double)
+
+Parsing non-terminal: Statement
+Current token: Type(Double)
+
+Parsing non-terminal: VarDecl
+Current token: Type(Double)
+
+Parsing non-terminal: Decl
+Current token: Type(Double)
+
+Parsing non-terminal: Type
+Current token: Type(Double)
+
+Parsing non-terminal: VName
+Current token: Variable(VarName("DOUBLERes"))
+
+Parsing non-terminal: VarDeclP
+Current token: Ops(Assignment)
+
+Parsing non-terminal: Ex
+Current token: Type(DoubleVal("0.0"))
+
+Parsing non-terminal: BoolEx
+Current token: Type(DoubleVal("0.0"))
+
+Parsing non-terminal: RelEx
+Current token: Type(DoubleVal("0.0"))
+
+Parsing non-terminal: ArithEx
+Current token: Type(DoubleVal("0.0"))
+
+Parsing non-terminal: ArithVal
+Current token: Type(DoubleVal("0.0"))
+
+Parsing non-terminal: Number
+Current token: Type(DoubleVal("0.0"))
 
 Parsing non-terminal: ArithExP
 Current token: Scope(Semi)
@@ -245,13 +694,16 @@ Parsing non-terminal: VName
 Current token: Variable(VarName("a"))
 
 Parsing non-terminal: StringP
-Current token: Ops(Plus)
+Current token: Ops(Divide)
 
 Parsing non-terminal: ArithExP
-Current token: Ops(Plus)
+Current token: Ops(Divide)
 
 Parsing non-terminal: ArithOp
-Current token: Ops(Plus)
+Current token: Ops(Divide)
+
+Parsing non-terminal: ArithOpP
+Current token: Ops(Divide)
 
 Parsing non-terminal: ArithEx
 Current token: Variable(VarName("b"))
@@ -264,6 +716,75 @@ Current token: Variable(VarName("b"))
 
 Parsing non-terminal: VName
 Current token: Variable(VarName("b"))
+
+Parsing non-terminal: StringP
+Current token: Scope(Semi)
+
+Parsing non-terminal: ArithExP
+Current token: Scope(Semi)
+
+Parsing non-terminal: RelExP
+Current token: Scope(Semi)
+
+Parsing non-terminal: BoolExP
+Current token: Scope(Semi)
+
+Parsing non-terminal: StatementList
+Current token: Variable(VarName("DOUBLERes"))
+
+Parsing non-terminal: Statement
+Current token: Variable(VarName("DOUBLERes"))
+
+Parsing non-terminal: Assignment
+Current token: Variable(VarName("DOUBLERes"))
+
+Parsing non-terminal: VName
+Current token: Variable(VarName("DOUBLERes"))
+
+Parsing non-terminal: Ex
+Current token: Variable(VarName("c"))
+
+Parsing non-terminal: BoolEx
+Current token: Variable(VarName("c"))
+
+Parsing non-terminal: RelEx
+Current token: Variable(VarName("c"))
+
+Parsing non-terminal: ArithEx
+Current token: Variable(VarName("c"))
+
+Parsing non-terminal: ArithVal
+Current token: Variable(VarName("c"))
+
+Parsing non-terminal: String
+Current token: Variable(VarName("c"))
+
+Parsing non-terminal: VName
+Current token: Variable(VarName("c"))
+
+Parsing non-terminal: StringP
+Current token: Ops(Divide)
+
+Parsing non-terminal: ArithExP
+Current token: Ops(Divide)
+
+Parsing non-terminal: ArithOp
+Current token: Ops(Divide)
+
+Parsing non-terminal: ArithOpP
+Current token: Ops(Divide)
+
+Parsing non-terminal: ArithEx
+Current token: Variable(VarName("d"))
+
+Parsing non-terminal: ArithVal
+Current token: Variable(VarName("d"))
+
+Parsing non-terminal: String
+Current token: Variable(VarName("d"))
+
+Parsing non-terminal: VName
+Current token: Variable(VarName("d"))
 
 Parsing non-terminal: StringP
 Current token: Scope(Semi)
@@ -294,6 +815,30 @@ Current token: Variable(VarName("INTRes"))
 
 Parsing non-terminal: VName
 Current token: Variable(VarName("INTRes"))
+
+Parsing non-terminal: StringP
+Current token: Scope(BracketR)
+
+Parsing non-terminal: TextTail
+Current token: Scope(BracketR)
+
+Parsing non-terminal: StatementList
+Current token: Utilities(Print)
+
+Parsing non-terminal: Statement
+Current token: Utilities(Print)
+
+Parsing non-terminal: Text
+Current token: Variable(VarName("DOUBLERes"))
+
+Parsing non-terminal: TextElement
+Current token: Variable(VarName("DOUBLERes"))
+
+Parsing non-terminal: String
+Current token: Variable(VarName("DOUBLERes"))
+
+Parsing non-terminal: VName
+Current token: Variable(VarName("DOUBLERes"))
 
 Parsing non-terminal: StringP
 Current token: Scope(BracketR)
@@ -348,7 +893,7 @@ NonTerminal: Prog
                     NonTerminal: ArithEx
                       NonTerminal: ArithVal
                         NonTerminal: Number
-                          Symbol: Type(IntVal(2))
+                          Symbol: Type(IntVal(26))
                       NonTerminal: ArithExP
                     NonTerminal: RelExP
                   NonTerminal: BoolExP
@@ -369,7 +914,7 @@ NonTerminal: Prog
                       NonTerminal: ArithEx
                         NonTerminal: ArithVal
                           NonTerminal: Number
-                            Symbol: Type(IntVal(1))
+                            Symbol: Type(IntVal(5))
                         NonTerminal: ArithExP
                       NonTerminal: RelExP
                     NonTerminal: BoolExP
@@ -379,9 +924,9 @@ NonTerminal: Prog
               NonTerminal: VarDecl
                 NonTerminal: Decl
                   NonTerminal: Type
-                    Symbol: Type(Int)
+                    Symbol: Type(Double)
                   NonTerminal: VName
-                    Symbol: Variable(VarName("INTRes"))
+                    Symbol: Variable(VarName("c"))
                 NonTerminal: VarDeclP
                   Symbol: Ops(Assignment)
                   NonTerminal: Ex
@@ -390,60 +935,166 @@ NonTerminal: Prog
                         NonTerminal: ArithEx
                           NonTerminal: ArithVal
                             NonTerminal: Number
-                              Symbol: Type(IntVal(0))
+                              Symbol: Type(DoubleVal("8.4"))
                           NonTerminal: ArithExP
                         NonTerminal: RelExP
                       NonTerminal: BoolExP
                 Symbol: Scope(Semi)
             NonTerminal: StatementList
               NonTerminal: Statement
-                NonTerminal: Assignment
-                  NonTerminal: VName
-                    Symbol: Variable(VarName("INTRes"))
-                  Symbol: Ops(Assignment)
-                  NonTerminal: Ex
-                    NonTerminal: BoolEx
-                      NonTerminal: RelEx
-                        NonTerminal: ArithEx
-                          NonTerminal: ArithVal
-                            NonTerminal: String
-                              NonTerminal: VName
-                                Symbol: Variable(VarName("a"))
-                              NonTerminal: StringP
-                          NonTerminal: ArithExP
-                            NonTerminal: ArithOp
-                              Symbol: Ops(Plus)
-                            NonTerminal: ArithEx
-                              NonTerminal: ArithVal
-                                NonTerminal: String
-                                  NonTerminal: VName
-                                    Symbol: Variable(VarName("b"))
-                                  NonTerminal: StringP
-                              NonTerminal: ArithExP
-                        NonTerminal: RelExP
-                      NonTerminal: BoolExP
+                NonTerminal: VarDecl
+                  NonTerminal: Decl
+                    NonTerminal: Type
+                      Symbol: Type(Double)
+                    NonTerminal: VName
+                      Symbol: Variable(VarName("d"))
+                  NonTerminal: VarDeclP
+                    Symbol: Ops(Assignment)
+                    NonTerminal: Ex
+                      NonTerminal: BoolEx
+                        NonTerminal: RelEx
+                          NonTerminal: ArithEx
+                            NonTerminal: ArithVal
+                              NonTerminal: Number
+                                Symbol: Type(DoubleVal("2.0"))
+                            NonTerminal: ArithExP
+                          NonTerminal: RelExP
+                        NonTerminal: BoolExP
                   Symbol: Scope(Semi)
               NonTerminal: StatementList
                 NonTerminal: Statement
-                  Symbol: Utilities(Print)
-                  Symbol: Scope(BracketL)
-                  NonTerminal: Text
-                    NonTerminal: TextElement
-                      NonTerminal: String
-                        NonTerminal: VName
-                          Symbol: Variable(VarName("INTRes"))
-                        NonTerminal: StringP
-                    NonTerminal: TextTail
-                  Symbol: Scope(BracketR)
-                  Symbol: Scope(Semi)
+                  NonTerminal: VarDecl
+                    NonTerminal: Decl
+                      NonTerminal: Type
+                        Symbol: Type(Int)
+                      NonTerminal: VName
+                        Symbol: Variable(VarName("INTRes"))
+                    NonTerminal: VarDeclP
+                      Symbol: Ops(Assignment)
+                      NonTerminal: Ex
+                        NonTerminal: BoolEx
+                          NonTerminal: RelEx
+                            NonTerminal: ArithEx
+                              NonTerminal: ArithVal
+                                NonTerminal: Number
+                                  Symbol: Type(IntVal(0))
+                              NonTerminal: ArithExP
+                            NonTerminal: RelExP
+                          NonTerminal: BoolExP
+                    Symbol: Scope(Semi)
                 NonTerminal: StatementList
                   NonTerminal: Statement
-                    Symbol: ControlFlow(Return)
-                    NonTerminal: ReturnTail
-                      NonTerminal: Number
-                        Symbol: Type(IntVal(0))
-                    Symbol: Scope(Semi)
+                    NonTerminal: VarDecl
+                      NonTerminal: Decl
+                        NonTerminal: Type
+                          Symbol: Type(Double)
+                        NonTerminal: VName
+                          Symbol: Variable(VarName("DOUBLERes"))
+                      NonTerminal: VarDeclP
+                        Symbol: Ops(Assignment)
+                        NonTerminal: Ex
+                          NonTerminal: BoolEx
+                            NonTerminal: RelEx
+                              NonTerminal: ArithEx
+                                NonTerminal: ArithVal
+                                  NonTerminal: Number
+                                    Symbol: Type(DoubleVal("0.0"))
+                                NonTerminal: ArithExP
+                              NonTerminal: RelExP
+                            NonTerminal: BoolExP
+                      Symbol: Scope(Semi)
                   NonTerminal: StatementList
+                    NonTerminal: Statement
+                      NonTerminal: Assignment
+                        NonTerminal: VName
+                          Symbol: Variable(VarName("INTRes"))
+                        Symbol: Ops(Assignment)
+                        NonTerminal: Ex
+                          NonTerminal: BoolEx
+                            NonTerminal: RelEx
+                              NonTerminal: ArithEx
+                                NonTerminal: ArithVal
+                                  NonTerminal: String
+                                    NonTerminal: VName
+                                      Symbol: Variable(VarName("a"))
+                                    NonTerminal: StringP
+                                NonTerminal: ArithExP
+                                  NonTerminal: ArithOp
+                                    NonTerminal: ArithOpP
+                                      Symbol: Ops(Divide)
+                                  NonTerminal: ArithEx
+                                    NonTerminal: ArithVal
+                                      NonTerminal: String
+                                        NonTerminal: VName
+                                          Symbol: Variable(VarName("b"))
+                                        NonTerminal: StringP
+                                    NonTerminal: ArithExP
+                              NonTerminal: RelExP
+                            NonTerminal: BoolExP
+                        Symbol: Scope(Semi)
+                    NonTerminal: StatementList
+                      NonTerminal: Statement
+                        NonTerminal: Assignment
+                          NonTerminal: VName
+                            Symbol: Variable(VarName("DOUBLERes"))
+                          Symbol: Ops(Assignment)
+                          NonTerminal: Ex
+                            NonTerminal: BoolEx
+                              NonTerminal: RelEx
+                                NonTerminal: ArithEx
+                                  NonTerminal: ArithVal
+                                    NonTerminal: String
+                                      NonTerminal: VName
+                                        Symbol: Variable(VarName("c"))
+                                      NonTerminal: StringP
+                                  NonTerminal: ArithExP
+                                    NonTerminal: ArithOp
+                                      NonTerminal: ArithOpP
+                                        Symbol: Ops(Divide)
+                                    NonTerminal: ArithEx
+                                      NonTerminal: ArithVal
+                                        NonTerminal: String
+                                          NonTerminal: VName
+                                            Symbol: Variable(VarName("d"))
+                                          NonTerminal: StringP
+                                      NonTerminal: ArithExP
+                                NonTerminal: RelExP
+                              NonTerminal: BoolExP
+                          Symbol: Scope(Semi)
+                      NonTerminal: StatementList
+                        NonTerminal: Statement
+                          Symbol: Utilities(Print)
+                          Symbol: Scope(BracketL)
+                          NonTerminal: Text
+                            NonTerminal: TextElement
+                              NonTerminal: String
+                                NonTerminal: VName
+                                  Symbol: Variable(VarName("INTRes"))
+                                NonTerminal: StringP
+                            NonTerminal: TextTail
+                          Symbol: Scope(BracketR)
+                          Symbol: Scope(Semi)
+                        NonTerminal: StatementList
+                          NonTerminal: Statement
+                            Symbol: Utilities(Print)
+                            Symbol: Scope(BracketL)
+                            NonTerminal: Text
+                              NonTerminal: TextElement
+                                NonTerminal: String
+                                  NonTerminal: VName
+                                    Symbol: Variable(VarName("DOUBLERes"))
+                                  NonTerminal: StringP
+                              NonTerminal: TextTail
+                            Symbol: Scope(BracketR)
+                            Symbol: Scope(Semi)
+                          NonTerminal: StatementList
+                            NonTerminal: Statement
+                              Symbol: ControlFlow(Return)
+                              NonTerminal: ReturnTail
+                                NonTerminal: Number
+                                  Symbol: Type(IntVal(0))
+                              Symbol: Scope(Semi)
+                            NonTerminal: StatementList
       Symbol: Scope(CurlyBracketR)
     NonTerminal: FuncList
 
@@ -471,44 +1122,61 @@ Processing node: NonTerminal(StatementList)
 Processing child 0 of StatementList: NonTerminal(Statement)
 Processing node: NonTerminal(Statement)
 Processing node: NonTerminal(VarDecl)
-{"a": 2.0}
+{"a": ("int", 26.0)}
 Processing child 1 of StatementList: NonTerminal(StatementList)
 Processing node: NonTerminal(StatementList)
 Processing child 0 of StatementList: NonTerminal(Statement)
 Processing node: NonTerminal(Statement)
 Processing node: NonTerminal(VarDecl)
-{"b": 1.0, "a": 2.0}
+{"b": ("int", 5.0), "a": ("int", 26.0)}
 Processing child 1 of StatementList: NonTerminal(StatementList)
 Processing node: NonTerminal(StatementList)
 Processing child 0 of StatementList: NonTerminal(Statement)
 Processing node: NonTerminal(Statement)
 Processing node: NonTerminal(VarDecl)
-{"b": 1.0, "a": 2.0, "INTRes": 0.0}
+{"b": ("int", 5.0), "c": ("double", 8.4), "a": ("int", 26.0)}
+Processing child 1 of StatementList: NonTerminal(StatementList)
+Processing node: NonTerminal(StatementList)
+Processing child 0 of StatementList: NonTerminal(Statement)
+Processing node: NonTerminal(Statement)
+Processing node: NonTerminal(VarDecl)
+{"d": ("double", 2.0), "b": ("int", 5.0), "c": ("double", 8.4), "a": ("int", 26.0)}
+Processing child 1 of StatementList: NonTerminal(StatementList)
+Processing node: NonTerminal(StatementList)
+Processing child 0 of StatementList: NonTerminal(Statement)
+Processing node: NonTerminal(Statement)
+Processing node: NonTerminal(VarDecl)
+{"d": ("double", 2.0), "INTRes": ("int", 0.0), "b": ("int", 5.0), "c": ("double", 8.4), "a": ("int", 26.0)}
+Processing child 1 of StatementList: NonTerminal(StatementList)
+Processing node: NonTerminal(StatementList)
+Processing child 0 of StatementList: NonTerminal(Statement)
+Processing node: NonTerminal(Statement)
+Processing node: NonTerminal(VarDecl)
+{"d": ("double", 2.0), "INTRes": ("int", 0.0), "b": ("int", 5.0), "c": ("double", 8.4), "DOUBLERes": ("double", 0.0), "a": ("int", 26.0)}
 Processing child 1 of StatementList: NonTerminal(StatementList)
 Processing node: NonTerminal(StatementList)
 Processing child 0 of StatementList: NonTerminal(Statement)
 Processing node: NonTerminal(Statement)
 Processing node: NonTerminal(Assignment)
-0.0
-0.0
-0.0
-0.0
-{"b": 1.0, "INTRes": 0.0, "a": 2.0}
+{"d": ("double", 2.0), "INTRes": ("double", 5.2), "b": ("int", 5.0), "c": ("double", 8.4), "DOUBLERes": ("double", 0.0), "a": ("int", 26.0)}
 Processing child 1 of StatementList: NonTerminal(StatementList)
 Processing node: NonTerminal(StatementList)
 Processing child 0 of StatementList: NonTerminal(Statement)
 Processing node: NonTerminal(Statement)
-Processing node: Terminal(Utilities(Print))
-Processing node: Terminal(Scope(BracketL))
-Processing node: NonTerminal(Text)
-Processing node: NonTerminal(TextElement)
-Processing node: NonTerminal(String)
-Processing node: NonTerminal(VName)
-Processing node: Terminal(Variable(VarName("INTRes")))
-Processing node: NonTerminal(StringP)
-Processing node: NonTerminal(TextTail)
-Processing node: Terminal(Scope(BracketR))
-Processing node: Terminal(Scope(Semi))
+Processing node: NonTerminal(Assignment)
+{"d": ("double", 2.0), "INTRes": ("double", 5.2), "b": ("int", 5.0), "c": ("double", 8.4), "DOUBLERes": ("double", 4.2), "a": ("int", 26.0)}
+Processing child 1 of StatementList: NonTerminal(StatementList)
+Processing node: NonTerminal(StatementList)
+Processing child 0 of StatementList: NonTerminal(Statement)
+Processing node: NonTerminal(Statement)
+Processing print statement in node: NonTerminal(Statement)
+Print value: ("double", 5.2)
+Processing child 1 of StatementList: NonTerminal(StatementList)
+Processing node: NonTerminal(StatementList)
+Processing child 0 of StatementList: NonTerminal(Statement)
+Processing node: NonTerminal(Statement)
+Processing print statement in node: NonTerminal(Statement)
+Print value: ("double", 4.2)
 Processing child 1 of StatementList: NonTerminal(StatementList)
 Processing node: NonTerminal(StatementList)
 Processing child 0 of StatementList: NonTerminal(Statement)
