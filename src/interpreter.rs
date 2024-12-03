@@ -65,24 +65,21 @@ fn process_node(node: &TreeNode, symbol_table: &mut HashMap<String, (String, f64
             
             NonTerminal::Assignment => {
                 let mut var_name = String::new();
+                let mut result_type = "int".to_string();
                 let mut value = 0.0;
-                let mut data_type = String::new();
 
                 if let Symbol::Terminal(Token::Variable(VariableTK::VarName(ref name))) = node.children[0].children[0].Symbol {
                     var_name = name.clone();
                     // println!("{:?}", var_name);
                 }
 
-                value = evaluate_expression(&node.children[2].children[0].children[0].children[0], symbol_table);
+                let (evaluated_type, evaluated_value) = evaluate_expression(&node.children[2].children[0].children[0].children[0], symbol_table);
 
-                if value.fract() == 0.0 {
-                    data_type = "int".to_string();
-                } else {
-                    data_type = "double".to_string();
-                }
+                result_type = evaluated_type;
+                value = evaluated_value;
 
                 if !var_name.is_empty() {
-                    symbol_table.insert(var_name, (data_type, value));
+                    symbol_table.insert(var_name, (result_type.clone(), value));
                     println!("{:?}", symbol_table);
                 }
             },
@@ -127,7 +124,14 @@ fn evaluate_text(node: &TreeNode, symbol_table: &HashMap<String, (String, f64)>)
             if let Some(child) = node.children.first() {
                 if let Symbol::Terminal(Token::Variable(VariableTK::VarName(name))) = &child.Symbol {
                     // Retrieve the variable value from the symbol table
-                    return format!("{:?}", symbol_table.get(name).unwrap_or(&(String::new(), 0.0)));
+                    if let Some((data_type, value)) = symbol_table.get(name) {
+                        if data_type == "int" {
+                            return format!("{}", *value as i64);
+                        } else {
+                            return format!("{}", value);
+                        }
+                    }
+                    return String::new();
                 }
             }
         }
@@ -150,43 +154,47 @@ fn evaluate_text(node: &TreeNode, symbol_table: &HashMap<String, (String, f64)>)
     String::new()
 }
 
-fn search_for_arithVal(node: &TreeNode, symbol_table: &HashMap<String, (String, f64)>) -> f64 {
+fn search_for_arithVal(node: &TreeNode, symbol_table: &HashMap<String, (String, f64)>) -> (String, f64) {
     for child in &node.children {
         match &child.Symbol {
             // Base case: Directly evaluate terminal values
             Symbol::Terminal(token) => match token {
-                Token::Type(TypeTK::IntVal(val)) => return *val as f64,
-                Token::Type(TypeTK::DoubleVal(val)) => return val.parse::<f64>().unwrap_or(0.0),
-                Token::Variable(VariableTK::VarName(name)) => {
-                    return symbol_table.get(name).map(|(_, val)| *val).unwrap_or(0.0) // Retrieve variable value from the symbol table
-                }
+                Token::Type(TypeTK::IntVal(val)) => return ("int".to_string(), *val as f64),
+                Token::Type(TypeTK::DoubleVal(val)) => return ("double".to_string(), val.parse::<f64>().unwrap_or(0.0)),
+                Token::Variable(VariableTK::VarName(name)) => 
+                    return symbol_table.get(name).cloned().unwrap_or(("int".to_string(), 0.0)),
                 _ => {}
             },
             _ => {
+                // Recursive case: Search deeper in the tree
                 let result = search_for_arithVal(child, symbol_table);
-                if result != 0.0 {
+                if result.1 != 0.0 {
                     return result;
                 }
             }
         }
     }
-    0.0
+    ("int".to_string(), 0.0) // Default return value
 }
 
-fn evaluate_expression(node: &TreeNode, symbol_table: &HashMap<String, (String, f64)>) -> f64 {
+
+fn evaluate_expression(node: &TreeNode, symbol_table: &HashMap<String, (String, f64)>) -> (String, f64) {
     match &node.Symbol {
         // Base case: Directly evaluate terminal values
         Symbol::Terminal(token) => match token {
-            Token::Type(TypeTK::IntVal(val)) => *val as f64,
-            Token::Type(TypeTK::DoubleVal(val)) => val.parse::<f64>().unwrap_or(0.0),
+            Token::Type(TypeTK::IntVal(val)) => ("int".to_string(), *val as f64),
+            Token::Type(TypeTK::DoubleVal(val)) => ("double".to_string(), val.parse::<f64>().unwrap_or(0.0)),
             Token::Variable(VariableTK::VarName(name)) => {
-                symbol_table.get(name).map(|(_, val)| *val).unwrap_or(0.0) // Retrieve variable value from the symbol table
+                symbol_table
+                    .get(name)
+                    .cloned()
+                    .unwrap_or(("int".to_string(), 0.0)) // Default to integer type with value 0
             }
-            _ => 0.0,
+            _ => ("int".to_string(), 0.0),
         },
         // Recursive case: Handle `ArithEx`
         Symbol::NonTerminal(NonTerminal::ArithEx) => {
-            let mut result = 0.0;
+            let mut result = (String::new(), 0.0);
 
             for child in &node.children {
                 match &child.Symbol {
@@ -206,11 +214,11 @@ fn evaluate_expression(node: &TreeNode, symbol_table: &HashMap<String, (String, 
 
             result
         }
-        _ => 0.0,
+        _ => ("int".to_string(), 0.0),
     }
 }
 
-fn evaluate_arith_val(node: &TreeNode, symbol_table: &HashMap<String, (String, f64)>) -> f64 {
+fn evaluate_arith_val(node: &TreeNode, symbol_table: &HashMap<String, (String, f64)>) -> (String, f64) {
     for child in &node.children {
         match &child.Symbol {
             Symbol::NonTerminal(NonTerminal::String) => {
@@ -218,24 +226,35 @@ fn evaluate_arith_val(node: &TreeNode, symbol_table: &HashMap<String, (String, f
                 return evaluate_expression(child, symbol_table);
             }
             Symbol::Terminal(token) => match token {
-                Token::Type(TypeTK::IntVal(val)) => return *val as f64,
-                Token::Type(TypeTK::DoubleVal(val)) => return val.parse::<f64>().unwrap_or(0.0),
+                Token::Type(TypeTK::IntVal(val)) => return ("int".to_string(), *val as f64),
+                Token::Type(TypeTK::DoubleVal(val)) => return ("double".to_string(), val.parse::<f64>().unwrap_or(0.0)),
                 Token::Variable(VariableTK::VarName(name)) => {
-                    return symbol_table.get(name).map(|(_, val)| *val).unwrap_or(0.0)
+                    return symbol_table
+                        .get(name)
+                        .cloned()
+                        .unwrap_or(("int".to_string(), 0.0)); // Default to 0.0 with "int"
                 }
                 _ => {}
             },
-            _ => {}
+            _ => {
+                // Recursive search into deeper nodes
+                let result = evaluate_arith_val(child, symbol_table);
+                if result.1 != 0.0 {
+                    return result; // Return as soon as a valid result is found
+                }
+            }
         }
     }
 
-    0.0 // Default to 0.0 if no value is found
+    ("int".to_string(), 0.0) // Default to 0.0 if no value is found
 }
 
+
 // Helper function to process `ArithExP` recursively
-fn evaluate_arith_exp_p(node: &TreeNode, accumulated_value: f64, symbol_table: &HashMap<String, (String, f64)>) -> f64 {
-    let mut result = accumulated_value;
+fn evaluate_arith_exp_p(node: &TreeNode, accumulated_value: (String, f64), symbol_table: &HashMap<String, (String, f64)>) -> (String, f64) {
+    let mut result = accumulated_value.1;
     let mut operation = None;
+    let mut current_type = accumulated_value.0;
 
     for child in &node.children {
         match &child.Symbol {
@@ -254,12 +273,24 @@ fn evaluate_arith_exp_p(node: &TreeNode, accumulated_value: f64, symbol_table: &
             }
             // Evaluate the next `ArithEx`
             Symbol::NonTerminal(NonTerminal::ArithEx) => {
-                let value = evaluate_expression(child, symbol_table);
+                let (child_type, value) = evaluate_expression(child, symbol_table);
                 result = match operation {
                     Some(OpsTK::Plus) => result + value,
                     Some(OpsTK::Minus) => result - value,
                     Some(OpsTK::Times) => result * value,
-                    Some(OpsTK::Divide) => result / value,
+                    Some(OpsTK::Divide) => {
+                        // Check operand types for division
+                        if current_type == "int" {
+                            // Integer division
+                            result = (result as i64 / value as i64) as f64;
+                            current_type = "int".to_string();
+                        } else {
+                            // Floating-point division
+                            result = result / value;
+                            current_type = "double".to_string();
+                        }
+                        result
+                    }
                     Some(OpsTK::Modulo) => result % value,
                     _ => result,
                 };
@@ -268,5 +299,5 @@ fn evaluate_arith_exp_p(node: &TreeNode, accumulated_value: f64, symbol_table: &
         }
     }
 
-    result
+    (current_type, result)
 }

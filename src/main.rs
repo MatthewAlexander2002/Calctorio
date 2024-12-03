@@ -31,7 +31,7 @@ fn main() {
     //     println!("\n--------------------");
     // }
 
-    let file = "/home/matthew/Documents/UNI/Sem 6/SDL/Calctorio/TestSuite/InterpreterTests/Division";
+    let file = "/home/matthew/Documents/UNI/Sem 6/SDL/Calctorio/TestSuite/InterpreterTests/Modulo";
     let tokens = lexer::lexer(&file);
         match parser::parser(&tokens) {
             Ok(tree) => {
