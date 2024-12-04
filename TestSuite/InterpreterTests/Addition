@@ -6,7 +6,7 @@ int main() {
     double d = 2.5;
 
     int INTRes = 0;
-    double DOUBLERes = 0;
+    double DOUBLERes = 0.0;
 
     INTRes = a + b;
     DOUBLERes = c + d;

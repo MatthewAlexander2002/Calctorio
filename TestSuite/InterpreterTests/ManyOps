@@ -1,0 +1,17 @@
+int main() {
+    /*This is a comment*/
+    int a = 6;
+    int b = 1;
+    int c = 3;
+
+    int INTOne = 0;
+    int INTTwo = 0;
+
+    INTOne = a + b;
+    INTTwo = a * b + c;
+
+    print(INTOne);
+    print(INTTwo);
+
+    return 0; 
+}

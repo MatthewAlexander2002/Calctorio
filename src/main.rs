@@ -6,6 +6,7 @@ use std::path::Path;
 mod lexer;
 mod parser;
 mod semantic;
+mod interpreter;
 
 fn main() {
     // let test_dir = Path::new("/home/matthew/Documents/UNI/Sem 6/SDL/Calctorio/TestSuite");
@@ -30,22 +31,39 @@ fn main() {
     //     println!("\n--------------------");
     // }
 
-    let file = "/home/matthew/Documents/UNI/Sem 6/SDL/Calctorio/TestSuite/AtomicTests/Addition";
+    let file = "/home/matthew/Documents/UNI/Sem 6/SDL/Calctorio/TestSuite/InterpreterTests/SemanticFail";
     let tokens = lexer::lexer(&file);
         match parser::parser(&tokens) {
             Ok(tree) => {
                 println!("Parse successful:");
                 print_tree(&tree, 0);
                 println!("\n--------------------"); 
-                // println!("{:#?}", tree); 
-                match semantic::semantic_analysis(tree) {
-                    Ok(analyzed_tree) => {
-                        println!("Semantic Analysis successful:");
-                        print_tree(&analyzed_tree, 0);
-                        // println!("{:#?}", analyzed_tree); 
-                    },
-                    Err(e) => println!("Semantic error: {}", e),
+                match semantic::semantic_analysis(&tree) {
+                    Ok(symbol_table) => {
+                        println!("Semantic Analysis Successful!");
+                        println!("Symbol Table: {:?}", symbol_table);
+                        println!("\n--------------------");
+                        interpreter::interpret(&tree);
+                    }
+                    Err(errors) => {
+                        println!("Semantic Analysis Failed with Errors:");
+                        for error in errors {
+                            println!("{}", error.message);
+                        }
+                    }
                 }
+            
+                // println!("{:#?}", tree); 
+                // match semantic::semantic_analysis(tree) {
+                    // Ok(analyzed_tree) => {
+                    //     println!("Semantic Analysis successful:");
+                    //     print_tree(&analyzed_tree, 0);
+                    //     // println!("{:#?}", analyzed_tree);
+                 
+                // interpreter::interpret(&tree);
+                    // },
+                    // Err(e) => println!("Semantic error: {}", e),
+                // }
             },
             Err(e) => println!("Parse error: {}", e),
         }
