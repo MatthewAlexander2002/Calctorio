@@ -819,6 +819,6 @@ NonTerminal: Prog
 
 --------------------
 Semantic Analysis Failed with Errors:
-Type mismatch in assignment: variable 'DOUBLERes' is of type 'Double' but assigned type 'Int'.
+Type mismatch in assignment: variable 'INTRes' is of type 'int' but assigned type 'double'.
 
 --------------------
