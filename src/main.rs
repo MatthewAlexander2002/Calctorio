@@ -31,13 +31,28 @@ fn main() {
     //     println!("\n--------------------");
     // }
 
-    let file = "/home/matthew/Documents/UNI/Sem 6/SDL/Calctorio/TestSuite/InterpreterTests/ManyOps";
+    let file = "/home/matthew/Documents/UNI/Sem 6/SDL/Calctorio/TestSuite/InterpreterTests/SemanticFail";
     let tokens = lexer::lexer(&file);
         match parser::parser(&tokens) {
             Ok(tree) => {
                 println!("Parse successful:");
                 print_tree(&tree, 0);
                 println!("\n--------------------"); 
+                match semantic::semantic_analysis(&tree) {
+                    Ok(symbol_table) => {
+                        println!("Semantic Analysis Successful!");
+                        println!("Symbol Table: {:?}", symbol_table);
+                        println!("\n--------------------");
+                        interpreter::interpret(&tree);
+                    }
+                    Err(errors) => {
+                        println!("Semantic Analysis Failed with Errors:");
+                        for error in errors {
+                            println!("{}", error.message);
+                        }
+                    }
+                }
+            
                 // println!("{:#?}", tree); 
                 // match semantic::semantic_analysis(tree) {
                     // Ok(analyzed_tree) => {
@@ -45,7 +60,7 @@ fn main() {
                     //     print_tree(&analyzed_tree, 0);
                     //     // println!("{:#?}", analyzed_tree);
                  
-                interpreter::interpret(&tree);
+                // interpreter::interpret(&tree);
                     // },
                     // Err(e) => println!("Semantic error: {}", e),
                 // }
