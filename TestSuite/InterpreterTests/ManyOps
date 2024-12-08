@@ -8,7 +8,7 @@ int main() {
     int INTTwo = 0;
 
     INTOne = a + b;
-    INTTwo = a * b + c;
+    INTTwo = a * b + c * 3;
 
     print(INTOne);
     print(INTTwo);

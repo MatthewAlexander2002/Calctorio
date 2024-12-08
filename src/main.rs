@@ -9,30 +9,94 @@ mod semantic;
 mod interpreter;
 
 fn main() {
-    // let test_dir = Path::new("/home/matthew/Documents/UNI/Sem 6/SDL/Calctorio/TestSuite");
-    // let test_files = find_test_files(test_dir);
+    let test_dirA = Path::new("/home/matthew/Documents/UNI/Sem 6/SDL/Calctorio/TestSuite/AtomicTests");
+    let test_filesA = find_test_files(test_dirA);
 
-    // println!("\nFound test files:");
-    // for file in &test_files {
-    //     println!("{}", file);
-    // }
+    println!("\nFound test files Atomic:");
+    for file in &test_filesA {
+        println!("{}", file);
+    }
 
-    // for file in test_files {
-    //     println!("\nTesting file: {}", file);
-    //     let tokens = lexer::lexer(&file);
-    //     match parser::parser(&tokens) {
-    //         Ok(tree) => {
-    //             println!("Parse successful:");
-    //             print_tree(&tree, 0);
-    //             semantic::semantic_analysis(tree);
-    //         },
-    //         Err(e) => println!("Parse error: {}", e),
-    //     }
-    //     println!("\n--------------------");
-    // }
+    let test_dirC = Path::new("/home/matthew/Documents/UNI/Sem 6/SDL/Calctorio/TestSuite/ComplexTests");
+    let test_filesC = find_test_files(test_dirC);
 
-    let file = "/home/matthew/Documents/UNI/Sem 6/SDL/Calctorio/TestSuite/InterpreterTests/SemanticFail";
-    let tokens = lexer::lexer(&file);
+    println!("\nFound test files Complex:");
+    for file in &test_filesC {
+        println!("{}", file);
+    }
+
+    let test_dirI = Path::new("/home/matthew/Documents/UNI/Sem 6/SDL/Calctorio/TestSuite/InterpreterTests");
+    let test_filesI = find_test_files(test_dirI);
+
+    println!("\nFound test files Interpreted:");
+    for file in &test_filesI {
+        println!("{}", file);
+    }
+
+    println!("ATOMIC TESTS");
+    for file in &test_filesA {
+        println!("\nTesting file: {}", file);
+        let tokens = lexer::lexer(file);
+        match parser::parser(&tokens) {
+            Ok(tree) => {
+                println!("Parse successful:");
+                print_tree(&tree, 0);
+                println!("\n--------------------"); 
+                match semantic::semantic_analysis(&tree) {
+                    Ok(symbol_table) => {
+                        println!("Semantic Analysis Successful!");
+                        println!("Symbol Table: {:?}", symbol_table);
+                        println!("\n--------------------");
+                        // interpreter::interpret(&tree);
+                    }
+                    Err(errors) => {
+                        println!("Semantic Analysis Failed with Errors:");
+                        for error in errors {
+                            println!("{}", error.message);
+                        }
+                    }
+                }
+            },
+            Err(e) => println!("Parse error: {}", e),
+        }
+        println!("\n--------------------"); 
+    }
+
+    println!("COMPLEX TESTS");
+
+    for file in &test_filesC {
+        println!("\nTesting file: {}", file);
+        let tokens = lexer::lexer(file);
+        match parser::parser(&tokens) {
+            Ok(tree) => {
+                println!("Parse successful:");
+                print_tree(&tree, 0);
+                println!("\n--------------------"); 
+                match semantic::semantic_analysis(&tree) {
+                    Ok(symbol_table) => {
+                        println!("Semantic Analysis Successful!");
+                        println!("Symbol Table: {:?}", symbol_table);
+                        println!("\n--------------------");
+                        // interpreter::interpret(&tree);
+                    }
+                    Err(errors) => {
+                        println!("Semantic Analysis Failed with Errors:");
+                        for error in errors {
+                            println!("{}", error.message);
+                        }
+                    }
+                }
+            },
+            Err(e) => println!("Parse error: {}", e),
+        }
+        println!("\n--------------------"); 
+    }
+
+    println!("INTERPRETER TESTS");
+
+    for file in &test_filesI {
+        println!("\nTesting file: {}", file);
+        let tokens = lexer::lexer(file);
         match parser::parser(&tokens) {
             Ok(tree) => {
                 println!("Parse successful:");
@@ -52,22 +116,11 @@ fn main() {
                         }
                     }
                 }
-            
-                // println!("{:#?}", tree); 
-                // match semantic::semantic_analysis(tree) {
-                    // Ok(analyzed_tree) => {
-                    //     println!("Semantic Analysis successful:");
-                    //     print_tree(&analyzed_tree, 0);
-                    //     // println!("{:#?}", analyzed_tree);
-                 
-                // interpreter::interpret(&tree);
-                    // },
-                    // Err(e) => println!("Semantic error: {}", e),
-                // }
             },
             Err(e) => println!("Parse error: {}", e),
         }
-    println!("\n--------------------"); 
+        println!("\n--------------------"); 
+    }
 }
 
 fn find_test_files(path: &Path) -> Vec<String> {

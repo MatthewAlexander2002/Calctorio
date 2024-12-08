@@ -7,7 +7,7 @@ int main() {
 
     int INTRes = 0;
     double DOUBLERes = 0.0;
-
+    
     INTRes = a + c;
     DOUBLERes = b + d;
 
